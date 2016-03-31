@@ -24,24 +24,14 @@ function warriorClass() {
 		this.controlKeyLeft = leftKey;
 	}
 
-	this.reset = function(whichImage, warriorName) {
+	this.reset = function(whichImage, warriorName, startPos) {
 		this.name = warriorName;
 		this.myWarriorPic = whichImage;
 		this.keysHeld = 0;
 		this.updateKeyReadout();
 
-		for(var eachRow=0;eachRow<WORLD_ROWS;eachRow++) {
-			for(var eachCol=0;eachCol<WORLD_COLS;eachCol++) {
-				var arrayIndex = rowColToArrayIndex(eachCol, eachRow);
-				if(worldGrid[arrayIndex] == TILE_PLAYERSTART) {
-					worldGrid[arrayIndex] = TILE_GROUND;
-					this.x = eachCol * WORLD_W + WORLD_W/2;
-					this.y = eachRow * WORLD_H + WORLD_H/2;
-					return;
-				} // end of player start if
-			} // end of col for
-		} // end of row for
-		console.log("NO PLAYER START FOUND!");
+		this.x = 300 + startPos * 200;
+		this.y = 300;
 	} // end of warriorReset func
 
 	this.updateKeyReadout = function() {
@@ -65,14 +55,14 @@ function warriorClass() {
 			nextX -= PLAYER_MOVE_SPEED;
 		}
 
-		var walkIntoTileIndex = getTileIndexAtPixelCoord(nextX, nextY);
-		var walkIntoTileType = TILE_WALL;
+		var walkIntoLevelPieceIndex = getLevelPieceIndexAtPixelCoord(nextX, nextY);
+		var walkIntoLevelPieceType = TILE_GROUND;
 
-		if(walkIntoTileIndex != undefined) {
-			walkIntoTileType = worldGrid[walkIntoTileIndex];
+		if(walkIntoLevelPieceIndex != undefined) {
+			walkIntoLevelPieceType = worldData[walkIntoLevelPieceIndex].kind;
 		}
 
-		switch(walkIntoTileType) {
+		switch(walkIntoLevelPieceType) {
 			case TILE_GROUND:
 				this.x = nextX;
 				this.y = nextY;
@@ -85,13 +75,13 @@ function warriorClass() {
 				if(this.keysHeld > 0) {
 					this.keysHeld--; // one less key
 					this.updateKeyReadout();
-					worldGrid[walkIntoTileIndex] = TILE_GROUND;
+					worldData[walkIntoLevelPieceIndex].kind = TILE_GROUND;
 				}
 				break;
 			case TILE_KEY:
 				this.keysHeld++; // one more key
 				this.updateKeyReadout();
-				worldGrid[walkIntoTileIndex] = TILE_GROUND;
+				worldData[walkIntoLevelPieceIndex].kind = TILE_GROUND;
 				break;
 			case TILE_WALL:
 			default:

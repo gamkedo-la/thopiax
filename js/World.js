@@ -1,23 +1,3 @@
-const WORLD_W = 50;
-const WORLD_H = 50;
-const WORLD_GAP = 2;
-const WORLD_COLS = 16;
-const WORLD_ROWS = 12;
-var levelOne =
-				[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-				 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
-				 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
-				 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-				 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-				 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-				 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 1,
-				 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-				 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-				 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
-				 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
-				 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-var worldGrid = [];
-
 const TILE_GROUND = 0;
 const TILE_WALL = 1;
 const TILE_PLAYERSTART = 2;
@@ -25,55 +5,41 @@ const TILE_GOAL = 3;
 const TILE_KEY = 4;
 const TILE_DOOR = 5;
 
-function returnTileTypeAtColRow(col, row) {
-	if(col >= 0 && col < WORLD_COLS &&
-		row >= 0 && row < WORLD_ROWS) {
-		 var worldIndexUnderCoord = rowColToArrayIndex(col, row);
-		 return worldGrid[worldIndexUnderCoord];
-	} else {
-		return WORLD_WALL;
+var levelOne = [ {kind: TILE_WALL, x: 10, y: 20},
+				 {kind: TILE_WALL, x: 60, y: 20},
+				 {kind: TILE_WALL, x: 160, y: 20},
+				 {kind: TILE_WALL, x: 210, y: 30},
+				 {kind: TILE_WALL, x: 270, y: 45},
+				 {kind: TILE_KEY, x: 100, y: 350},
+				 {kind: TILE_DOOR, x: 110, y: 20},
+				 {kind: TILE_GOAL, x: 50, y: 475} ];
+var worldData = [];
+
+// still used for tiling ground, for now, also for assumption of how large level parts are from their corners
+const WORLD_W = 50;
+const WORLD_H = 50;
+const WORLD_GAP = 2;
+const WORLD_COLS = 16;
+const WORLD_ROWS = 12;
+
+function getLevelPieceIndexAtPixelCoord(atX, atY) {
+	for (var i = 0; i < worldData.length; i++) {
+		if(atX > worldData[i].x && atX < worldData[i].x + WORLD_W &&
+		   atY > worldData[i].y && atY < worldData[i].y + WORLD_H) {
+			return i;
+		}
 	}
-}
-
-function getTileIndexAtPixelCoord(atX, atY) {
-	var warriorWorldCol = Math.floor(atX / WORLD_W);
-	var warriorWorldRow = Math.floor(atY / WORLD_H);
-	var worldIndexUnderWarrior = rowColToArrayIndex(warriorWorldCol, warriorWorldRow);
-
-	if(warriorWorldCol >= 0 && warriorWorldCol < WORLD_COLS &&
-		warriorWorldRow >= 0 && warriorWorldRow < WORLD_ROWS) {
-		return worldIndexUnderWarrior;
-	} // end of valid col and row
-
 	return undefined;
-} // end of warriorWorldHandling func
-
-function rowColToArrayIndex(col, row) {
-	return col + WORLD_COLS * row;
-}
-
-function tileTypeHasTransparency(checkTileType) {
-	return (checkTileType == TILE_GOAL ||
-			checkTileType == TILE_KEY ||
-			checkTileType == TILE_DOOR);
 }
 
 function drawWorld() {
-
 	var arrayIndex = 0;
 	var drawTileX = 0;
 	var drawTileY = 0;
 	for(var eachRow=0;eachRow<WORLD_ROWS;eachRow++) {
 		for(var eachCol=0;eachCol<WORLD_COLS;eachCol++) {
 
-			var arrayIndex = rowColToArrayIndex(eachCol, eachRow);
-			var tileKindHere = worldGrid[arrayIndex];
-			var useImg = worldPics[tileKindHere];
-
-			if( tileTypeHasTransparency(tileKindHere) ) {
-				canvasContext.drawImage(worldPics[TILE_GROUND],drawTileX,drawTileY);
-			}
-			canvasContext.drawImage(useImg,drawTileX,drawTileY);
+			canvasContext.drawImage(worldPics[TILE_GROUND],drawTileX,drawTileY);
 			drawTileX += WORLD_W;
 			arrayIndex++;
 		} // end of for each col
@@ -81,4 +47,9 @@ function drawWorld() {
 		drawTileX = 0;
 	} // end of for each row
 
+	for (var i = 0; i < worldData.length; i++) {
+		if(worldData[i].kind != TILE_GROUND) { // skip these as "removed"
+			canvasContext.drawImage(worldPics[worldData[i].kind],worldData[i].x,worldData[i].y);
+		}
+	};
 } // end of drawWorld func

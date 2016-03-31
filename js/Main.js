@@ -23,9 +23,9 @@ function imageLoadingDoneSoStartGame() {
 }
 
 function loadLevel(whichLevel) {
-	worldGrid = whichLevel.slice();
-	blueWarrior.reset(warriorPic, "Blue Storm")
-	redWarrior.reset(warrior2Pic, "Red Rider");
+	worldData = JSON.parse(JSON.stringify(whichLevel));
+	blueWarrior.reset(warriorPic, "Melee Dude", 1)
+	redWarrior.reset(warrior2Pic, "Ranged Dudette", 0);
 }
 
 function updateAll() {
