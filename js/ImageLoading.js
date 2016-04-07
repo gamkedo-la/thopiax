@@ -1,6 +1,7 @@
 var warriorPic = document.createElement("img");
 var warrior2Pic = document.createElement("img");
-var playerArrow = document.createElement("img");
+var playerArrowPic = document.createElement("img");
+var demonPic = document.createElement("img");
 var worldPics = [];
 
 var picsToLoad = 0; // set automatically based on imageList in loadImages()
@@ -27,7 +28,8 @@ function loadImages() {
 	var imageList = [
 		{varName: warriorPic, theFile: "warrior.png"},
 		{varName: warrior2Pic, theFile: "warrior2.png"},
-		{varName: playerArrow, theFile: "arrow.png"},
+		{varName: playerArrowPic, theFile: "arrow.png"},
+		{varName: demonPic, theFile: "demon.png"},
 
 		{worldType: TILE_GROUND, theFile: "world_ground.png"},
 		{worldType: TILE_WALL, theFile: "world_wall.png"},

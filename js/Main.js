@@ -26,6 +26,7 @@ function loadLevel(whichLevel) {
 	worldData = JSON.parse(JSON.stringify(whichLevel));
 	blueWarrior.reset(warriorPic, "Melee Dude", 1)
 	redWarrior.reset(warrior2Pic, "Ranged Dudette", 0);
+	spawnEnemies();
 }
 
 function updateAll() {
@@ -37,11 +38,13 @@ function moveAll() {
 	blueWarrior.move();
 	redWarrior.move();
 	moveShots();
+	moveEnemies();
 }
 
 function drawAll() {
 	drawWorld();
 	blueWarrior.draw();
 	redWarrior.draw();
+	drawEnemies();
 	drawShots();
 }

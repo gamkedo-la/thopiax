@@ -7,7 +7,7 @@ function resetShots() {
 
 function fireShot() {
 	var newShot = new shotClass();
-	newShot.reset(playerArrow, blueWarrior, PLAYER_ARROW_SPEED, mouseX, mouseY);
+	newShot.reset(playerArrowPic, blueWarrior, PLAYER_ARROW_SPEED, mouseX, mouseY);
 	shotList.push(newShot);
 }
 
