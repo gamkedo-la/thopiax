@@ -36,10 +36,12 @@ function updateAll() {
 function moveAll() {
 	blueWarrior.move();
 	redWarrior.move();
+	moveShots();
 }
 
 function drawAll() {
 	drawWorld();
 	blueWarrior.draw();
 	redWarrior.draw();
+	drawShots();
 }

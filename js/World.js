@@ -23,6 +23,9 @@ const WORLD_COLS = 16;
 const WORLD_ROWS = 12;
 
 function getLevelPieceIndexAtPixelCoord(atX, atY) {
+	if(atX < 0 || atY < 0 || atX > canvas.width || atY > canvas.height) {
+		return TILE_WALL;
+	}
 	for (var i = 0; i < worldData.length; i++) {
 		if(atX > worldData[i].x && atX < worldData[i].x + WORLD_W &&
 		   atY > worldData[i].y && atY < worldData[i].y + WORLD_H) {

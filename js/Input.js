@@ -13,12 +13,17 @@ var mouseY = 0;
 
 function setupInput() {
 	canvas.addEventListener('mousemove', updateMousePos);
+	canvas.addEventListener('mousedown', mousePressed);
 
 	document.addEventListener('keydown', keyPressed);
 	document.addEventListener('keyup', keyReleased);
 
 	blueWarrior.setupInput(KEY_UP_ARROW, KEY_RIGHT_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW);
 	redWarrior.setupInput(KEY_W, KEY_D, KEY_S, KEY_A);
+}
+
+function mousePressed(evt) {
+	fireShot();
 }
 
 function updateMousePos(evt) {
