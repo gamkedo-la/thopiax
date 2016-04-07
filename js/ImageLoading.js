@@ -1,6 +1,7 @@
 var warriorPic = document.createElement("img");
 var warrior2Pic = document.createElement("img");
 var playerArrowPic = document.createElement("img");
+var playerSlashPic = document.createElement("img");
 var demonPic = document.createElement("img");
 var worldPics = [];
 
@@ -29,6 +30,7 @@ function loadImages() {
 		{varName: warriorPic, theFile: "warrior.png"},
 		{varName: warrior2Pic, theFile: "warrior2.png"},
 		{varName: playerArrowPic, theFile: "arrow.png"},
+		{varName: playerSlashPic, theFile: "swordswipe.png"},
 		{varName: demonPic, theFile: "demon.png"},
 
 		{worldType: TILE_GROUND, theFile: "world_ground.png"},

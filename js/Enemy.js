@@ -48,6 +48,18 @@ function enemyClass() {
 		}
 	}
 
+	this.hitBy = function(someShot) {
+		var dx = someShot.x - this.x;
+		var dy = someShot.y - this.y;
+		var dist = Math.sqrt(dx*dx+dy*dy);
+
+		if(dist < this.myPic.width/2) {
+			this.readyToRemove = true;
+			return true;
+		}
+		return false;
+	}
+
 	this.draw = function() {
 		drawBitmapCenteredWithRotation(this.myPic, this.x,this.y, 0);
 	}

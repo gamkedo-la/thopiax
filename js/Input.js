@@ -7,6 +7,7 @@ const KEY_W = 87;
 const KEY_A = 65;
 const KEY_S = 83;
 const KEY_D = 68;
+const KEY_SPACE = 32;
 
 var mouseX = 0;
 var mouseY = 0;
@@ -55,7 +56,9 @@ function keySet(keyEvent, setTo) {
 	}
 
 
-
+	if(setTo && keyEvent.keyCode == KEY_SPACE) {
+		swingSword();
+	}
 	if(keyEvent.keyCode == redWarrior.controlKeyLeft) {
 		redWarrior.keyHeld_West = setTo;
 	}

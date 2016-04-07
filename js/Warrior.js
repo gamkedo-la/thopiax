@@ -3,6 +3,7 @@ const PLAYER_MOVE_SPEED = 5.0;
 function warriorClass() {
 	this.x = 75;
 	this.y = 75;
+	this.prevMoveAng = 0;
 	this.myWarriorPic; // which picture to use
 	this.name = "Untitled Warrior";
 	this.keysHeld = 0;
@@ -41,18 +42,27 @@ function warriorClass() {
 	this.move = function() {
 		var nextX = this.x;
 		var nextY = this.y;
+		var anyKey = false;
 
 		if(this.keyHeld_North) {
 			nextY -= PLAYER_MOVE_SPEED;
+			anyKey = true;
 		}
 		if(this.keyHeld_East) {
 			nextX += PLAYER_MOVE_SPEED;
+			anyKey = true;
 		}
 		if(this.keyHeld_South) {
 			nextY += PLAYER_MOVE_SPEED;
+			anyKey = true;
 		}
 		if(this.keyHeld_West) {
 			nextX -= PLAYER_MOVE_SPEED;
+			anyKey = true;
+		}
+		
+		if(anyKey) {
+			this.prevMoveAng = Math.atan2( nextY - this.y, nextX - this.x );
 		}
 
 		var walkIntoLevelPieceIndex = getLevelPieceIndexAtPixelCoord(nextX, nextY);
