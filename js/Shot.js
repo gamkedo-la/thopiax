@@ -1,4 +1,4 @@
-const ATTACK_SPAWN_DIST = 25;
+const ATTACK_SPAWN_DIST = 37;
 
 function shotClass() {
 	this.x = 75;
@@ -9,8 +9,9 @@ function shotClass() {
 	this.myShotPic; // which picture to use
 	this.facingAng;
 	this.readyToRemove;
+	this.vanishOnHit;
 
-	this.reset = function(whichImage, firedBy, mvSpeed, atX, atY, lifeFrames, useFacing) {
+	this.reset = function(whichImage, firedBy, mvSpeed, atX, atY, lifeFrames, useFacing, vanishOnHit) {
 		var startX = firedBy.x + (useFacing ? Math.cos(firedBy.prevMoveAng) * ATTACK_SPAWN_DIST : 0);
 		var startY = firedBy.y + (useFacing ? Math.sin(firedBy.prevMoveAng) * ATTACK_SPAWN_DIST : 0);
 		this.readyToRemove = false;
@@ -28,6 +29,7 @@ function shotClass() {
 		this.xv = mvSpeed * dx / magnitude;
 		this.yv = mvSpeed * dy / magnitude;
 		this.lifeTime = lifeFrames;
+		this.vanishOnHit = vanishOnHit;
 	} // end of warriorReset func
 
 	this.move = function() {
@@ -38,7 +40,7 @@ function shotClass() {
 		}
 
 		for(var i=0; i<enemyList.length-1; i++) {
-			if(enemyList[i].hitBy(this)) {
+			if(enemyList[i].hitBy(this) && this.vanishOnHit) {
 				this.readyToRemove = true;
 				return;
 			}

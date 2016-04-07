@@ -56,9 +56,6 @@ function keySet(keyEvent, setTo) {
 	}
 
 
-	if(setTo && keyEvent.keyCode == KEY_SPACE) {
-		swingSword();
-	}
 	if(keyEvent.keyCode == redWarrior.controlKeyLeft) {
 		redWarrior.keyHeld_West = setTo;
 	}
@@ -70,6 +67,11 @@ function keySet(keyEvent, setTo) {
 	}
 	if(keyEvent.keyCode == redWarrior.controlKeyDown) {
 		redWarrior.keyHeld_South = setTo;
+	}
+	if(setTo && keyEvent.keyCode == KEY_SPACE) {
+		redWarrior.keyHeld_South = redWarrior.keyHeld_North =
+			redWarrior.keyHeld_East = redWarrior.keyHeld_West = false;
+		swingSword();
 	}
 }
 

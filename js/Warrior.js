@@ -1,5 +1,7 @@
 const PLAYER_MOVE_SPEED = 5.0;
 
+const PLAYER_FRAME_NUM = 60;
+
 function warriorClass() {
 	this.x = 75;
 	this.y = 75;
@@ -7,6 +9,7 @@ function warriorClass() {
 	this.myWarriorPic; // which picture to use
 	this.name = "Untitled Warrior";
 	this.keysHeld = 0;
+	this.lastMovedRight = false;
 
 	this.keyHeld_North = false;
 	this.keyHeld_South = false;
@@ -51,6 +54,7 @@ function warriorClass() {
 		if(this.keyHeld_East) {
 			nextX += PLAYER_MOVE_SPEED;
 			anyKey = true;
+			this.lastMovedRight = true;
 		}
 		if(this.keyHeld_South) {
 			nextY += PLAYER_MOVE_SPEED;
@@ -59,6 +63,7 @@ function warriorClass() {
 		if(this.keyHeld_West) {
 			nextX -= PLAYER_MOVE_SPEED;
 			anyKey = true;
+			this.lastMovedRight = false;
 		}
 		
 		if(anyKey) {
@@ -100,6 +105,19 @@ function warriorClass() {
 	}
 
 	this.draw = function() {
-		drawBitmapCenteredWithRotation(this.myWarriorPic, this.x,this.y, 0);
+		var frameSize = 50;
+		var frameNum = sharedAnimCycle % PLAYER_FRAME_NUM;
+		
+		canvasContext.save();
+		canvasContext.translate(this.x, this.y);
+		if(this.lastMovedRight) {
+			canvasContext.scale(-1, 1);
+		}
+		canvasContext.drawImage(this.myWarriorPic,
+			frameNum * frameSize, 0,
+			frameSize,frameSize,
+			-frameSize/2, -frameSize/2,
+			frameSize,frameSize);
+		canvasContext.restore();
 	}
 }

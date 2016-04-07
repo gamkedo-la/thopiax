@@ -27,8 +27,8 @@ function loadImageForWorldCode(worldCode, fileName) {
 
 function loadImages() {
 	var imageList = [
-		{varName: warriorPic, theFile: "warrior.png"},
-		{varName: warrior2Pic, theFile: "warrior2.png"},
+		{varName: warriorPic, theFile: "heavy_run_strip60.png"},
+		{varName: warrior2Pic, theFile: "range_idle_strip.png"},
 		{varName: playerArrowPic, theFile: "arrow.png"},
 		{varName: playerSlashPic, theFile: "swordswipe.png"},
 		{varName: demonPic, theFile: "demon.png"},

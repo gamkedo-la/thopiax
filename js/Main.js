@@ -3,6 +3,8 @@ var canvas, canvasContext;
 var blueWarrior = new warriorClass();
 var redWarrior = new warriorClass();
 
+var sharedAnimCycle = 0;
+
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
 	canvasContext = canvas.getContext('2d');
@@ -30,6 +32,8 @@ function loadLevel(whichLevel) {
 }
 
 function updateAll() {
+	sharedAnimCycle++;
+	
 	moveAll();
 	drawAll();
 }
