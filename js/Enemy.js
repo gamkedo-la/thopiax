@@ -1,11 +1,16 @@
 function enemyClass() {
 	this.x = 75;
 	this.y = 75;
-	this.xv = 1;
-	this.yv = 1;
+	this.xv = 0;
+	this.yv = 0;
 	this.myPic;
 	this.facingAng;
 	this.readyToRemove;
+	this.mvSpeed = 4;
+	this.moving;
+	this.probMove;
+	this.targetX; 
+	this.targetY;
 
 	this.randDir = function() {
 		var newDir = Math.PI * 2.0 * Math.random();
@@ -21,30 +26,24 @@ function enemyClass() {
 		this.myPic = whichImage;
 		this.x = spawnX;
 		this.y = spawnY;
-		this.randDir();
-		
+		//this.randDir();
+		this.moving = false;
+		this.probMove = 0.20;
+		this.targetX = this.x; 
+		this.targetY = this.y;
+		this.decide();
 	} // end of warriorReset func
 
 	this.move = function() {
 		var nextX = this.x+this.xv;
 		var nextY = this.y+this.yv;
-
-		var walkIntoLevelPieceIndex = getLevelPieceIndexAtPixelCoord(nextX, nextY);
-		var walkIntoLevelPieceType = TILE_GROUND;
-
-		if(walkIntoLevelPieceIndex != undefined) {
-			walkIntoLevelPieceType = worldData[walkIntoLevelPieceIndex].kind;
-		}
-
-		switch(walkIntoLevelPieceType) {
-			case TILE_GROUND:
-				this.x = nextX;
-				this.y = nextY;
-				break;
-			default:
-				this.randDir();
-				// this.readyToRemove = true;
-				break;
+		if(!this.onTileGround( nextX, nextY )) {
+			this.randPos();
+		} else if(this.arrived()) {
+			this.decide();
+		} else {
+			this.x = nextX;
+			this.y = nextY;
 		}
 	}
 
@@ -63,4 +62,60 @@ function enemyClass() {
 	this.draw = function() {
 		drawBitmapCenteredWithRotation(this.myPic, this.x,this.y, 0);
 	}
+
+
+
+	//------ Added by dalath -------//
+	//----------- START ------------//
+	//
+	this.decide = function() {
+		var rnd = Math.random();
+		if(rnd < this.probMove) {
+			this.randPos();
+			this.probMove -= 0.15;	
+		} else {
+			this.probMove += 0.001;
+		}
+		
+	}
+
+	this.arrived = function() {
+		var xDone = Math.abs(( this.x + this.xv ) - this.targetX) < this.mvSpeed;
+		var yDone = Math.abs(( this.y + this.yv ) - this.targetY) < this.mvSpeed;
+		if(xDone && yDone) {
+			this.x = this.targetX;
+			this.y = this.targetY;
+			this.xv = 0;
+			this.yv = 0;
+			return true;
+		} 
+		return false;
+	}
+
+	this.randPos = function() {
+		var brk = 100;
+		do {
+			this.targetX = Math.random() * canvas.width;
+			this.targetY = Math.random() * canvas.height;
+		} while(!this.onTileGround(this.targetX, this.targetY) && brk-- > 0);
+		//
+		var xDiff = this.targetX - this.x;
+		var yDiff = this.targetY - this.y;
+		var maxDiff = Math.max(Math.abs(xDiff), Math.abs(yDiff));
+		this.xv = this.mvSpeed * (xDiff / maxDiff);
+		this.yv = this.mvSpeed * (yDiff / maxDiff);
+	}
+
+	this.onTileGround = function(_x, _y) {
+		var walkIntoLevelPieceIndex = getLevelPieceIndexAtPixelCoord(_x, _y);
+		var walkIntoLevelPieceType = TILE_GROUND;
+		if(walkIntoLevelPieceIndex != undefined) {
+			walkIntoLevelPieceType = worldData[walkIntoLevelPieceIndex].kind;
+		}
+		//
+		return walkIntoLevelPieceType == TILE_GROUND;
+	}
+	//
+	//------------ END -------------//
+
 }
