@@ -62,7 +62,7 @@ function enemyClass() {
 		var dy = someShot.y - this.y;
 		var dist = Math.sqrt(dx*dx+dy*dy);
 
-		if(dist < this.myPic.width/2) {
+		if(dist < this.myPic.width*0.7) {
 			if(someShot.doesStun) {
 				this.stunTime = STUN_TIME;
 			} else {
@@ -78,7 +78,7 @@ function enemyClass() {
 			drawBitmapCenteredWithRotation(this.myPic, this.x,this.y, 0);
 		} else {
 			var stunShakeRange = 4;
-			var stunLeft = stunShakeRange * (STUN_TIME - this.stunTime) / STUN_TIME;
+			var stunLeft = 1 + stunShakeRange * (STUN_TIME - this.stunTime) / STUN_TIME;
 			drawBitmapCenteredWithRotation(this.myPic, 
 				this.x+Math.random()*stunLeft-Math.random()*stunLeft,
 				this.y+Math.random()*stunLeft-Math.random()*stunLeft, 0);
