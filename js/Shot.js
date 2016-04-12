@@ -1,4 +1,8 @@
-const ATTACK_SPAWN_DIST = 37;
+const ATTACK_SPAWN_DIST = 37; // side
+const ATTACK_SPAWN_DIST_UP = 57;
+const ATTACK_SPAWN_DIST_DOWN = 32;
+
+const WAIST_HEIGHT = -12;
 
 function shotClass() {
 	this.x = 75;
@@ -10,10 +14,15 @@ function shotClass() {
 	this.facingAng;
 	this.readyToRemove;
 	this.vanishOnHit;
+	this.doesStun;
 
-	this.reset = function(whichImage, firedBy, mvSpeed, atX, atY, lifeFrames, useFacing, vanishOnHit) {
+	this.reset = function(whichImage, firedBy, mvSpeed, atX, atY, lifeFrames, useFacing, vanishOnHit, useRot, stuns) {
 		var startX = firedBy.x + (useFacing ? Math.cos(firedBy.prevMoveAng) * ATTACK_SPAWN_DIST : 0);
-		var startY = firedBy.y + (useFacing ? Math.sin(firedBy.prevMoveAng) * ATTACK_SPAWN_DIST : 0);
+		var faceUp = firedBy.prevMoveAng < 0;
+		console.log(faceUp);
+		var startY = firedBy.y + (useFacing ? Math.sin(firedBy.prevMoveAng) * 
+					(faceUp ? ATTACK_SPAWN_DIST_UP : ATTACK_SPAWN_DIST_DOWN) : 0)
+					+ WAIST_HEIGHT;
 		this.readyToRemove = false;
 		this.myShotPic = whichImage;
 		this.x = startX;
@@ -22,7 +31,11 @@ function shotClass() {
 		var dy = atY-startY;
 		var magnitude = Math.sqrt(dx*dx + dy*dy);
 		if(useFacing) {
-			this.facingAng = firedBy.prevMoveAng;
+			if(useRot) {
+				this.facingAng = firedBy.prevMoveAng;
+			} else {
+				this.facingAng = 0;
+			}
 		} else {
 			this.facingAng = Math.atan2(dy,dx);
 		}
@@ -30,6 +43,10 @@ function shotClass() {
 		this.yv = mvSpeed * dy / magnitude;
 		this.lifeTime = lifeFrames;
 		this.vanishOnHit = vanishOnHit;
+		if(stuns == undefined) {
+			stuns = false;
+		}
+		this.doesStun = stuns;
 	} // end of warriorReset func
 
 	this.move = function() {
@@ -45,7 +62,6 @@ function shotClass() {
 				return;
 			}
 		}
-
 
 		var nextX = this.x+this.xv;
 		var nextY = this.y+this.yv;

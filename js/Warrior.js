@@ -116,7 +116,7 @@ function warriorClass() {
 		canvasContext.drawImage(this.myWarriorPic,
 			frameNum * frameSize, 0,
 			frameSize,frameSize,
-			-frameSize/2, -frameSize/2,
+			-frameSize/2, -frameSize*5/6,
 			frameSize,frameSize);
 		canvasContext.restore();
 	}

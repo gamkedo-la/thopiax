@@ -6,6 +6,7 @@ var arenaWallsFG = document.createElement("img");
 
 var playerArrowPic = document.createElement("img");
 var playerSlashPic = document.createElement("img");
+var playerShieldPic = document.createElement("img");
 var demonPic = document.createElement("img");
 var worldPics = [];
 
@@ -35,6 +36,7 @@ function loadImages() {
 		{varName: warrior2Pic, theFile: "range_idle_strip.png"},
 		{varName: playerArrowPic, theFile: "arrow.png"},
 		{varName: playerSlashPic, theFile: "swordswipe.png"},
+		{varName: playerShieldPic, theFile: "shieldblock.png"},
 		{varName: demonPic, theFile: "demon.png"},
 
 		{varName: arenaWallsBG, theFile: "arena-back.png"},

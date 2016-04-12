@@ -1,3 +1,5 @@
+const STUN_TIME = 80;
+
 function enemyClass() {
 	this.x = 75;
 	this.y = 75;
@@ -11,6 +13,7 @@ function enemyClass() {
 	this.probMove;
 	this.targetX; 
 	this.targetY;
+	this.stunTime;
 
 	this.randDir = function() {
 		var newDir = Math.PI * 2.0 * Math.random();
@@ -32,11 +35,18 @@ function enemyClass() {
 		this.targetX = this.x; 
 		this.targetY = this.y;
 		this.decide();
+		this.stunTime = 0;
 	} // end of warriorReset func
 
 	this.move = function() {
 		var nextX = this.x+this.xv;
 		var nextY = this.y+this.yv;
+
+		if(this.stunTime>0) {
+			this.stunTime--;
+			return;
+		}
+
 		if(!this.onTileGround( nextX, nextY )) {
 			this.randPos();
 		} else if(this.arrived()) {
@@ -53,14 +63,26 @@ function enemyClass() {
 		var dist = Math.sqrt(dx*dx+dy*dy);
 
 		if(dist < this.myPic.width/2) {
-			this.readyToRemove = true;
+			if(someShot.doesStun) {
+				this.stunTime = STUN_TIME;
+			} else {
+				this.readyToRemove = true;
+			}
 			return true;
 		}
 		return false;
 	}
 
 	this.draw = function() {
-		drawBitmapCenteredWithRotation(this.myPic, this.x,this.y, 0);
+		if(this.stunTime<=0) {
+			drawBitmapCenteredWithRotation(this.myPic, this.x,this.y, 0);
+		} else {
+			var stunShakeRange = 4;
+			var stunLeft = stunShakeRange * (STUN_TIME - this.stunTime) / STUN_TIME;
+			drawBitmapCenteredWithRotation(this.myPic, 
+				this.x+Math.random()*stunLeft-Math.random()*stunLeft,
+				this.y+Math.random()*stunLeft-Math.random()*stunLeft, 0);
+		}
 	}
 
 

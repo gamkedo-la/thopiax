@@ -7,7 +7,8 @@ const KEY_W = 87;
 const KEY_A = 65;
 const KEY_S = 83;
 const KEY_D = 68;
-const KEY_SPACE = 32;
+const KEY_Y = 89;
+const KEY_U = 85;
 
 var mouseX = 0;
 var mouseY = 0;
@@ -68,10 +69,15 @@ function keySet(keyEvent, setTo) {
 	if(keyEvent.keyCode == redWarrior.controlKeyDown) {
 		redWarrior.keyHeld_South = setTo;
 	}
-	if(setTo && keyEvent.keyCode == KEY_SPACE) {
+	if(setTo && keyEvent.keyCode == KEY_Y) {
 		redWarrior.keyHeld_South = redWarrior.keyHeld_North =
 			redWarrior.keyHeld_East = redWarrior.keyHeld_West = false;
 		swingSword();
+	}
+	if(setTo && keyEvent.keyCode == KEY_U) {
+		redWarrior.keyHeld_South = redWarrior.keyHeld_North =
+			redWarrior.keyHeld_East = redWarrior.keyHeld_West = false;
+		raiseShield();
 	}
 }
 

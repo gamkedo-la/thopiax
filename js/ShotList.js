@@ -13,7 +13,13 @@ function fireShot() {
 
 function swingSword() {
 	var newShot = new shotClass();
-	newShot.reset(playerSlashPic, redWarrior, 0, mouseX, mouseY, 10, true, false);
+	newShot.reset(playerSlashPic, redWarrior, 0, mouseX, mouseY, 10, true, false, true);
+	shotList.push(newShot);
+}
+
+function raiseShield() {
+	var newShot = new shotClass();
+	newShot.reset(playerShieldPic, redWarrior, 0, mouseX, mouseY, 10, true, false, false, true);
 	shotList.push(newShot);
 }
 

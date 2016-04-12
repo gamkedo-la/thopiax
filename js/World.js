@@ -5,14 +5,12 @@ const TILE_GOAL = 3;
 const TILE_KEY = 4;
 const TILE_DOOR = 5;
 
-var levelOne = [ {kind: TILE_WALL, x: 10, y: 15},
-				 {kind: TILE_WALL, x: 60, y: 20},
-				 {kind: TILE_WALL, x: 160, y: 25},
-				 {kind: TILE_WALL, x: 210, y: 30},
-				 {kind: TILE_WALL, x: 270, y: 45},
+var levelOne = [ {kind: TILE_WALL, x: 274, y: 175},
+				 {kind: TILE_WALL, x: 509, y: 139},
+				 {kind: TILE_WALL, x: 440, y: 440}/*,
 				 {kind: TILE_KEY, x: 100, y: 350},
 				 {kind: TILE_DOOR, x: 110, y: 20},
-				 {kind: TILE_GOAL, x: 50, y: 475} ];
+				 {kind: TILE_GOAL, x: 50, y: 475}*/ ];
 var worldData = [];
 
 // still used for tiling ground, for now, also for assumption of how large level parts are from their corners
