@@ -2,6 +2,9 @@ const PLAYER_MOVE_SPEED = 5.0;
 
 const PLAYER_FRAME_NUM = 60;
 
+const DASH_DURATION = 28.0;
+const DASH_MAX_SPEED = 11.0;
+
 function warriorClass() {
 	this.x = 75;
 	this.y = 75;
@@ -21,6 +24,10 @@ function warriorClass() {
 	this.controlKeyDown;
 	this.controlKeyLeft;
 
+	this.dashTime;
+	this.dashXV;
+	this.dashYV;
+
 	this.setupInput = function(upKey, rightKey, downKey, leftKey) {
 		this.controlKeyUp = upKey;
 		this.controlKeyRight = rightKey;
@@ -33,13 +40,26 @@ function warriorClass() {
 		this.myWarriorPic = whichImage;
 		this.keysHeld = 0;
 		this.updateKeyReadout();
-
+		this.dashTime = 0;
 		this.x = 300 + startPos * 200;
 		this.y = 300;
 	} // end of warriorReset func
 
 	this.updateKeyReadout = function() {
 		document.getElementById("debugText").innerHTML = "Keys: " + this.keysHeld;
+	}
+
+	this.dashAtMouse = function() {
+		if(this.dashTime <= 0) {
+			var dx = mouseX - this.x;
+			var dy = mouseY - this.y;
+			var dist = Math.sqrt(dx*dx + dy*dy);
+			if(dist > 1) {
+				this.dashTime = DASH_DURATION;
+				this.dashXV = dx / dist;
+				this.dashYV = dy / dist;
+			}
+		}
 	}
 
 	this.move = function() {
@@ -68,6 +88,13 @@ function warriorClass() {
 		
 		if(anyKey) {
 			this.prevMoveAng = Math.atan2( nextY - this.y, nextX - this.x );
+		}
+
+		if(this.dashTime > 0) {
+			var dashSpeed = DASH_MAX_SPEED * this.dashTime/DASH_DURATION;
+			 nextX += this.dashXV * dashSpeed;
+			 nextY += this.dashYV * dashSpeed;
+			this.dashTime--;
 		}
 
 		var walkIntoLevelPieceIndex = getLevelPieceIndexAtPixelCoord(nextX, nextY);
@@ -99,6 +126,7 @@ function warriorClass() {
 				worldData[walkIntoLevelPieceIndex].kind = TILE_GROUND;
 				break;
 			case TILE_WALL:
+				this.dashTime = 0;
 			default:
 				break;
 		}

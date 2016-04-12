@@ -7,19 +7,19 @@ function resetShots() {
 
 function fireShot() {
 	var newShot = new shotClass();
-	newShot.reset(playerArrowPic, blueWarrior, PLAYER_ARROW_SPEED, mouseX, mouseY, 40, false, true);
+	newShot.reset(playerArrowPic, playerRanged, PLAYER_ARROW_SPEED, mouseX, mouseY, 40, false, true);
 	shotList.push(newShot);
 }
 
 function swingSword() {
 	var newShot = new shotClass();
-	newShot.reset(playerSlashPic, redWarrior, 0, mouseX, mouseY, 10, true, false, true);
+	newShot.reset(playerSlashPic, playerFighter, 0, mouseX, mouseY, 10, true, false, true);
 	shotList.push(newShot);
 }
 
 function raiseShield() {
 	var newShot = new shotClass();
-	newShot.reset(playerShieldPic, redWarrior, 0, mouseX, mouseY, 10, true, false, false, true);
+	newShot.reset(playerShieldPic, playerFighter, 0, mouseX, mouseY, 10, true, false, false, true);
 	shotList.push(newShot);
 }
 

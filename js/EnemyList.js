@@ -7,7 +7,7 @@ function resetEnemies() {
 function spawnEnemies() {
 	for(var i=0;i<10;i++) {
 		var newEnemy = new enemyClass();
-		newEnemy.reset(demonPic, Math.random() * canvas.width, Math.random() * canvas.height);
+		newEnemy.reset(demonPic, canvas.width/2, canvas.height/2);
 		enemyList.push(newEnemy);
 	}
 }

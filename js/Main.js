@@ -1,7 +1,7 @@
 var canvas, canvasContext;
 
-var blueWarrior = new warriorClass();
-var redWarrior = new warriorClass();
+var playerRanged = new warriorClass();
+var playerFighter = new warriorClass();
 
 var sharedAnimCycle = 0;
 
@@ -26,8 +26,8 @@ function imageLoadingDoneSoStartGame() {
 
 function loadLevel(whichLevel) {
 	worldData = JSON.parse(JSON.stringify(whichLevel));
-	blueWarrior.reset(warriorPic, "Melee Dude", 1)
-	redWarrior.reset(warrior2Pic, "Ranged Dudette", 0);
+	playerRanged.reset(warriorPic, "Melee Dude", 1)
+	playerFighter.reset(warrior2Pic, "Ranged Dudette", 0);
 	spawnEnemies();
 }
 
@@ -39,16 +39,16 @@ function updateAll() {
 }
 
 function moveAll() {
-	blueWarrior.move();
-	redWarrior.move();
+	playerRanged.move();
+	playerFighter.move();
 	moveShots();
 	moveEnemies();
 }
 
 function drawAll() {
 	drawWorld();
-	blueWarrior.draw();
-	redWarrior.draw();
+	playerRanged.draw();
+	playerFighter.draw();
 	drawEnemies();
 	drawShots();
 
