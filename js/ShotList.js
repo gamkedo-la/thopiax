@@ -4,23 +4,38 @@ const PLAYER_ARROW_SPEED = 7.0;
 function resetShots() {
 	shotList = [];
 }
+const PLAYER_ARROW_RELOAD = 35;
+const PLAYER_SWORD_RELOAD = 20;
+const PLAYER_SHIELD_RELOAD = 9;
 
 function fireShot() {
-	var newShot = new shotClass();
-	newShot.reset(playerArrowPic, playerRanged, PLAYER_ARROW_SPEED, mouseX, mouseY, 40, false, true);
-	shotList.push(newShot);
+	var fromPlayer = playerRanged;
+	if(fromPlayer.myLives > 0 && fromPlayer.reloadTime <= 0) {
+		fromPlayer.reloadTime = PLAYER_ARROW_RELOAD;
+		var newShot = new shotClass();
+		newShot.reset(playerArrowPic, fromPlayer, PLAYER_ARROW_SPEED, mouseX, mouseY, 40, false, true);
+		shotList.push(newShot);
+	}
 }
 
 function swingSword() {
-	var newShot = new shotClass();
-	newShot.reset(playerSlashPic, playerFighter, 0, mouseX, mouseY, 10, true, false, true);
-	shotList.push(newShot);
+	var fromPlayer = playerFighter;
+	if(fromPlayer.myLives > 0 && fromPlayer.reloadTime <= 0) {
+		fromPlayer.reloadTime = PLAYER_SWORD_RELOAD;
+		var newShot = new shotClass();
+		newShot.reset(playerSlashPic, fromPlayer, 0, mouseX, mouseY, 15, true, false, true);
+		shotList.push(newShot);
+	}
 }
 
 function raiseShield() {
-	var newShot = new shotClass();
-	newShot.reset(playerShieldPic, playerFighter, 0, mouseX, mouseY, 10, true, false, false, true);
-	shotList.push(newShot);
+	var fromPlayer = playerFighter;
+	if(fromPlayer.myLives > 0 && fromPlayer.reloadTime <= 0) {
+		fromPlayer.reloadTime = PLAYER_SHIELD_RELOAD;
+		var newShot = new shotClass();
+		newShot.reset(playerShieldPic, fromPlayer, 0, mouseX, mouseY, 60, true, false, false, true);
+		shotList.push(newShot);
+	}
 }
 
 function moveShots() {

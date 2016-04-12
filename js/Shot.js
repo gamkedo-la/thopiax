@@ -1,6 +1,6 @@
 const ATTACK_SPAWN_DIST = 37; // side
 const ATTACK_SPAWN_DIST_UP = 57;
-const ATTACK_SPAWN_DIST_DOWN = 32;
+const ATTACK_SPAWN_DIST_DOWN = 40;
 
 const WAIST_HEIGHT = -12;
 
@@ -56,7 +56,7 @@ function shotClass() {
 			return;
 		}
 
-		for(var i=0; i<enemyList.length-1; i++) {
+		for(var i=0; i<enemyList.length; i++) {
 			if(enemyList[i].hitBy(this) && this.vanishOnHit) {
 				this.readyToRemove = true;
 				return;

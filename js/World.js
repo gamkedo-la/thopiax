@@ -5,8 +5,12 @@ const TILE_GOAL = 3;
 const TILE_KEY = 4;
 const TILE_DOOR = 5;
 
-var levelOne = [ {kind: TILE_WALL, x: 274, y: 175},
+var levelOne = [ {kind: TILE_WALL, x: 174, y: 175},
 				 {kind: TILE_WALL, x: 509, y: 139},
+				 {kind: TILE_WALL, x: 609, y: 239},
+				 {kind: TILE_WALL, x: 359, y: 89},
+				 {kind: TILE_WALL, x: 309, y: 389},
+				 {kind: TILE_WALL, x: 109, y: 339},
 				 {kind: TILE_WALL, x: 440, y: 440}/*,
 				 {kind: TILE_KEY, x: 100, y: 350},
 				 {kind: TILE_DOOR, x: 110, y: 20},

@@ -57,13 +57,20 @@ function enemyClass() {
 		}
 	}
 
-	this.hitBy = function(someShot) {
-		var dx = someShot.x - this.x;
-		var dy = someShot.y - this.y;
+	this.hitBy = function(someShotOrPlayer) {
+		var dx = someShotOrPlayer.x - this.x;
+		var dy = someShotOrPlayer.y - this.y;
 		var dist = Math.sqrt(dx*dx+dy*dy);
 
 		if(dist < this.myPic.width*0.7) {
-			if(someShot.doesStun) {
+			if(someShotOrPlayer.myLives != undefined) {
+				if(this.stunTime > 0) {
+					return false;
+				} else {
+					this.stunTime = STUN_TIME;
+				}
+				console.log("bumped player!");
+			}else if(someShotOrPlayer.doesStun) {
 				this.stunTime = STUN_TIME;
 			} else {
 				this.readyToRemove = true;

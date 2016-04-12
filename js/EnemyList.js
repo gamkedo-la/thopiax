@@ -1,11 +1,13 @@
 var enemyList = [];
 
+const START_ENEMY_COUNT = 10;
+
 function resetEnemies() {
 	enemyList = [];
 }
 
 function spawnEnemies() {
-	for(var i=0;i<10;i++) {
+	for(var i=0;i<START_ENEMY_COUNT;i++) {
 		var newEnemy = new enemyClass();
 		newEnemy.reset(demonPic, canvas.width/2, canvas.height/2);
 		enemyList.push(newEnemy);
