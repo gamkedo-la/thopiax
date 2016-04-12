@@ -25,7 +25,7 @@ const WORLD_COLS = 16;
 const WORLD_ROWS = 12;
 
 const ARENA_HALF_WID = 355.0;
-const ARENA_HALF_HEI_RATIO_INV = 323.0/257.0;
+const ARENA_HALF_HEI_RATIO_INV = 353.0/257.0;
 
 function getLevelPieceIndexAtPixelCoord(atX, atY) {
 	var xFromCenter = atX - canvas.width/2;
