@@ -22,8 +22,15 @@ const WORLD_GAP = 2;
 const WORLD_COLS = 16;
 const WORLD_ROWS = 12;
 
+const ARENA_HALF_WID = 355.0;
+const ARENA_HALF_HEI_RATIO_INV = 323.0/257.0;
+
 function getLevelPieceIndexAtPixelCoord(atX, atY) {
-	if(atX < 0 || atY < 0 || atX > canvas.width || atY > canvas.height) {
+	var xFromCenter = atX - canvas.width/2;
+	var yFromCenter = (atY - canvas.height/2)*ARENA_HALF_HEI_RATIO_INV;
+	var distFromCenter = Math.sqrt(xFromCenter*xFromCenter + yFromCenter*yFromCenter);
+
+	if(distFromCenter > ARENA_HALF_WID) {
 		return TILE_WALL;
 	}
 	for (var i = 0; i < worldData.length; i++) {
@@ -36,7 +43,7 @@ function getLevelPieceIndexAtPixelCoord(atX, atY) {
 }
 
 function drawWorld() {
-	var arrayIndex = 0;
+	/*var arrayIndex = 0;
 	var drawTileX = 0;
 	var drawTileY = 0;
 	for(var eachRow=0;eachRow<WORLD_ROWS;eachRow++) {
@@ -49,6 +56,9 @@ function drawWorld() {
 		drawTileY += WORLD_H;
 		drawTileX = 0;
 	} // end of for each row
+*/
+	canvasContext.drawImage(arenaWallsBG,
+		0,0);
 
 	for (var i = 0; i < worldData.length; i++) {
 		if(worldData[i].kind != TILE_GROUND) { // skip these as "removed"

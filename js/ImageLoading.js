@@ -1,5 +1,9 @@
 var warriorPic = document.createElement("img");
 var warrior2Pic = document.createElement("img");
+
+var arenaWallsBG = document.createElement("img");
+var arenaWallsFG = document.createElement("img");
+
 var playerArrowPic = document.createElement("img");
 var playerSlashPic = document.createElement("img");
 var demonPic = document.createElement("img");
@@ -32,6 +36,10 @@ function loadImages() {
 		{varName: playerArrowPic, theFile: "arrow.png"},
 		{varName: playerSlashPic, theFile: "swordswipe.png"},
 		{varName: demonPic, theFile: "demon.png"},
+
+		{varName: arenaWallsBG, theFile: "arena-back.png"},
+		{varName: arenaWallsFG, theFile: "arena-fg.png"},
+
 
 		{worldType: TILE_GROUND, theFile: "world_ground.png"},
 		{worldType: TILE_WALL, theFile: "world_wall.png"},

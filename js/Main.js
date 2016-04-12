@@ -51,4 +51,7 @@ function drawAll() {
 	redWarrior.draw();
 	drawEnemies();
 	drawShots();
+
+	canvasContext.drawImage(arenaWallsFG,
+		0,canvas.height-arenaWallsFG.height);
 }
