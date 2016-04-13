@@ -12,7 +12,9 @@ function warriorClass() {
 	this.x = 75;
 	this.y = 75;
 	this.prevMoveAng = 0;
-	this.myWarriorPic; // which picture to use
+	this.myWarriorPic;
+	this.myWarriorPicBack;
+	this.myWarriorPicStand;
 	this.name = "Untitled Warrior";
 	this.keysHeld = 0;
 	this.lastMovedRight = false;
@@ -33,6 +35,7 @@ function warriorClass() {
 	this.dashTime;
 	this.dashXV;
 	this.dashYV;
+	this.isMoving;
 
 	this.reloadTime;
 
@@ -54,9 +57,12 @@ function warriorClass() {
 		this.reloadTime = 0;
 	}
 
-	this.reset = function(whichImage, warriorName, startPos) {
+	this.reset = function(whichImage, whichImageBack, whichImageStand, 
+		warriorName, startPos) {
 		this.name = warriorName;
 		this.myWarriorPic = whichImage;
+		this.myWarriorPicBack = whichImageBack;
+		this.myWarriorPicStand = whichImageStand;
 		this.keysHeld = 0;
 		this.updateKeyReadout();
 		this.startSide = startPos;
@@ -111,6 +117,7 @@ function warriorClass() {
 			this.lastMovedRight = false;
 		}
 		
+		this.isMoving = anyKey;
 		if(anyKey) {
 			this.prevMoveAng = Math.atan2( nextY - this.y, nextX - this.x );
 		}
@@ -120,6 +127,7 @@ function warriorClass() {
 			 nextX += this.dashXV * dashSpeed;
 			 nextY += this.dashYV * dashSpeed;
 			this.dashTime--;
+			this.isMoving = true;
 		}
 
 		var walkIntoLevelPieceIndex = getLevelPieceIndexAtPixelCoord(nextX, nextY);
@@ -174,13 +182,10 @@ function warriorClass() {
 		var frameNum = sharedAnimCycle % PLAYER_FRAME_NUM;
 
 		for(var i=0;i<this.myLives;i++) {
-			canvasContext.drawImage(this.myWarriorPic,
-			0 * frameSize, 0,
-			frameSize,frameSize,
+			canvasContext.drawImage(this.myWarriorPicStand,
 			( this.startSide == 0 ? i*(frameSize+3) + frameSize/4 :
 				canvas.width - (i+1)*(frameSize+3) - frameSize/4)
-			,frameSize/4,
-			frameSize,frameSize);
+			,frameSize/4);
 		}
 		
 		if(this.invulTime > 0) {
@@ -204,11 +209,20 @@ function warriorClass() {
 		if(this.lastMovedRight) {
 			canvasContext.scale(-1, 1);
 		}
-		canvasContext.drawImage(this.myWarriorPic,
-			frameNum * frameSize, 0,
-			frameSize,frameSize,
-			-frameSize/2, -frameSize*5/6,
-			frameSize,frameSize);
+
+		if(this.isMoving) {
+			canvasContext.drawImage(this.myWarriorPic,
+				frameNum * frameSize, 0,
+				frameSize,frameSize,
+				-frameSize/2, -frameSize*5/6,
+				frameSize,frameSize);
+		} else if(this.prevMoveAng >= 0.0){
+			canvasContext.drawImage(this.myWarriorPicStand,
+				-frameSize/2, -frameSize*5/6);
+		} else {
+			canvasContext.drawImage(this.myWarriorPicBack,
+				-frameSize/2, -frameSize*5/6);
+		}
 		canvasContext.restore();
 	}
 }

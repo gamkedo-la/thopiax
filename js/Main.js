@@ -26,8 +26,8 @@ function imageLoadingDoneSoStartGame() {
 
 function loadLevel(whichLevel) {
 	worldData = JSON.parse(JSON.stringify(whichLevel));
-	playerRanged.reset(warriorPic, "Melee Dude", 1)
-	playerFighter.reset(warrior2Pic, "Ranged Dudette", 0);
+	playerRanged.reset(warriorPic,warriorPicBack,warriorPicStand, "Melee Dude", 1)
+	playerFighter.reset(warrior2Pic,warrior2PicBack,warrior2PicStand, "Ranged Dudette", 0);
 	spawnEnemies();
 }
 

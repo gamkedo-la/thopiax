@@ -1,5 +1,9 @@
 var warriorPic = document.createElement("img");
+var warriorPicBack = document.createElement("img");
+var warriorPicStand = document.createElement("img");
 var warrior2Pic = document.createElement("img");
+var warrior2PicBack = document.createElement("img");
+var warrior2PicStand = document.createElement("img");
 
 var arenaWallsBG = document.createElement("img");
 var arenaWallsFG = document.createElement("img");
@@ -33,7 +37,11 @@ function loadImageForWorldCode(worldCode, fileName) {
 function loadImages() {
 	var imageList = [
 		{varName: warriorPic, theFile: "heavy_run_strip60.png"},
+		{varName: warriorPicBack, theFile: "warrior-back.png"},
+		{varName: warriorPicStand, theFile: "warrior.png"},
 		{varName: warrior2Pic, theFile: "range_idle_strip.png"},
+		{varName: warrior2PicBack, theFile: "warrior2-back.png"},
+		{varName: warrior2PicStand, theFile: "warrior2.png"},
 		{varName: playerArrowPic, theFile: "arrow.png"},
 		{varName: playerSlashPic, theFile: "swordswipe.png"},
 		{varName: playerShieldPic, theFile: "shieldblock.png"},
