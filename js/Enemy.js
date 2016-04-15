@@ -47,7 +47,7 @@ function enemyClass() {
 			return;
 		}
 
-		if(!this.onTileGround( nextX, nextY )) {
+		if(!AIH.onTileGround( nextX, nextY )) {
 			this.randPos();
 		} else if(this.arrived()) {
 			this.decide();
@@ -94,7 +94,7 @@ function enemyClass() {
 
 
 
-	//------ Added by dalath -------//
+	//------------ AI --------------//
 	//----------- START ------------//
 	//
 	this.decide = function() {
@@ -126,23 +126,13 @@ function enemyClass() {
 		do {
 			this.targetX = Math.random() * canvas.width;
 			this.targetY = Math.random() * canvas.height;
-		} while(!this.onTileGround(this.targetX, this.targetY) && brk-- > 0);
+		} while(!AIH.onTileGround(this.targetX, this.targetY) && brk-- > 0);
 		//
 		var xDiff = this.targetX - this.x;
 		var yDiff = this.targetY - this.y;
 		var maxDiff = Math.max(Math.abs(xDiff), Math.abs(yDiff));
 		this.xv = this.mvSpeed * (xDiff / maxDiff);
 		this.yv = this.mvSpeed * (yDiff / maxDiff);
-	}
-
-	this.onTileGround = function(_x, _y) {
-		var walkIntoLevelPieceIndex = getLevelPieceIndexAtPixelCoord(_x, _y);
-		var walkIntoLevelPieceType = TILE_GROUND;
-		if(walkIntoLevelPieceIndex != undefined) {
-			walkIntoLevelPieceType = worldData[walkIntoLevelPieceIndex].kind;
-		}
-		//
-		return walkIntoLevelPieceType == TILE_GROUND;
 	}
 	//
 	//------------ END -------------//

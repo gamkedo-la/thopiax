@@ -41,6 +41,8 @@ function warriorClass() {
 
 	this.startSide;
 
+	this.ai;
+
 	this.setupInput = function(upKey, rightKey, downKey, leftKey) {
 		this.controlKeyUp = upKey;
 		this.controlKeyRight = rightKey;
@@ -67,6 +69,7 @@ function warriorClass() {
 		this.updateKeyReadout();
 		this.startSide = startPos;
 		this.myLives = START_LIVES+1; // so that first respawn won't count
+		this.ai = new AIH(this);
 		this.respawn();
 	} // end of warriorReset func
 
@@ -98,23 +101,30 @@ function warriorClass() {
 		var nextY = this.y;
 		var anyKey = false;
 
-		if(this.keyHeld_North) {
-			nextY -= PLAYER_MOVE_SPEED;
-			anyKey = true;
-		}
-		if(this.keyHeld_East) {
-			nextX += PLAYER_MOVE_SPEED;
-			anyKey = true;
-			this.lastMovedRight = true;
-		}
-		if(this.keyHeld_South) {
-			nextY += PLAYER_MOVE_SPEED;
-			anyKey = true;
-		}
-		if(this.keyHeld_West) {
-			nextX -= PLAYER_MOVE_SPEED;
-			anyKey = true;
-			this.lastMovedRight = false;
+		if(document.getElementById(this.name).checked) {
+			this.ai.melee();
+			anyKey = this.ai.moved;
+			nextX += this.ai.moveX;
+			nextY += this.ai.moveY;
+		} else {
+			if(this.keyHeld_North) {
+				nextY -= PLAYER_MOVE_SPEED;
+				anyKey = true;
+			}
+			if(this.keyHeld_East) {
+				nextX += PLAYER_MOVE_SPEED;
+				anyKey = true;
+				this.lastMovedRight = true;
+			}
+			if(this.keyHeld_South) {
+				nextY += PLAYER_MOVE_SPEED;
+				anyKey = true;
+			}
+			if(this.keyHeld_West) {
+				nextX -= PLAYER_MOVE_SPEED;
+				anyKey = true;
+				this.lastMovedRight = false;
+			}
 		}
 		
 		this.isMoving = anyKey;
