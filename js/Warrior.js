@@ -5,8 +5,8 @@ const PLAYER_FRAME_NUM = 60;
 const DASH_DURATION = 28.0;
 const DASH_MAX_SPEED = 11.0;
 
-const START_LIVES = 3;
-const INVUL_FRAMES = 90;
+const START_LIVES = 100;
+const INVUL_FRAMES = 50;
 
 function warriorClass() {
 	this.x = 75;
@@ -187,7 +187,8 @@ function warriorClass() {
 		if(this.invulTime <= 0) {
 			for(var i=0; i<enemyList.length; i++) {
 				if(enemyList[i].hitBy(this)) {
-					this.respawn();
+					this.myLives -= 10;
+					this.invulTime = INVUL_FRAMES;
 				}
 			}
 		}
@@ -201,11 +202,16 @@ function warriorClass() {
 		var frameSize = 50;
 		var frameNum = sharedAnimCycle % PLAYER_FRAME_NUM;
 
-		for(var i=0;i<this.myLives;i++) {
-			canvasContext.drawImage(this.myWarriorPicStand,
-			(this.startSide == 0 ? i*(frameSize+3) + frameSize/4 :
-				canvas.width - (i+1)*(frameSize+3) - frameSize/4)
-			,frameSize/4);
+		if (this.startSide == 0) {
+			canvasContext.drawImage(healthBarPic, 20,20)
+			for(var i=0;i<this.myLives;i++) {
+				colorRect(22 + i, 22, 1, 20, "green");
+			}
+		} else {
+			canvasContext.drawImage(healthBarPic, 680,20)
+			for(var i=0;i<this.myLives;i++) {
+				colorRect(781 - i, 22, 1, 20, "green");
+			}
 		}
 
 		if(this.invulTime > 0) {
