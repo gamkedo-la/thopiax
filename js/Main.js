@@ -26,14 +26,14 @@ function imageLoadingDoneSoStartGame() {
 
 function loadLevel(whichLevel) {
 	worldData = JSON.parse(JSON.stringify(whichLevel));
-	playerRanged.reset(warriorPic,warriorPicBack,warriorPicStand, "Melee Dude", 1)
-	playerFighter.reset(warrior2Pic,warrior2PicBack,warrior2PicStand, "Ranged Dudette", 0);
+	playerFighter.reset(warriorPic,warriorPicBack,warriorPicStand, "Melee Dude", 0)
+	playerRanged.reset(warrior2Pic,warrior2PicBack,warrior2PicStand, "Ranged Dudette", 1);
 	spawnEnemies();
 }
 
 function updateAll() {
 	sharedAnimCycle++;
-	
+
 	moveAll();
 	drawAll();
 }

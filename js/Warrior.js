@@ -38,6 +38,7 @@ function warriorClass() {
 	this.isMoving;
 
 	this.reloadTime;
+	this.windup;
 
 	this.startSide;
 
@@ -59,7 +60,7 @@ function warriorClass() {
 		this.reloadTime = 0;
 	}
 
-	this.reset = function(whichImage, whichImageBack, whichImageStand, 
+	this.reset = function(whichImage, whichImageBack, whichImageStand,
 		warriorName, startPos) {
 		this.name = warriorName;
 		this.myWarriorPic = whichImage;
@@ -75,6 +76,15 @@ function warriorClass() {
 
 	this.updateKeyReadout = function() {
 		// document.getElementById("debugText").innerHTML = "Keys: " + this.keysHeld;
+	}
+
+	this.swordCircle = function () {
+		this.windup --;
+
+		canvasContext.fillStyle = "black";
+		canvasContext.beginPath();
+		canvasContext.arc(this.x,this.y, 90, 0,Math.PI*2, true);
+		canvasContext.stroke();
 	}
 
 	this.dashAtMouse = function() {
@@ -126,7 +136,7 @@ function warriorClass() {
 				this.lastMovedRight = false;
 			}
 		}
-		
+
 		this.isMoving = anyKey;
 		if(anyKey) {
 			this.prevMoveAng = Math.atan2( nextY - this.y, nextX - this.x );
@@ -193,11 +203,11 @@ function warriorClass() {
 
 		for(var i=0;i<this.myLives;i++) {
 			canvasContext.drawImage(this.myWarriorPicStand,
-			( this.startSide == 0 ? i*(frameSize+3) + frameSize/4 :
+			(this.startSide == 0 ? i*(frameSize+3) + frameSize/4 :
 				canvas.width - (i+1)*(frameSize+3) - frameSize/4)
 			,frameSize/4);
 		}
-		
+
 		if(this.invulTime > 0) {
 			this.invulTime--;
 			if(this.invulTime%5 < 2) {
@@ -233,6 +243,11 @@ function warriorClass() {
 			canvasContext.drawImage(this.myWarriorPicBack,
 				-frameSize/2, -frameSize*5/6);
 		}
+
+		if (this.windup > 0) {
+			this.swordCircle()
+		}
+
 		canvasContext.restore();
 	}
 }

@@ -5,7 +5,7 @@ function resetShots() {
 	shotList = [];
 }
 const PLAYER_ARROW_RELOAD = 35;
-const PLAYER_SWORD_RELOAD = 20;
+const PLAYER_SWORD_RELOAD = 100;
 const PLAYER_SHIELD_RELOAD = 9;
 
 function fireShot() {
@@ -22,9 +22,10 @@ function swingSword() {
 	var fromPlayer = playerFighter;
 	if(fromPlayer.myLives > 0 && fromPlayer.reloadTime <= 0) {
 		fromPlayer.reloadTime = PLAYER_SWORD_RELOAD;
-		var newShot = new shotClass();
-		newShot.reset(playerSlashPic, fromPlayer, 0, mouseX, mouseY, 15, true, false, true);
-		shotList.push(newShot);
+		fromPlayer.windup = PLAYER_SWORD_RELOAD - 10;
+		//var newShot = new shotClass();
+		//newShot.reset(playerSlashPic, fromPlayer, 0, mouseX, mouseY, 15, true, false, true);
+		//shotList.push(newShot);
 	}
 }
 
