@@ -44,6 +44,9 @@ function warriorClass() {
 
 	this.ai;
 
+	this.rightHandWeapon;
+	this.leftHandWeapon;
+
 	this.setupInput = function(upKey, rightKey, downKey, leftKey) {
 		this.controlKeyUp = upKey;
 		this.controlKeyRight = rightKey;
@@ -61,11 +64,13 @@ function warriorClass() {
 	}
 
 	this.reset = function(whichImage, whichImageBack, whichImageStand,
-		warriorName, startPos) {
+		warriorName, startPos, whichWeaponRight, whichWeaponLeft) {
 		this.name = warriorName;
 		this.myWarriorPic = whichImage;
 		this.myWarriorPicBack = whichImageBack;
 		this.myWarriorPicStand = whichImageStand;
+		this.rightHandWeapon = whichWeaponRight;
+		this.leftHandWeapon = whichWeaponLeft;
 		this.keysHeld = 0;
 		this.updateKeyReadout();
 		this.startSide = startPos;
