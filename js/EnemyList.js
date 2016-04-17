@@ -1,6 +1,20 @@
 var enemyList = [];
 
-const START_ENEMY_COUNT = 10;
+const START_ENEMY_COUNT = 12;
+
+var whichGate = 1;
+
+var spawnX1 = 400;
+var spawnY1 = 50;
+
+var spawnX2 = 750;
+var spawnY2 = 300;
+
+var spawnX3 = 400;
+var spawnY3 = 550;
+
+var spawnX4 = 50;
+var spawnY4 = 300;
 
 function resetEnemies() {
 	enemyList = [];
@@ -9,7 +23,26 @@ function resetEnemies() {
 function spawnEnemies() {
 	for(var i=0;i<START_ENEMY_COUNT;i++) {
 		var newEnemy = new enemyClass();
-		newEnemy.reset(demonPic, canvas.width/2, canvas.height/2);
+
+		if (whichGate == 1) {
+			newEnemy.reset(demonPic, spawnX1, spawnY1);
+		}
+		if (whichGate == 2) {
+			newEnemy.reset(demonPic, spawnX2, spawnY2);
+		}
+		if (whichGate == 3) {
+			newEnemy.reset(demonPic, spawnX3, spawnY3);
+		}
+		if (whichGate == 4) {
+			newEnemy.reset(demonPic, spawnX4, spawnY4);
+		}
+
+		if (whichGate == 4) {
+			whichGate = 1;
+		} else {
+			whichGate ++;
+		}
+
 		enemyList.push(newEnemy);
 	}
 }
