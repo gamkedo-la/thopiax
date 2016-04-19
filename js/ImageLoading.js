@@ -4,6 +4,7 @@ var warriorPicStand = document.createElement("img");
 var warrior2Pic = document.createElement("img");
 var warrior2PicBack = document.createElement("img");
 var warrior2PicStand = document.createElement("img");
+var healthBarPic = document.createElement("img")
 
 var arenaWallsBG = document.createElement("img");
 var arenaWallsFG = document.createElement("img");
@@ -42,6 +43,7 @@ function loadImages() {
 		{varName: warrior2Pic, theFile: "range_idle_strip.png"},
 		{varName: warrior2PicBack, theFile: "warrior2-back.png"},
 		{varName: warrior2PicStand, theFile: "warrior2.png"},
+		{varName: healthBarPic, theFile: "hpBar.png"},
 		{varName: playerArrowPic, theFile: "arrow.png"},
 		{varName: playerSlashPic, theFile: "swordswipe.png"},
 		{varName: playerShieldPic, theFile: "shieldblock.png"},

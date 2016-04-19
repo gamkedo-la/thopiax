@@ -34,9 +34,13 @@ function setupInput() {
 function mousePressed(evt) {
 	var leftMouseButton = (evt.button == 0);
 	if(leftMouseButton) {
-		fireShot();
+		if (playerRanged.rightHandWeapon == "bow") {
+			fireShot();
+		}
 	} else {
-		playerRanged.dashAtMouse();
+		if (playerRanged.leftHandWeapon == "rope") {
+			playerRanged.dashAtMouse();
+		}
 	}
 }
 
@@ -84,12 +88,22 @@ function keySet(keyEvent, setTo) {
 	if(setTo && keyEvent.keyCode == KEY_Y) {
 		playerFighter.keyHeld_South = playerFighter.keyHeld_North =
 			playerFighter.keyHeld_East = playerFighter.keyHeld_West = false;
-		swingSword();
+
+		if(playerFighter.rightHandWeapon == "sword") {
+				swingSword();
+		}
+		if(playerFighter.rightHandWeapon == "spear") {
+				stabSpear();
+		}
+
 	}
 	if(setTo && keyEvent.keyCode == KEY_U) {
 		playerFighter.keyHeld_South = playerFighter.keyHeld_North =
 			playerFighter.keyHeld_East = playerFighter.keyHeld_West = false;
-		raiseShield();
+
+		if(playerFighter.leftHandWeapon == "shield") {
+			raiseShield();
+		}
 	}
 }
 

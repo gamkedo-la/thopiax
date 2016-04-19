@@ -40,7 +40,7 @@ function enemyClass() {
 
 	this.move = function() {
 		var nextX = this.x+this.xv;
-		var nextY = this.y+this.yv;
+		var nextY = this.y+this.yv*worldTiltYDampen;
 
 		if(this.stunTime>0) {
 			this.stunTime--;
