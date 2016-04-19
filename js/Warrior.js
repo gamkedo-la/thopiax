@@ -88,7 +88,9 @@ function warriorClass() {
 
 		canvasContext.fillStyle = "black";
 		canvasContext.beginPath();
-		canvasContext.arc(this.x,this.y, 90, 0,Math.PI*2, true);
+		// canvasContext.arc(this.x,this.y, 90, 0,Math.PI*2, true);
+		canvasContext.ellipse(this.x, this.y+5, // with camera perspective tilt
+	      		90, 90*worldTiltYDampen, 0.0, 0.0, Math.PI*2);
 		canvasContext.stroke();
 	}
 
@@ -123,7 +125,7 @@ function warriorClass() {
 			nextY += this.ai.moveY;
 		} else {
 			if(this.keyHeld_North) {
-				nextY -= PLAYER_MOVE_SPEED;
+				nextY -= PLAYER_MOVE_SPEED*worldTiltYDampen;
 				anyKey = true;
 			}
 			if(this.keyHeld_East) {
@@ -132,7 +134,7 @@ function warriorClass() {
 				this.lastMovedRight = true;
 			}
 			if(this.keyHeld_South) {
-				nextY += PLAYER_MOVE_SPEED;
+				nextY += PLAYER_MOVE_SPEED*worldTiltYDampen;
 				anyKey = true;
 			}
 			if(this.keyHeld_West) {
@@ -255,10 +257,10 @@ function warriorClass() {
 				-frameSize/2, -frameSize*5/6);
 		}
 
+		canvasContext.restore();
+
 		if (this.windup > 0) {
 			this.swordCircle()
 		}
-
-		canvasContext.restore();
 	}
 }

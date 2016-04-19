@@ -5,6 +5,8 @@ var playerFighter = new warriorClass();
 
 var sharedAnimCycle = 0;
 
+var worldTiltYDampen = 5.0/7.0;
+
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
 	canvasContext = canvas.getContext('2d');
@@ -26,7 +28,7 @@ function imageLoadingDoneSoStartGame() {
 
 function loadLevel(whichLevel) {
 	worldData = JSON.parse(JSON.stringify(whichLevel));
-	playerFighter.reset(warriorPic,warriorPicBack,warriorPicStand, "Melee Dude", 0, "spear", "shield")
+	playerFighter.reset(warriorPic,warriorPicBack,warriorPicStand, "Melee Dude", 0, "sword", "shield")
 	playerRanged.reset(warrior2Pic,warrior2PicBack,warrior2PicStand, "Ranged Dudette", 1, "bow","rope");
 	spawnEnemies();
 }
