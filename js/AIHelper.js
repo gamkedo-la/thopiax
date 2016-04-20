@@ -40,7 +40,7 @@ var LEFT	= 7;
 var OPPOSITE = [ 4, 5, 6, 7, 0, 1, 2, 3 ];
 //			   UP_L			UP		   UP_R		   RIGHT		 DW_R		  DOWN		    DW_L		LEFT
 var DIRS = [ [-1,-1], 	  [0,-1],  	  [1,-1], 	   [1,0], 		 [1,1],		  [0,1], 	   [-1,1], 	   [-1,0] ];
-
+var NBH = [ [LEFT,UP], [UP_L,UP_R], [UP,RIGHT], [UP_R,DW_R], [RIGHT,DOWN], [DW_R,DW_L], [LEFT,DOWN], [UP_L,DW_L] ];
 
 
 //---------------------------------------------------------
@@ -123,17 +123,24 @@ AIH.gridDangerScan = function()
 	}
 	return;
 	//
+	canvasContext.save();
 	for(var x in AIH.grid) {
 		for(var y in AIH.grid[x]) {
 			var cell = AIH.grid[x][y];
-			canvasContext.globalAlpha = 0.008 * cell.danger;
-			colorRect(cell.x*T_WIDTH,cell.y*T_HEIGHT, T_WIDTH, T_HEIGHT, "magenta");
+
+			//canvasContext.globalAlpha = 0.008 * cell.danger;
+			//cell.blocked && colorRect(cell.x*T_WIDTH,cell.y*T_HEIGHT, T_WIDTH, T_HEIGHT, "magenta");
 			//canvasContext.globalAlpha = 1.0;
+			canvasContext.strokeStyle = "white";
+			canvasContext.lineWidth = "0.2";
+			canvasContext.strokeRect(cell.x*T_WIDTH,cell.y*T_HEIGHT, T_WIDTH, T_HEIGHT);
 			//colorText(cell.danger.toFixed(2), (cell.x*T_WIDTH)+10,(cell.y*T_HEIGHT)+T_HALF, "black");	
+			canvasContext.font="8px Arial";
+			colorText(cell.x +", "+ cell.y, (cell.x*T_WIDTH)+4,(cell.y*T_HEIGHT)+T_HALF+4, "black");	
 		}
 	}
 	//alert();
-	canvasContext.globalAlpha = 1.0;
+	canvasContext.restore();
 };
 
 
@@ -151,11 +158,12 @@ AIH.prototype.melee = function()
 		this.moveX = 0;
 		if(Math.abs(this.unit.x - nextCell.cx) >= PLAYER_MOVE_SPEED) {
 			this.moveX = this.unit.x < nextCell.cx ? PLAYER_MOVE_SPEED : -PLAYER_MOVE_SPEED;
-		}
+		} else this.unit.x = nextCell.cx;
 		this.moveY = 0;
 		if(Math.abs(this.unit.y - nextCell.cy) >= PLAYER_MOVE_SPEED) {
 			this.moveY = this.unit.y < nextCell.cy ? PLAYER_MOVE_SPEED : -PLAYER_MOVE_SPEED;
-		}
+			this.moveY *= worldTiltYDampen;
+		} else this.unit.y = nextCell.cy;
 		this.moved = this.moveX != 0 || this.moveY != 0;
 		if(!this.moved) {
 			this.path.shift();
@@ -220,12 +228,22 @@ AIH.prototype.melee = function()
 	var open = [current];
 	var break_out = 1000;
 	while(break_out-- > 0 && open.length > 0 && current.cell != targetCell) {
+		var nbhCells = [];
 		for(var dir in DIRS) {
-			var cN = AIH.grid[current.cell.x+DIRS[dir][0]][current.cell.y+DIRS[dir][1]];
-			if(cN == null || cN.blocked || cN.done) {
+			nbhCells.push(AIH.grid[current.cell.x+DIRS[dir][0]][current.cell.y+DIRS[dir][1]]);
+		}
+		for(var i in nbhCells) {
+			if(nbhCells[i] == null || nbhCells[i].blocked || nbhCells[i].done) {
 				continue;
 			}
-			open.push(new AStarNode(current, cN, targetCell));
+			if(i % 2 == 0) {
+				var nbh_0 = nbhCells[NBH[i][0]];
+				var nbh_1 = nbhCells[NBH[i][1]];
+				if(nbh_0 == null || nbh_1 == null || nbh_0.blocked || nbh_1.blocked) {
+					continue;
+				}
+			}
+			open.push(new AStarNode(current, nbhCells[i], targetCell));
 		}
 		current.cell.done = true;
 		open.sort(AStarNode.compareFVal);
