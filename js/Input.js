@@ -35,7 +35,10 @@ function mousePressed(evt) {
 	var leftMouseButton = (evt.button == 0);
 	if(leftMouseButton) {
 		if (playerRanged.rightHandWeapon == "bow") {
-			fireShot();
+			arrowShot();
+		}
+		if (playerRanged.rightHandWeapon == "fire staff") {
+			fireStaff();
 		}
 	} else {
 		if (playerRanged.leftHandWeapon == "rope") {

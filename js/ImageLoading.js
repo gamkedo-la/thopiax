@@ -10,6 +10,8 @@ var arenaWallsBG = document.createElement("img");
 var arenaWallsFG = document.createElement("img");
 
 var playerArrowPic = document.createElement("img");
+var playerFireballPic = document.createElement("img");
+
 var playerSlashPic = document.createElement("img");
 var playerShieldPic = document.createElement("img");
 var demonPic = document.createElement("img");
@@ -45,6 +47,8 @@ function loadImages() {
 		{varName: warrior2PicStand, theFile: "warrior2.png"},
 		{varName: healthBarPic, theFile: "hpBar.png"},
 		{varName: playerArrowPic, theFile: "arrow.png"},
+		{varName: playerFireballPic, theFile: "fireball.png"},
+
 		{varName: playerSlashPic, theFile: "swordswipe.png"},
 		{varName: playerShieldPic, theFile: "shieldblock.png"},
 		{varName: demonPic, theFile: "demon.png"},

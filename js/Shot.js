@@ -15,6 +15,7 @@ function shotClass() {
 	this.readyToRemove;
 	this.vanishOnHit;
 	this.doesStun;
+	this.isSpinningRate;
 
 	this.reset = function(whichImage, firedBy, mvSpeed, atX, atY, lifeFrames, useFacing, vanishOnHit, useRot, stuns) {
 		var startX = firedBy.x + (useFacing ? Math.cos(firedBy.prevMoveAng) * ATTACK_SPAWN_DIST : 0);
@@ -25,6 +26,7 @@ function shotClass() {
 					+ WAIST_HEIGHT;
 		this.readyToRemove = false;
 		this.myShotPic = whichImage;
+		this.isSpinningRate = 0.0;
 		this.x = startX;
 		this.y = startY;
 		var dx = atX-startX;
@@ -82,6 +84,8 @@ function shotClass() {
 				this.readyToRemove = true;
 				break;
 		}
+
+		this.facingAng += this.isSpinningRate;
 	}
 
 	this.draw = function() {
