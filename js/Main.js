@@ -29,7 +29,7 @@ function imageLoadingDoneSoStartGame() {
 function loadLevel(whichLevel) {
 	worldData = JSON.parse(JSON.stringify(whichLevel));
 	AIH.setupGrid(); 	// AI Helper setup 
-	playerFighter.reset(warriorPic,warriorPicBack,warriorPicStand, "Melee Dude", 0, "sword", "shield")
+	playerFighter.reset(warriorPic,warriorPicBack,warriorPicStand, "Melee Dude", 0, "spear", "shield")
 	playerRanged.reset(warrior2Pic,warrior2PicBack,warrior2PicStand, "Ranged Dudette", 1, /*"bow"*/ "fire staff","rope");
 	spawnEnemies();
 }

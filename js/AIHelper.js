@@ -63,10 +63,10 @@ function AIH(_unit) {
 
 
 const T_WIDTH = WORLD_W / 2.0;
-const T_HEIGHT = WORLD_H / 2.0;
+const T_HEIGHT = (WORLD_H*worldTiltYDampen) / 2.0;
 const T_HALF = T_WIDTH / 2.0;
 const AIH_COLS = WORLD_COLS * 2;
-const AIH_ROWS = WORLD_ROWS * 2;
+const AIH_ROWS = Math.floor(WORLD_ROWS * 2 * worldTiltYDampen);
 
 AIH.grid = [];
 AIH.allCells = [];
@@ -163,7 +163,7 @@ AIH.prototype.melee = function()
 		this.moveY = 0;
 		if(Math.abs(this.unit.y - nextCell.cy) >= PLAYER_MOVE_SPEED) {
 			this.moveY = this.unit.y < nextCell.cy ? PLAYER_MOVE_SPEED : -PLAYER_MOVE_SPEED;
-			//this.moveY *= worldTiltYDampen;
+			this.moveY *= worldTiltYDampen;
 		} else this.unit.y = nextCell.cy;
 		this.moved = this.moveX != 0 || this.moveY != 0;
 		if(!this.moved) {
