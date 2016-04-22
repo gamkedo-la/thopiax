@@ -152,6 +152,7 @@ AIH.prototype.noCmd = function(_nA)
 
 AIH.prototype.melee = function() 
 {
+
 	this.moved = false;
 	while(!this.moved && this.path.length > 0) {
 		var nextCell = this.path[0];
@@ -162,11 +163,14 @@ AIH.prototype.melee = function()
 		this.moveY = 0;
 		if(Math.abs(this.unit.y - nextCell.cy) >= PLAYER_MOVE_SPEED) {
 			this.moveY = this.unit.y < nextCell.cy ? PLAYER_MOVE_SPEED : -PLAYER_MOVE_SPEED;
-			this.moveY *= worldTiltYDampen;
+			//this.moveY *= worldTiltYDampen;
 		} else this.unit.y = nextCell.cy;
 		this.moved = this.moveX != 0 || this.moveY != 0;
 		if(!this.moved) {
 			this.path.shift();
+			if(this.path.length > 0 && this.path[0].danger > 50) {
+				break;
+			}
 		}
 	}
 
@@ -182,7 +186,7 @@ AIH.prototype.melee = function()
 	// 
 	// Collect cells in nearby area
 	var nearCells = [];
-	var scanRange = 6;
+	var scanRange = 5;
 	var startX = Math.max(gx-scanRange, 0);
 	var startY = Math.max(gy-scanRange, 0);
 	var endX = Math.min(gx+scanRange+1, AIH_COLS);
@@ -212,62 +216,100 @@ AIH.prototype.melee = function()
 	for(var i in safeCells) {
 		if(AIH.cellDistance(homeCell, safeCells[i]) <= bestDist) {
 			candidateCells.push(safeCells[i]);
-			colorRect(safeCells[i].x*T_WIDTH,safeCells[i].y*T_HEIGHT, T_WIDTH, T_HEIGHT, "blue");
+			//colorRect(safeCells[i].x*T_WIDTH,safeCells[i].y*T_HEIGHT, T_WIDTH, T_HEIGHT, "blue");
 		} else {
-			colorRect(nearCells[i].x*T_WIDTH,nearCells[i].y*T_HEIGHT, T_WIDTH, T_HEIGHT, "red");
+			//colorRect(nearCells[i].x*T_WIDTH,nearCells[i].y*T_HEIGHT, T_WIDTH, T_HEIGHT, "red");
 		}
 	}
 
 	var dangerTolerance = AIH.DANGER_FALLOF*4; // ring*ring
-	var targetCell = candidateCells[Math.floor(Math.random()*candidateCells.length)];
-	colorRect(targetCell.x*T_WIDTH,targetCell.y*T_HEIGHT, T_WIDTH, T_HEIGHT, "green");
-	//
-	// start A*
-	AIH.runGridCommand(function(_cell) {_cell.done=false;});
-	var current = new AStarNode(null, homeCell, targetCell);
-	var open = [current];
-	var break_out = 1000;
-	while(break_out-- > 0 && open.length > 0 && current.cell != targetCell) {
-		var nbhCells = [];
-		for(var dir in DIRS) {
-			nbhCells.push(AIH.grid[current.cell.x+DIRS[dir][0]][current.cell.y+DIRS[dir][1]]);
-		}
-		for(var i in nbhCells) {
-			if(nbhCells[i] == null || nbhCells[i].blocked || nbhCells[i].done) {
-				continue;
+	var pathDone = false;
+	var break_out = 500;
+	//this.report = [];
+	while(break_out-- > 0 && candidateCells.length > 0 && !pathDone) {
+		var targetCell = candidateCells.splice(Math.floor(Math.random()*candidateCells.length), 1)[0];
+		//colorRect(targetCell.x*T_WIDTH,targetCell.y*T_HEIGHT, T_WIDTH, T_HEIGHT, "green");
+		//
+		// start A*
+		AIH.runGridCommand(function(_cell) {_cell.done=false;});
+		var current = new AStarNode(null, homeCell, targetCell);
+		var open = [current];
+		var break_out_2 = 500;
+		while(break_out_2-- > 0 && !pathDone) {
+			var nbhCells = [];
+			for(var dir in DIRS) {
+				nbhCells.push(AIH.grid[current.cell.x+DIRS[dir][0]][current.cell.y+DIRS[dir][1]]);
 			}
-			if(i % 2 == 0) {
-				var nbh_0 = nbhCells[NBH[i][0]];
-				var nbh_1 = nbhCells[NBH[i][1]];
-				if(nbh_0 == null || nbh_1 == null || nbh_0.blocked || nbh_1.blocked) {
+			for(var i in nbhCells) {
+				if(nbhCells[i] == null || nbhCells[i].blocked || nbhCells[i].done || nbhCells[i].danger > current.danger || nbhCells[i].danger > homeCell.danger) {
 					continue;
 				}
+				if(i % 2 == 0) {
+					var nbh_0 = nbhCells[NBH[i][0]];
+					var nbh_1 = nbhCells[NBH[i][1]];
+					if(nbh_0 == null || nbh_1 == null || nbh_0.blocked || nbh_1.blocked) {
+						continue;
+					}
+				}
+				var node = new AStarNode(current, nbhCells[i], targetCell, (i % 2 == 0));
+				var upgradedExisting = false;
+				for(var j in open) {
+					if(open[j].cell == nbhCells[i]) {
+						if(node.f < open[j].f) {
+							open[j] = node;
+							upgradedExisting = true;
+							break;
+						}
+					}
+				}
+				if(!upgradedExisting) {
+					open.push(node);
+				}
 			}
-			open.push(new AStarNode(current, nbhCells[i], targetCell));
+			if(open.length == 0) {
+				break;
+			}
+			current.cell.done = true;
+			open.sort(AStarNode.compareFVal);
+			// Remove a random node from the lowest-f-value set and make it the new current-cell
+			current = open[0];
+			for(var i in open) {
+				if(open[i].f != current.f) {
+					current = open[Math.floor(Math.random()*i)];
+					break;
+				}
+			}
+			open.splice(open.indexOf(current), 1);
+			pathDone = current.cell == targetCell;
+			//this.report.push(current);
 		}
-		current.cell.done = true;
-		open.sort(AStarNode.compareFVal);
-		current = open.shift();
 	}
-	/*
-	console.log(current.cell);
-	console.log(targetCell);
-	console.log(current);
-	*/
 	this.path = [];
-	break_out = 1000;
+	break_out = 100;
 	while(break_out-- > 0 && current.cameFrom != null) {
 		this.path.unshift(current.cell);
 		current = current.cameFrom;
 	}
-	/*
-	for(var i in this.path) {
-		canvasContext.globalAlpha = 1.0 - (i*0.05);
-		colorRect(this.path[i].x*T_WIDTH,this.path[i].y*T_HEIGHT, T_WIDTH, T_HEIGHT, "white");
+	
+	return;
+	
+	for(var i in this.report) {
+		//canvasContext.globalAlpha = 0.6;
+		colorRect(this.report[i].cell.x*T_WIDTH,this.report[i].cell.y*T_HEIGHT, T_WIDTH, T_HEIGHT, "white");
+		canvasContext.globalAlpha = 1.0;
+		canvasContext.strokeStyle = "black";
+		canvasContext.lineWidth = "0.2";
+		canvasContext.strokeRect(this.report[i].cell.x*T_WIDTH,this.report[i].cell.y*T_HEIGHT, T_WIDTH, T_HEIGHT);
+		canvasContext.font="8px Arial";
+		colorText(this.report[i].cell.danger.toFixed(1), (this.report[i].cell.x*T_WIDTH)+4,(this.report[i].cell.y*T_HEIGHT)+T_HALF+4, "black");	
 	}
-	canvasContext.globalAlpha = 1.0;
-	alert();
-	*/
+	
+	for(var i in this.path) {
+		canvasContext.strokeStyle = "green";
+		canvasContext.lineWidth = "1.0";
+		canvasContext.strokeRect(this.path[i].x*T_WIDTH,this.path[i].y*T_HEIGHT, T_WIDTH, T_HEIGHT);
+	}
+	alert();	
 };
 
 
@@ -277,16 +319,18 @@ AIH.cellDistance = function(_cellA, _cellB)
 };
 
 
-function AStarNode(_parent, _cell, _target) 
+function AStarNode(_parent, _cell, _target, _diag) 
 {
 	_parent = typeof _parent != 'undefined' ? _parent : null;
 	_cell = typeof _cell != 'undefined' ? _cell : null;
 	_target = typeof _target != 'undefined' ? _target : null;
+	_diag = typeof _diag != 'undefined' ? _diag : false;
 	//
-	this.g = _parent != null ? _parent.g + 1 : 0;
+	var gMod = _diag ? 60 : 40;
+	this.g = _parent != null ? (_parent.g + gMod) : 0;
 	this.cell = _cell;
-	this.h = AIH.cellDistance(_cell, _target);
-	this.f = this.g + this.h;
+	this.h = (AIH.cellDistance(_cell, _target) * 20) + _cell.danger;
+	this.f = this.g + (this.h);
 	this.cameFrom = _parent;
 }
 
