@@ -40,6 +40,8 @@ function AIH(_unit) {
 	this.moved = false;
 	this.moveX = 0;
 	this.moveY = 0;
+	this.facing = RIGHT;
+	this.attackCtr = 0;
 }
 AIH.grid = [];
 AIH.allCells = [];
@@ -110,6 +112,22 @@ const OPPOSITE = [4,          5,         6,            7,            0,         
 const DIRS = [ [-1,-1], 	[0,-1],    [1,-1], 	     [1,0], 	   [1,1],		[0,1], 	    [-1,1], 	 [-1,0] ];
 const NBH = [ [LEFT,UP], [UP_L,UP_R], [UP,RIGHT], [UP_R,DW_R], [RIGHT,DOWN], [DW_R,DW_L], [LEFT,DOWN], [UP_L,DW_L] ];
 //			     UP_L		  UP	    UP_R		 RIGHT		    DW_R		DOWN		 DW_L		  LEFT
+//
+const ATK_DIRS = [ 	[-ATTACK_SPAWN_DIST, -ATTACK_SPAWN_DIST_UP ], 	// UP_L
+					[0, -ATTACK_SPAWN_DIST_UP],						// UP
+					[ATTACK_SPAWN_DIST,-ATTACK_SPAWN_DIST_UP],		// UP_R
+					[ATTACK_SPAWN_DIST,0],							// RIGHT
+					[ATTACK_SPAWN_DIST,ATTACK_SPAWN_DIST_DOWN],		// DW_R
+					[0,ATTACK_SPAWN_DIST_DOWN],						// DOWN
+					[-ATTACK_SPAWN_DIST,ATTACK_SPAWN_DIST_DOWN],	// DW_L
+					[-ATTACK_SPAWN_DIST,0] ];						// LEFT
+
+
+
+
+
+
+
 
 
 //--------------------
@@ -122,7 +140,7 @@ const T_WIDTH = WORLD_W / 2.0;
 const T_HEIGHT = (WORLD_H*worldTiltYDampen) / 2.0;
 const T_HALF = T_WIDTH / 2.0;
 const AIH_COLS = WORLD_COLS * 2;
-const AIH_ROWS = Math.floor(WORLD_ROWS * 2 * worldTiltYDampen);
+const AIH_ROWS = Math.floor((WORLD_ROWS*2)/worldTiltYDampen);
 
 
 //--------------------
@@ -247,7 +265,6 @@ AIH.gridDangerScan = function()
 			cell.danger = Math.max(100.0 - (AIH.DANGER_FALLOF*ring*ring), cell.danger);
 		}
 	}
-	return;
 };
 //
 AIH.cellDistance = function(_cellA, _cellB) 
@@ -265,7 +282,26 @@ AIH.onTileGround = function(_x, _y)
 	//
 	return walkIntoLevelPieceType == TILE_GROUND;
 };
-
+// @ @ @ @ @
+AIH.isHit = function(_aggressor, _target)
+{
+	var targetPic = AIH.getPic(_target);
+	var dist = Math.sqrt(Math.pow( _aggressor.x - _target.x, 2 ) + Math.pow( _aggressor.y - _target.y, 2 ));
+	return dist < targetPic.width*0.7;
+};
+// @ @ @ @ @
+AIH.getPic = function(_entity)
+{
+	var name = _entity.constructor.name;
+	if(name == "enemyClass") {
+		return _entity.myPic;
+	} else if(name == "shotClass") {
+		return _entity.myShotPic;
+	} else if(name == "enemyClass") {
+		return _entity.myWarriorPic;
+	}
+	return "";
+};
 
 
 //--------------------
@@ -342,6 +378,7 @@ AStarNode.compareFVal = function(a,b)
                                    \   \_________,-"
                                    |   |
                                    |   | 
+                                   |   | 
 ----------------------------------------------------------------------------------*/
 
 
@@ -358,45 +395,70 @@ AIH.prototype.noCmd = function(_nA)
 //
 AIH.prototype.melee = function() 
 {// ---
+	
+	if(this.unit.myLives <= 0) {
+		return;
+	}
+	//
+	var gx = Math.floor(this.unit.x / T_WIDTH);
+	var gy = Math.floor(this.unit.y / T_HEIGHT);
+	var homeCell = AIH.grid[gx][gy];
+	var targetDir = this.strike();
+	if(targetDir != this.facing) {
+		try {
+			this.path = [AIH.grid[ gx+DIRS[targetDir][0] ][ gy+DIRS[targetDir][1] ]];
+			this.moveAlongPath();
+			this.path = [];
+			return;
+		} catch(err) {
+			alert(targetDir);
+		}
+	}
+	//
 	if(this.moveAlongPath()) {
 		return;
 	}
 	//
 	// Decide if we're in danger and if so create an escape path
 	this.path = [];
-	var gx = Math.floor(this.unit.x / T_WIDTH);
-	var gy = Math.floor(this.unit.y / T_HEIGHT);
-	var homeCell = AIH.grid[gx][gy];
-	if(homeCell.danger < 60 && Math.random()*60 > homeCell.danger) {
-		return; 	// No escaping right now.
-	}
-	// 
-	// Find the safest cells offered in nearby area
-	var nearCells = AIH.getGridBlock(gx, gy, 5).sort(GridCell.compareDanger);
-	var lowest = 100.0;
-	for(var i in nearCells) {
-		lowest = Math.min(lowest, nearCells[i].danger); // Remember best available safety.
-	}
-	// Extract only the very safest
-	var safeCells = [];
-	var bestDist = AIH_ROWS + AIH_COLS;
-	for(var i in nearCells) {
-		if(nearCells[i].danger <= lowest) {
-			safeCells.push(nearCells[i]);
-			bestDist = Math.min(bestDist, AIH.cellDistance(homeCell, nearCells[i])); // Remember the closest.
-		}	
-	}
-	// We now know enough to gather the best places to go
 	var candidateCells = [];
-	for(var i in safeCells) {
-		if(AIH.cellDistance(homeCell, safeCells[i]) <= bestDist) {
-			candidateCells.push(safeCells[i]);
+	if(homeCell.danger < 60 && Math.random()*60 > homeCell.danger) {
+		// No escaping right now
+		if(Math.random() < 0.975) {
+			return; // Do nothing.
+		}
+		// Move center-ish
+		var mapCenterBlock = AIH.getGridBlock(Math.floor(AIH_COLS/2), Math.floor(AIH_ROWS/2), Math.floor(Math.random()*4)+1);
+		candidateCells.push(mapCenterBlock[Math.floor(Math.random()*mapCenterBlock.length)]);
+	} else {
+		// Find the safest cells offered in nearby area
+		var nearCells = AIH.getGridBlock(gx, gy, 5).sort(GridCell.compareDanger);
+		var lowest = 100.0;
+		for(var i in nearCells) {
+			lowest = Math.min(lowest, nearCells[i].danger); // Remember best available safety.
+		}
+		// Extract only the very safest
+		var safeCells = [];
+		var bestDist = AIH_ROWS + AIH_COLS;
+		for(var i in nearCells) {
+			if(nearCells[i].danger <= lowest) {
+				safeCells.push(nearCells[i]);
+				bestDist = Math.min(bestDist, AIH.cellDistance(homeCell, nearCells[i])); // Remember the closest.
+			}	
+		}
+		// We now know enough to gather the best places to go
+		var candidateCells = [];
+		for(var i in safeCells) {
+			if(AIH.cellDistance(homeCell, safeCells[i]) <= bestDist) {
+				candidateCells.push(safeCells[i]);
+			}
 		}
 	}
 	//
 	// Test candidate safe havens with A* to make sure they are reachable and not too risky
 	var pathDone = false;
 	var break_out = 500;
+	//this.report = [];
 	while(break_out-- > 0 && candidateCells.length > 0 && !pathDone) { // Randomly select and test a safe haven
 		var targetCell = candidateCells.splice(Math.floor(Math.random()*candidateCells.length), 1)[0];
 		//colorRect(targetCell.x*T_WIDTH,targetCell.y*T_HEIGHT, T_WIDTH, T_HEIGHT, "green");
@@ -452,6 +514,7 @@ AIH.prototype.melee = function()
 			}
 			open.splice(open.indexOf(current), 1); 	// Remove from frontier.
 			pathDone = current.cell == targetCell; 	// Check if goal is reached.
+			//this.report.push(current);
 		}
 	}
 	//
@@ -464,6 +527,57 @@ AIH.prototype.melee = function()
 	}
 	//
 	this.moveAlongPath(); // Put path in action immediately!
+};
+// @ @ @ @ @
+AIH.prototype.strike = function() 
+{
+	if(this.unit.reloadTime > 0 || this.attackCtr++ < 20 + (Math.random()*40)) {
+		return this.facing;
+	}
+	//
+	var targetDir = this.facing;
+	//
+	if(this.unit.name == "Melee Dude") {
+		this.unit.rightHandWeapon = "spear";
+	}
+	//
+	var candidates = [];
+	for(var dir in ATK_DIRS) {
+		var atk_dummy = { 
+			"x": ATK_DIRS[dir][0] + this.unit.x, //+ (DIRS[dir][0]*PLAYER_MOVE_SPEED),
+			"y": ATK_DIRS[dir][1] + this.unit.y //+ (DIRS[dir][1]*PLAYER_MOVE_SPEED*worldTiltYDampen)
+		};
+		for(var i in enemyList) {
+			if(AIH.isHit(atk_dummy, enemyList[i])) {
+				candidates.push(dir);
+				break;
+			}
+		}
+	}
+	//
+	if(candidates.length == 0) {
+		return this.facing;
+	}
+	//
+	targetDir = candidates[Math.floor( Math.random()*candidates.length )];
+	for(var i in candidates) {
+		if(candidates[i] == this.facing) {
+			targetDir = this.facing;
+			break;
+		}
+	}
+	//
+	if(targetDir != this.facing) {
+		return targetDir;
+	}
+	//
+	this.unit.reloadTime = PLAYER_SPEAR_RELOAD;
+	var newShot = new shotClass();
+	newShot.reset(playerSlashPic, this.unit, 0, mouseX, mouseY, 15, true, false, true);
+	shotList.push(newShot);
+	this.attackCtr = 0;
+	//
+	return this.facing;
 };
 //
 AIH.prototype.moveAlongPath = function() 
@@ -481,6 +595,14 @@ AIH.prototype.moveAlongPath = function()
 			this.moveY *= worldTiltYDampen;
 		} else this.unit.y = nextCell.cy;
 		this.moved = this.moveX != 0 || this.moveY != 0;
+		var xDir = this.moveX == 0 ? 0 : (this.moveX < 0 ? -1 : 1);
+		var yDir = this.moveY == 0 ? 0 : (this.moveY < 0 ? -1 : 1);
+		for(var dir in DIRS) {
+			if(xDir == DIRS[dir][0] && yDir == DIRS[dir][1]) {
+				this.facing = dir;
+				break;
+			}
+		}
 		if(!this.moved) {
 			this.path.shift();
 			if(this.path.length > 0 && this.path[0].danger > 50) {
