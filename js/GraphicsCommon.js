@@ -3,7 +3,7 @@ function drawBitmapCenteredWithRotation(useBitmap, atX,atY, withAng, scale) {
 	canvasContext.save();
 	canvasContext.translate(atX, atY);
 	canvasContext.rotate(withAng);
-	canvasContext.drawImage(useBitmap, -useBitmap.width/2, -useBitmap.height/2, useBitmap.height * scale, useBitmap.height * scale);
+	canvasContext.drawImage(useBitmap, -useBitmap.width/2 * scale, -useBitmap.height/2 * scale, useBitmap.height * scale, useBitmap.height * scale);
 	canvasContext.restore();
 }
 
