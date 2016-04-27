@@ -35,6 +35,10 @@ function fireStaff() {
 		fromPlayer.reloadTime = PLAYER_FIRE_BALL_RELOAD;
 		var newShot = new shotClass();
 		newShot.reset(playerFireballPic, fromPlayer, PLAYER_FIRE_BALL_SPEED, mouseX, mouseY, PLAYER_FIRE_BALL_LIFE, false, false);
+		newShot.draw = function() {
+			var shotSize = (newShot.lifeTime/ newShot.maxLifeTime - 1) * -1 + .3
+			drawBitmapCenteredWithRotation(this.myShotPic, this.x,this.y, this.facingAng, shotSize);
+		}
 		newShot.isSpinningRate = 0.7;
 		shotList.push(newShot);
 		fireStaffSound.play()
