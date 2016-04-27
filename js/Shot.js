@@ -44,6 +44,7 @@ function shotClass() {
 		this.xv = mvSpeed * dx / magnitude;
 		this.yv = mvSpeed * dy / magnitude;
 		this.lifeTime = lifeFrames;
+		this.maxLifeTime = lifeFrames;
 		this.vanishOnHit = vanishOnHit;
 		if(stuns == undefined) {
 			stuns = false;

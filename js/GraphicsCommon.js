@@ -1,10 +1,13 @@
-function drawBitmapCenteredWithRotation(useBitmap, atX,atY, withAng) {
+function drawBitmapCenteredWithRotation(useBitmap, atX,atY, withAng, scale) {
+	scale = scale || 1;
 	canvasContext.save();
 	canvasContext.translate(atX, atY);
 	canvasContext.rotate(withAng);
-	canvasContext.drawImage(useBitmap, -useBitmap.width/2, -useBitmap.height/2);
+	canvasContext.drawImage(useBitmap, -useBitmap.width/2 * scale, -useBitmap.height/2 * scale, useBitmap.height * scale, useBitmap.height * scale);
 	canvasContext.restore();
 }
+
+
 
 function colorRect(topLeftX,topLeftY, boxWidth,boxHeight, fillColor) {
 	canvasContext.fillStyle = fillColor;

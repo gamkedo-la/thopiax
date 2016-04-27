@@ -15,6 +15,9 @@ const PLAYER_FIRE_BALL_LIFE = 120;
 const PLAYER_SWORD_RELOAD = 100;
 const PLAYER_SPEAR_RELOAD = 5;
 const PLAYER_SHIELD_RELOAD = 15;
+var fireStaffSound = new SoundOverlapsClass("audio/fireball")
+var sliceSound = new SoundOverlapsClass("audio/slice")
+var sheildSound = new SoundOverlapsClass("audio/sheild")
 
 function arrowShot() {
 	var fromPlayer = playerRanged;
@@ -32,8 +35,13 @@ function fireStaff() {
 		fromPlayer.reloadTime = PLAYER_FIRE_BALL_RELOAD;
 		var newShot = new shotClass();
 		newShot.reset(playerFireballPic, fromPlayer, PLAYER_FIRE_BALL_SPEED, mouseX, mouseY, PLAYER_FIRE_BALL_LIFE, false, false);
+		newShot.draw = function() {
+			var shotSize = (newShot.lifeTime/ newShot.maxLifeTime - 1) * -1 + .3
+			drawBitmapCenteredWithRotation(this.myShotPic, this.x,this.y, this.facingAng, shotSize);
+		}
 		newShot.isSpinningRate = 0.7;
 		shotList.push(newShot);
+		fireStaffSound.play()
 	}
 }
 
@@ -45,6 +53,7 @@ function swingSword() {
 		//var newShot = new shotClass();
 		//newShot.reset(playerSlashPic, fromPlayer, 0, mouseX, mouseY, 15, true, false, true);
 		//shotList.push(newShot);
+		sliceSound.play()
 	}
 }
 
@@ -56,6 +65,7 @@ function stabSpear() {
 		var newShot = new shotClass();
 		newShot.reset(playerSlashPic, fromPlayer, 0, mouseX, mouseY, 15, true, false, true);
 		shotList.push(newShot);
+		sliceSound.play()
 	}
 }
 
@@ -66,6 +76,7 @@ function raiseShield() {
 		var newShot = new shotClass();
 		newShot.reset(playerShieldPic, fromPlayer, 0, mouseX, mouseY, 60, true, false, false, true);
 		shotList.push(newShot);
+		sheildSound.play();
 	}
 }
 
