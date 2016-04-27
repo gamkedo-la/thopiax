@@ -14,6 +14,7 @@ function enemyClass() {
 	this.targetX; 
 	this.targetY;
 	this.stunTime;
+	var hitEnemySound = new SoundOverlapsClass("audio/hitEnemy")
 
 	this.randDir = function() {
 		var newDir = Math.PI * 2.0 * Math.random();
@@ -73,6 +74,7 @@ function enemyClass() {
 			}else if(someShotOrPlayer.doesStun) {
 				this.stunTime = STUN_TIME;
 			} else {
+				setTimeout(hitEnemySound.play(), 200)
 				this.readyToRemove = true;
 			}
 			return true;
