@@ -531,16 +531,11 @@ AIH.prototype.melee = function()
 // @ @ @ @ @
 AIH.prototype.strike = function() 
 {
-	if(this.unit.reloadTime > 0 || this.attackCtr++ < 20 + (Math.random()*40)) {
+	if(this.unit.name != "Melee Dude" || this.unit.reloadTime > 0 || this.attackCtr++ < 20 + (Math.random()*40)) {
 		return this.facing;
 	}
 	//
 	var targetDir = this.facing;
-	//
-	if(this.unit.name == "Melee Dude") {
-		this.unit.rightHandWeapon = "spear";
-	}
-	//
 	var candidates = [];
 	for(var dir in ATK_DIRS) {
 		var atk_dummy = { 
@@ -566,15 +561,15 @@ AIH.prototype.strike = function()
 			break;
 		}
 	}
-	//
 	if(targetDir != this.facing) {
 		return targetDir;
 	}
 	//
-	this.unit.reloadTime = PLAYER_SPEAR_RELOAD;
-	var newShot = new shotClass();
-	newShot.reset(playerSlashPic, this.unit, 0, mouseX, mouseY, 15, true, false, true);
-	shotList.push(newShot);
+	if(Math.random() < 0.5) {
+		stabSpear();
+	} else {
+		raiseShield();
+	}
 	this.attackCtr = 0;
 	//
 	return this.facing;
