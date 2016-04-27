@@ -575,6 +575,7 @@ AIH.prototype.strike = function()
 	var newShot = new shotClass();
 	newShot.reset(playerSlashPic, this.unit, 0, mouseX, mouseY, 15, true, false, true);
 	shotList.push(newShot);
+	sliceSound.play()
 	this.attackCtr = 0;
 	//
 	return this.facing;

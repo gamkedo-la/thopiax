@@ -47,6 +47,8 @@ function warriorClass() {
 	this.rightHandWeapon;
 	this.leftHandWeapon;
 
+	var dashSound = new SoundOverlapsClass("audio/dash")
+
 	this.setupInput = function(upKey, rightKey, downKey, leftKey) {
 		this.controlKeyUp = upKey;
 		this.controlKeyRight = rightKey;
@@ -106,6 +108,7 @@ function warriorClass() {
 				this.dashTime = DASH_DURATION;
 				this.dashXV = dx / dist;
 				this.dashYV = dy / dist;
+				dashSound.play()
 			}
 		}
 	}
