@@ -35,6 +35,8 @@ function warriorClass() {
 	this.dashTime;
 	this.dashXV;
 	this.dashYV;
+	this.dashHookAtX;
+	this.dashHookAtY;
 	this.isMoving;
 
 	this.reloadTime;
@@ -88,12 +90,8 @@ function warriorClass() {
 	this.swordCircle = function () {
 		this.windup --;
 
-		canvasContext.fillStyle = "black";
-		canvasContext.beginPath();
-		// canvasContext.arc(this.x,this.y, 90, 0,Math.PI*2, true);
-		canvasContext.ellipse(this.x, this.y+5, // with camera perspective tilt
-	      		90, 90*worldTiltYDampen, 0.0, 0.0, Math.PI*2);
-		canvasContext.stroke();
+		drawEllipse(this.x, this.y+5,
+	      		90, 90*worldTiltYDampen,"black");
 	}
 
 	this.dashAtMouse = function() {
@@ -101,6 +99,8 @@ function warriorClass() {
 			return;
 		}
 		if(this.dashTime <= 0) {
+			this.dashHookAtX = mouseX;
+			this.dashHookAtY = mouseY;
 			var dx = mouseX - this.x;
 			var dy = mouseY - this.y;
 			var dist = Math.sqrt(dx*dx + dy*dy);
@@ -224,6 +224,10 @@ function warriorClass() {
 			}
 		}
 
+		if(this.dashTime > 0) {
+			drawLine(this.x, this.y-10,this.dashHookAtX, this.dashHookAtY,2,'#333333');
+		}
+
 		if(this.invulTime > 0) {
 			this.invulTime--;
 			if(this.invulTime%5 < 2) {
@@ -233,11 +237,8 @@ function warriorClass() {
 
 		if(this.reloadTime > 0) {
 			this.reloadTime--;
-			canvasContext.beginPath();
-			canvasContext.strokeStyle = "#cccccc";
-	      	canvasContext.ellipse(this.x, this.y+5,
-	      		frameSize/3, frameSize/7, 0.0, 0.0, Math.PI*2);
-			canvasContext.stroke();
+			drawEllipse(this.x, this.y+5,
+	      		frameSize/3, frameSize/7,"#cccccc");
 		}
 
 		canvasContext.save();

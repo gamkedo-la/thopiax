@@ -7,6 +7,31 @@ function drawBitmapCenteredWithRotation(useBitmap, atX,atY, withAng, scale) {
 	canvasContext.restore();
 }
 
+function drawLine(fromX,fromY,toX,toY,thickness,color) {
+	canvasContext.beginPath();
+	canvasContext.moveTo(fromX,fromY);
+	canvasContext.lineTo(toX,toY);
+	canvasContext.lineWidth = thickness;
+	canvasContext.strokeStyle = color;
+	canvasContext.stroke();
+}
+
+function drawEllipse(centerX, centerY, width, height, lineColor) {
+  canvasContext.lineWidth = 1;
+  canvasContext.beginPath();
+  canvasContext.moveTo(centerX - width*0.5, centerY); // A1
+  canvasContext.bezierCurveTo(
+    centerX - width*0.5, centerY + height*0.5, // C1
+    centerX + width*0.5, centerY + height*0.5, // C2
+    centerX + width*0.5, centerY); // A2
+  canvasContext.bezierCurveTo(
+    centerX + width*0.5, centerY - height*0.5, // C3
+    centerX - width*0.5, centerY - height*0.5, // C4
+    centerX - width*0.5, centerY); // A1
+  canvasContext.strokeStyle = lineColor;
+  canvasContext.closePath();	
+  canvasContext.stroke();	
+}
 
 
 function colorRect(topLeftX,topLeftY, boxWidth,boxHeight, fillColor) {
