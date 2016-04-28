@@ -7,6 +7,8 @@ var sharedAnimCycle = 0;
 
 var worldTiltYDampen = 5.0/7.0;
 
+var gameIsGoing = false;
+
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
 	canvasContext = canvas.getContext('2d');
@@ -28,17 +30,23 @@ function imageLoadingDoneSoStartGame() {
 
 function loadLevel(whichLevel) {
 	worldData = JSON.parse(JSON.stringify(whichLevel));
-	AIH.setupGrid(); 	// AI Helper setup 
+	AIH.setupGrid(); 	// AI Helper setup
 	playerFighter.reset(warriorPic,warriorPicBack,warriorPicStand, "Melee Dude", 0, "sword", "shield")
 	playerRanged.reset(warrior2Pic,warrior2PicBack,warrior2PicStand, "Ranged Dudette", 1, /*"bow"*/ "fire staff","rope");
 	spawnEnemies();
 }
 
 function updateAll() {
-	sharedAnimCycle++;
 
-	moveAll();
-	drawAll();
+	if (gameIsGoing) {
+		sharedAnimCycle++;
+
+		moveAll();
+		drawAll();
+		
+	} else {
+		runMenu();
+	}
 }
 
 function moveAll() {

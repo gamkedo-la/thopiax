@@ -17,7 +17,7 @@ const PLAYER_SPEAR_RELOAD = 5;
 const PLAYER_SHIELD_RELOAD = 15;
 var fireStaffSound = new SoundOverlapsClass("audio/fireball")
 var sliceSound = new SoundOverlapsClass("audio/slice")
-var sheildSound = new SoundOverlapsClass("audio/sheild")
+var shieldSound = new SoundOverlapsClass("audio/shield")
 
 function arrowShot() {
 	var fromPlayer = playerRanged;
@@ -76,7 +76,7 @@ function raiseShield() {
 		var newShot = new shotClass();
 		newShot.reset(playerShieldPic, fromPlayer, 0, mouseX, mouseY, 60, true, false, false, true);
 		shotList.push(newShot);
-		sheildSound.play();
+		shieldSound.play();
 	}
 }
 

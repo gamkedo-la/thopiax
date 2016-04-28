@@ -10,6 +10,8 @@ const KEY_D = 68;
 const KEY_Y = 89;
 const KEY_U = 85;
 
+const KEY_SPACE = 32;
+
 var mouseX = 0;
 var mouseY = 0;
 
@@ -62,6 +64,94 @@ function updateMousePos(evt) {
 }
 
 function keySet(keyEvent, setTo) {
+
+	//Menu Input Code
+	if (gameIsGoing == false) {
+		if(setTo && keyEvent.keyCode == KEY_SPACE) {
+			gameIsGoing = true;
+		}
+
+		//Player 1 up and down
+		if(setTo && keyEvent.keyCode == KEY_S) {
+			if (cursor1 < 2){
+				cursor1 ++;
+			}
+		}
+		if(setTo && keyEvent.keyCode == KEY_W) {
+			if (cursor1 > 0){
+				cursor1 --;
+			}
+		}
+
+		//player 2 up and down
+		if(setTo && keyEvent.keyCode == KEY_DOWN_ARROW) {
+			if (cursor2 < 2){
+				cursor2 ++;
+			}
+		}
+		if(setTo && keyEvent.keyCode == KEY_UP_ARROW) {
+			if (cursor2 > 0){
+				cursor2 --;
+			}
+		}
+
+		//player 1 Selector
+		if(setTo && keyEvent.keyCode == KEY_D) {
+			if (cursor2 == 0) {
+				if (classIndexP1 < 2) {
+					classIndexP1 +=1;
+				} else {
+					classIndexP1 = 0;
+				}
+			}
+			if (cursor1 == 1) {
+				if (rightHandIndexP1 < 2) {
+					rightHandIndexP1 +=1;
+				} else {
+					rightHandIndexP1 = 0;
+				}
+			}
+
+			if (cursor1 == 2) {
+				if (leftHandIndexP1 < 2) {
+					leftHandIndexP1 +=1;
+				} else {
+					leftHandIndexP1 = 0;
+				}
+			}
+		}
+
+		if(setTo && keyEvent.keyCode == KEY_RIGHT_ARROW) {
+			if (cursor2 == 0) {
+				if (classIndexP2 < 2) {
+					classIndexP2 +=1;
+				} else {
+					classIndexP2 = 0;
+				}
+			}
+			if (cursor2 == 1) {
+				if (rightHandIndexP2 < 2) {
+					rightHandIndexP2 +=1;
+				} else {
+					rightHandIndexP2 = 0;
+				}
+			}
+
+			if (cursor2 == 2) {
+				if (leftHandIndexP2 < 2) {
+					leftHandIndexP2 +=1;
+				} else {
+					leftHandIndexP2 = 0;
+				}
+			}
+		}
+
+
+	}
+
+
+
+
 	if(keyEvent.keyCode == playerRanged.controlKeyLeft) {
 		playerRanged.keyHeld_West = setTo;
 	}

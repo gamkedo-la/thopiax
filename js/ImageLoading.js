@@ -8,6 +8,8 @@ var healthBarPic = document.createElement("img")
 
 var arenaWallsBG = document.createElement("img");
 var arenaWallsFG = document.createElement("img");
+var startMenu = document.createElement("img");
+var cursorPic = document.createElement("img");
 
 var playerArrowPic = document.createElement("img");
 var playerFireballPic = document.createElement("img");
@@ -55,6 +57,8 @@ function loadImages() {
 
 		{varName: arenaWallsBG, theFile: "arena-back.png"},
 		{varName: arenaWallsFG, theFile: "arena-fg.png"},
+		{varName: startMenu, theFile: "startMenu.png"},
+		{varName: cursorPic, theFile: "cursor.png"},
 
 
 		{worldType: TILE_GROUND, theFile: "world_ground.png"},
