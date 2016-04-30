@@ -1,5 +1,21 @@
 const STUN_TIME = 80;
 
+
+var distToRangedPlayer = function(x, y){
+	var distRangedX = Math.abs(x - playerRanged.x);
+	var distRangedY = Math.abs(y - playerRanged.y);
+	
+	return Math.sqrt(distRangedX*distRangedX + distRangedY*distRangedY);
+}
+
+var distToFighterPlayer = function(x, y){
+	var distFighterX = Math.abs(x - playerFighter.x);
+	var distFighterY = Math.abs(y - playerFighter.x);
+	
+	return Math.sqrt(distFighterX*distFighterX + distFighterY*distFighterY);
+}
+
+
 function enemyClass() {
 	this.x = 75;
 	this.y = 75;
@@ -141,23 +157,51 @@ function enemyClass() {
 }
 
 
-enemy2Class.prototype = new enemyClass();
-enemy2Class.prototype.constructor = enemy2Class;
+enemyNinjaClass.prototype = new enemyClass();
+enemyNinjaClass.prototype.constructor = enemyNinjaClass;
 
 function enemyNinjaClass() {
-  enemyClass.call(this);
-  this.mvSpeed = 8;
-  this.projectileSpeed = 6;
-  this.projectileLife = 100;
-  this.target;
+	enemyClass.call(this);
+	this.moveCounter = 100;
+	this.mvSpeed = 8;
+	this.projectileSpeed = 6;
+	this.projectileLife = 100;
+	this.rangedCooldown = 60;
+	this.rangedCooldownTimer = 60;
+	this.target;
 	this.myPic = demonNinjaPic;
 	
 	this.rangedAttack = function(targetX, targetY){
+		if(this.rangedCooldownTimer > 0){
+			this.rangedCooldownTimer--;
+			return;
+		}
 		var fromEnemy = this;
 		//Make sure to manage cooldown timers
-		var newShot = new shotClass();
+		var newShot = new enemyShotClass();
 		newShot.reset(playerFireballPic, this, this.projectileSpeed, targetX, targetY, this.projectileLife, false, false);
 		newShot.isSpinningRate = 0.7;
 		shotList.push(newShot);
+		this.rangedCooldownTimer = this.rangedCooldown;
+	}
+	
+	this.decide = function() {
+		if(this.moveCounter >= 100) {
+			this.randPos();
+			this.moveCounter = 0;
+		} else {
+			var distRanged = distToRangedPlayer(this.x, this.y);
+			var distFighter = distToFighterPlayer(this.x, this.y);
+			
+			var distNearestPlayer = distFighter < distRanged ? distFighter : distRanged;
+			
+			this.moveCounter += Math.max((100 - distNearestPlayer/2)/15, 0.35);
+			
+			if(distFighter < distRanged){
+				this.rangedAttack(playerFighter.x, playerFighter.y);
+			} else {
+				this.rangedAttack(playerRanged.x, playerRanged.y);
+			}
+		}
 	}
 }
