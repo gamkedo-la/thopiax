@@ -5,7 +5,7 @@ function enemyClass() {
 	this.y = 75;
 	this.xv = 0;
 	this.yv = 0;
-	this.myPic;
+	this.myPic = demonPic;
 	this.facingAng;
 	this.readyToRemove;
 	this.mvSpeed = 4;
@@ -25,9 +25,9 @@ function enemyClass() {
 		this.yv = mvSpeed * Math.cos(newDir);
 	}
 
-	this.reset = function(whichImage, spawnX, spawnY) {
+	this.reset = function(spawnX, spawnY) {
 		this.readyToRemove = false;
-		this.myPic = whichImage;
+//		this.myPic = whichImage;
 		this.x = spawnX;
 		this.y = spawnY;
 		//this.randDir();
@@ -138,5 +138,26 @@ function enemyClass() {
 	}
 	//
 	//------------ END -------------//
+}
 
+
+enemy2Class.prototype = new enemyClass();
+enemy2Class.prototype.constructor = enemy2Class;
+
+function enemyNinjaClass() {
+  enemyClass.call(this);
+  this.mvSpeed = 8;
+  this.projectileSpeed = 6;
+  this.projectileLife = 100;
+  this.target;
+	this.myPic = demonNinjaPic;
+	
+	this.rangedAttack = function(targetX, targetY){
+		var fromEnemy = this;
+		//Make sure to manage cooldown timers
+		var newShot = new shotClass();
+		newShot.reset(playerFireballPic, this, this.projectileSpeed, targetX, targetY, this.projectileLife, false, false);
+		newShot.isSpinningRate = 0.7;
+		shotList.push(newShot);
+	}
 }

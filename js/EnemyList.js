@@ -1,49 +1,37 @@
 var enemyList = [];
 
+var enemyWaveLists = [[3, 3], [6, 6]];
+var enemyTypes = [enemyClass, enemyNinjaClass];
+var currentWave = 1;
+
 const START_ENEMY_COUNT = 12;
 
 var whichGate = 1;
 
-var spawnX1 = 400;
-var spawnY1 = 50;
+var spawn = function(_x, _y){
+	this.x = _x;
+	this.y = _y;
+};
 
-var spawnX2 = 750;
-var spawnY2 = 300;
-
-var spawnX3 = 400;
-var spawnY3 = 550;
-
-var spawnX4 = 50;
-var spawnY4 = 300;
+var spawns = [new spawn(400, 50),
+              new spawn(750, 300),
+              new spawn(400, 550),
+              new spawn(50, 300)];
 
 function resetEnemies() {
 	enemyList = [];
 }
 
 function spawnEnemies() {
-	for(var i=0;i<START_ENEMY_COUNT;i++) {
-		var newEnemy = new enemyClass();
-
-		if (whichGate == 1) {
-			newEnemy.reset(demonPic, spawnX1, spawnY1);
+	var spawnCount = 0;
+	for(var i = 0; i < enemyWaveLists[currentWave].length; i++){
+		for(var j = 0; j < enemyWaveLists[currentWave][i]; j++){
+			var newEnemy = new enemyTypes[i]();
+			newEnemy.reset(spawns[spawnCount % spawns.length].x,
+			               spawns[spawnCount++ % spawns.length].y);
+			
+			enemyList.push(newEnemy);
 		}
-		if (whichGate == 2) {
-			newEnemy.reset(demonPic, spawnX2, spawnY2);
-		}
-		if (whichGate == 3) {
-			newEnemy.reset(demonPic, spawnX3, spawnY3);
-		}
-		if (whichGate == 4) {
-			newEnemy.reset(demonPic, spawnX4, spawnY4);
-		}
-
-		if (whichGate == 4) {
-			whichGate = 1;
-		} else {
-			whichGate ++;
-		}
-
-		enemyList.push(newEnemy);
 	}
 }
 
