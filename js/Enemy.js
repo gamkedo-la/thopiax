@@ -79,7 +79,7 @@ function enemyClass() {
 		var dy = someShotOrPlayer.y - this.y;
 		var dist = Math.sqrt(dx*dx+dy*dy);
 
-		if(dist < this.myPic.width*0.7) {
+		if(dist < this.myPic.height*0.7) { // note: .height so it works for animated strips
 			if(someShotOrPlayer.myLives != undefined) {
 				if(this.stunTime > 0) {
 					return false;
@@ -99,14 +99,27 @@ function enemyClass() {
 	}
 
 	this.draw = function() {
+		var frameToShow;
+
+		if(this.myPic.width > this.myPic.height) { // using height as strip's square size
+			this.facingAng = Math.atan2(this.yv,this.xv);
+			frameToShow = Math.round( this.facingAng * 8 / (2 * Math.PI) );
+			if(frameToShow<0) {
+				frameToShow+=8;
+			}
+			console.log(frameToShow);
+		} else {
+			frameToShow = 0;
+		}
+
 		if(this.stunTime<=0) {
-			drawBitmapCenteredWithRotation(this.myPic, this.x,this.y, 0);
+			drawBitmapCenteredAnimFrame(this.myPic, this.x,this.y, frameToShow);
 		} else {
 			var stunShakeRange = 4;
 			var stunLeft = 1 + stunShakeRange * (STUN_TIME - this.stunTime) / STUN_TIME;
-			drawBitmapCenteredWithRotation(this.myPic, 
+			drawBitmapCenteredAnimFrame(this.myPic, 
 				this.x+Math.random()*stunLeft-Math.random()*stunLeft,
-				this.y+Math.random()*stunLeft-Math.random()*stunLeft, 0);
+				this.y+Math.random()*stunLeft-Math.random()*stunLeft, frameToShow);
 		}
 	}
 

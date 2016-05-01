@@ -45,6 +45,9 @@ function moveEnemies() {
 }
 
 function drawEnemies() {
+	// sorting on y position to achieve back-to-front draw order
+	enemyList.sort(function(a, b) {return a.y - b.y});
+
 	for(var i=0; i<enemyList.length; i++) {
 		enemyList[i].draw();
 	}
