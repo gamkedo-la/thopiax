@@ -1,5 +1,5 @@
 
-
+// possible TODO: Have ranged use leading when lining up shots. Evade enemy projectiles.
 
 
 
@@ -34,6 +34,7 @@
 function AIH(_unit) {
 	this.active = true;
 	this.unit = _unit;
+	this.homeCell;
 	this.path = [];
 	//
 	this.updateCtr = 0;
@@ -282,14 +283,14 @@ AIH.onTileGround = function(_x, _y)
 	//
 	return walkIntoLevelPieceType == TILE_GROUND;
 };
-// @ @ @ @ @
+// Return true if this would count as a hit on target
 AIH.isHit = function(_aggressor, _target)
 {
 	var targetPic = AIH.getPic(_target);
 	var dist = Math.sqrt(Math.pow( _aggressor.x - _target.x, 2 ) + Math.pow( _aggressor.y - _target.y, 2 ));
 	return dist < targetPic.width*0.7;
 };
-// @ @ @ @ @
+// Find the correct visual representation of an entity
 AIH.getPic = function(_entity)
 {
 	var name = _entity.constructor.name;
@@ -301,6 +302,44 @@ AIH.getPic = function(_entity)
 		return _entity.myWarriorPic;
 	}
 	return "";
+};
+
+// Helper for function intersect(). BY Erik Verlage in the Optiverse Origins project
+AIH.ccw = function(A,B,C) {  
+        return Boolean( (C[1]-A[1]) * (B[0]-A[0]) > (B[1]-A[1]) * (C[0]-A[0]) ); 
+};
+// Line intersection test. BY Erik Verlage in the Optiverse Origins project
+AIH.lines_intersect = function(L1, L2) {
+    // Return true if lines L1 and L2 intersect
+    var A = [L1.startX, L1.startY];
+    var B = [L1.endX, L1.endY];    
+    
+    var C = [L2.startX, L2.startY];
+    var D = [L2.endX, L2.endY];   
+    //if(Math.random() > 0.99) console.log(C);
+    return Boolean(AIH.ccw(A,C,D) != AIH.ccw(B,C,D) && AIH.ccw(A,B,C) != AIH.ccw(A,B,D));
+};
+AIH.intersectedCells = function(_line)
+{
+	var cells = [];
+	for(var x in AIH.grid) {
+		for(var y in AIH.grid[x]) {
+			var cell = AIH.grid[x][y];
+			var x1 = cell.x * T_WIDTH;
+			var y1 = cell.y * T_HEIGHT;
+			var x2 = x1 + T_WIDTH;
+			var y2 = y1 + T_HEIGHT;
+			if( AIH.lines_intersect(_line, {"startX": x1, "startY": y1, "endX": x2, "endY": y1}) ||
+				AIH.lines_intersect(_line, {"startX": x2, "startY": y1, "endX": x2, "endY": y2}) ||
+				AIH.lines_intersect(_line, {"startX": x2, "startY": y2, "endX": x1, "endY": y2}) ||
+				AIH.lines_intersect(_line, {"startX": x1, "startY": y2, "endX": x1, "endY": y1}) ) {
+				cells.push(cell);
+			} else {
+				//console.log(_line);
+			}
+		}
+	}
+	return cells;
 };
 
 
@@ -388,84 +427,56 @@ AStarNode.compareFVal = function(a,b)
 //
 //----------------
 //
-AIH.prototype.noCmd = function(_nA) 
+AIH.prototype.updateHomecell = function() 
 {
-	return false;
-};
-//
-AIH.prototype.melee = function() 
-{// ---
-	
-	if(this.unit.myLives <= 0) {
-		return;
-	}
-	//
 	var gx = Math.floor(this.unit.x / T_WIDTH);
 	var gy = Math.floor(this.unit.y / T_HEIGHT);
-	var homeCell = AIH.grid[gx][gy];
-	var targetDir = this.strike();
-	if(targetDir != this.facing) {
-		try {
-			this.path = [AIH.grid[ gx+DIRS[targetDir][0] ][ gy+DIRS[targetDir][1] ]];
-			this.moveAlongPath();
-			this.path = [];
-			return;
-		} catch(err) {
-			alert(targetDir);
-		}
-	}
-	//
-	if(this.moveAlongPath()) {
-		return;
-	}
-	//
-	// Decide if we're in danger and if so create an escape path
-	this.path = [];
+	this.homeCell = AIH.grid[gx][gy];
+};
+//
+AIH.prototype.findSafety = function() 
+{
 	var candidateCells = [];
-	if(homeCell.danger < 60 && Math.random()*60 > homeCell.danger) {
-		// No escaping right now
-		if(Math.random() < 0.975) {
-			return; // Do nothing.
-		}
-		// Move center-ish
-		var mapCenterBlock = AIH.getGridBlock(Math.floor(AIH_COLS/2), Math.floor(AIH_ROWS/2), Math.floor(Math.random()*4)+1);
-		candidateCells.push(mapCenterBlock[Math.floor(Math.random()*mapCenterBlock.length)]);
-	} else {
-		// Find the safest cells offered in nearby area
-		var nearCells = AIH.getGridBlock(gx, gy, 5).sort(GridCell.compareDanger);
-		var lowest = 100.0;
-		for(var i in nearCells) {
-			lowest = Math.min(lowest, nearCells[i].danger); // Remember best available safety.
-		}
-		// Extract only the very safest
-		var safeCells = [];
-		var bestDist = AIH_ROWS + AIH_COLS;
-		for(var i in nearCells) {
-			if(nearCells[i].danger <= lowest) {
-				safeCells.push(nearCells[i]);
-				bestDist = Math.min(bestDist, AIH.cellDistance(homeCell, nearCells[i])); // Remember the closest.
-			}	
-		}
-		// We now know enough to gather the best places to go
-		var candidateCells = [];
-		for(var i in safeCells) {
-			if(AIH.cellDistance(homeCell, safeCells[i]) <= bestDist) {
-				candidateCells.push(safeCells[i]);
-			}
+	// Find the safest cells offered in nearby area
+	var nearCells = AIH.getGridBlock(this.homeCell.x, this.homeCell.y, 5).sort(GridCell.compareDanger);
+	var lowest = 100.0;
+	for(var i in nearCells) {
+		lowest = Math.min(lowest, nearCells[i].danger); // Remember best available safety.
+	}
+	// Extract only the very safest
+	var safeCells = [];
+	var bestDist = AIH_ROWS + AIH_COLS;
+	for(var i in nearCells) {
+		if(nearCells[i].danger <= lowest) {
+			safeCells.push(nearCells[i]);
+			bestDist = Math.min(bestDist, AIH.cellDistance(this.homeCell, nearCells[i])); // Remember the closest.
+		}	
+	}
+	// We now know enough to gather the best places to go
+	var candidateCells = [];
+	for(var i in safeCells) {
+		if(AIH.cellDistance(this.homeCell, safeCells[i]) <= bestDist) {
+			candidateCells.push(safeCells[i]);
 		}
 	}
 	//
+	return candidateCells;
+};
+//
+AIH.prototype.createAStarPath = function(_candidateCells)
+{
 	// Test candidate safe havens with A* to make sure they are reachable and not too risky
+	this.path = [];
 	var pathDone = false;
 	var break_out = 500;
 	//this.report = [];
-	while(break_out-- > 0 && candidateCells.length > 0 && !pathDone) { // Randomly select and test a safe haven
-		var targetCell = candidateCells.splice(Math.floor(Math.random()*candidateCells.length), 1)[0];
+	while(break_out-- > 0 && _candidateCells.length > 0 && !pathDone) { // Randomly select and test a safe haven
+		var targetCell = _candidateCells.splice(Math.floor(Math.random()*_candidateCells.length), 1)[0];
 		//colorRect(targetCell.x*T_WIDTH,targetCell.y*T_HEIGHT, T_WIDTH, T_HEIGHT, "green");
 		//
 		// start A*
 		AIH.runGridCommand(function(_cell) {_cell.done=false;});
-		var current = new AStarNode(null, homeCell, targetCell);
+		var current = new AStarNode(null, this.homeCell, targetCell);
 		var open = [current];
 		var break_out_2 = 500;
 		while(break_out_2-- > 0 && !pathDone) { // Expand A* frontier
@@ -474,7 +485,7 @@ AIH.prototype.melee = function()
 				nbhCells.push(AIH.grid[current.cell.x+DIRS[dir][0]][current.cell.y+DIRS[dir][1]]);
 			}
 			for(var i in nbhCells) { // Discard from frontier if blocked or too risky
-				if(nbhCells[i] == null || nbhCells[i].blocked || nbhCells[i].done || nbhCells[i].danger > current.danger || nbhCells[i].danger > homeCell.danger) {
+				if(nbhCells[i] == null || nbhCells[i].blocked || nbhCells[i].done || nbhCells[i].danger > current.danger || nbhCells[i].danger > this.homeCell.danger) {
 					continue;
 				}
 				if(i % 2 == 0) { // For diagonal movement, make sure neighboring cells won't block
@@ -525,10 +536,57 @@ AIH.prototype.melee = function()
 		this.path.unshift(current.cell);
 		current = current.cameFrom;
 	}
+};
+//
+AIH.prototype.noCmd = function() 
+{
+	//return false;
+};
+//
+AIH.prototype.action = function() 
+{// ---
+	var isRanged = this.unit.name != "Melee Dude";
+	//
+	if(this.unit.myLives <= 0) {
+		return;
+	}
+	this.updateHomecell();
+	//
+	if(isRanged) {
+		this.shoot(true);
+	} else {
+		var targetDir = this.strike();
+		if(targetDir != this.facing) {
+			this.path = [AIH.grid[ this.homeCell.x+DIRS[targetDir][0] ][ this.homeCell.y+DIRS[targetDir][1] ]];
+			this.moveAlongPath();
+			this.path = [];
+			return;
+		}	
+	}
+	// 
+	if(this.moveAlongPath()) {
+		return; 	// If we're out moving and safe enough doing so, quit here.
+	}
+	//
+	// Decide if we're in danger and if so create an escape path
+	if(this.homeCell.danger < 60 && Math.random()*60 > this.homeCell.danger) {
+		// No escaping right now
+		if(isRanged && this.shoot(false)) {
+			return;
+		} else if(Math.random() < 0.975) {
+			return; // Do nothing.
+		} else {
+			// Move center-ish
+			var mapCenterBlock = AIH.getGridBlock(Math.floor(AIH_COLS/2), Math.floor(AIH_ROWS/2), Math.floor(Math.random()*4)+1);
+			this.createAStarPath([mapCenterBlock[Math.floor(Math.random()*mapCenterBlock.length)]]);	
+		}
+	} else {
+		this.createAStarPath(this.findSafety());
+	}
 	//
 	this.moveAlongPath(); // Put path in action immediately!
 };
-// @ @ @ @ @
+// Melee warrior tries to hit something and if needing to turn to make it happen, return needed facing 
 AIH.prototype.strike = function() 
 {
 	if(this.unit.name != "Melee Dude" || this.unit.reloadTime > 0 || this.attackCtr++ < 20 + (Math.random()*40)) {
@@ -574,6 +632,53 @@ AIH.prototype.strike = function()
 	//
 	return this.facing;
 };
+// Ranged attack, return true if an attack is unleashed
+AIH.prototype.shoot = function(_insta) 
+{
+	_insta = typeof _insta != 'undefined' ? _insta : false;
+	//
+	if(this.unit.name != "Ranged Dudette" || this.unit.reloadTime > 0) {
+		return false;
+	}
+	if(!_insta & this.attackCtr++ < 20 + (Math.random()*40)) {
+		return false;
+	}
+	//
+	// Gather all enemy candidates that are within attack range
+	var inRange = [];
+	var atk_range = ATTACK_SPAWN_DIST * (_insta ? 1 : 8);	
+	for(var i in enemyList) {
+		if(distToRangedPlayer(enemyList[i].x, enemyList[i].y) < atk_range) {
+			inRange.push(enemyList[i]);
+		}
+	}
+	var candidates = [];
+	for(var i in inRange) {
+		var shot_trace = {"startX":this.unit.x, "startY":this.unit.y, "endX":inRange[i].x, "endY":inRange[i].y};
+		var tracedCells = AIH.intersectedCells(shot_trace);
+		var shotBlocked = false;
+		for(var j in tracedCells) {
+			if(tracedCells[j].blocked) {
+				shotBlocked = true;
+				break;
+			}
+		}
+		if(!shotBlocked) {
+			candidates.push(inRange[i]);	
+		}
+	}
+	if(candidates.length == 0) {
+		return false;
+	}
+	//
+	var target = candidates[Math.floor( Math.random()*candidates.length )];
+	mouseX = target.x;
+	mouseY = target.y;
+	arrowShot();
+	this.attackCtr = 0;
+	//
+	return true;
+};
 //
 AIH.prototype.moveAlongPath = function() 
 {// Try to move to the next cell in the current path
@@ -607,6 +712,8 @@ AIH.prototype.moveAlongPath = function()
 	}
 	return this.moved;
 };
+
+
 
 
 

@@ -122,7 +122,7 @@ function warriorClass() {
 		var anyKey = false;
 
 		if(document.getElementById(this.name).checked) {
-			this.ai.melee();
+			this.ai.action();
 			anyKey = this.ai.moved;
 			nextX += this.ai.moveX;
 			nextY += this.ai.moveY;
