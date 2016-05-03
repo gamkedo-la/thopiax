@@ -41,6 +41,8 @@ function warriorClass() {
 
 	this.reloadTime;
 	this.windup;
+	this.radius;
+	this.circleColor;
 
 	this.startSide;
 
@@ -68,13 +70,11 @@ function warriorClass() {
 	}
 
 	this.reset = function(whichImage, whichImageBack, whichImageStand,
-		warriorName, startPos, whichWeaponRight, whichWeaponLeft) {
+		warriorName, startPos) {
 		this.name = warriorName;
 		this.myWarriorPic = whichImage;
 		this.myWarriorPicBack = whichImageBack;
 		this.myWarriorPicStand = whichImageStand;
-		this.rightHandWeapon = whichWeaponRight;
-		this.leftHandWeapon = whichWeaponLeft;
 		this.keysHeld = 0;
 		this.updateKeyReadout();
 		this.startSide = startPos;
@@ -87,11 +87,15 @@ function warriorClass() {
 		// document.getElementById("debugText").innerHTML = "Keys: " + this.keysHeld;
 	}
 
-	this.swordCircle = function () {
+	this.windupCircle = function () {
 		this.windup --;
 
 		drawEllipse(this.x, this.y+5,
-	      		90, 90*worldTiltYDampen,"black");
+	      		this.radius, this.radius*worldTiltYDampen,this.circleColor);
+
+		if (this.windup == 1) {
+			sliceSound.play()
+		}
 	}
 
 	this.dashAtMouse = function() {
@@ -264,7 +268,7 @@ function warriorClass() {
 		canvasContext.restore();
 
 		if (this.windup > 0) {
-			this.swordCircle()
+			this.windupCircle()
 		}
 	}
 }

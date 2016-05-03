@@ -36,14 +36,22 @@ function setupInput() {
 function mousePressed(evt) {
 	var leftMouseButton = (evt.button == 0);
 	if(leftMouseButton) {
-		if (playerRanged.rightHandWeapon == "bow") {
+		//Bow
+		if (rightHandIndexP2 == 0) {
 			arrowShot();
 		}
-		if (playerRanged.rightHandWeapon == "fire staff") {
+		//Fire Staff
+		if (rightHandIndexP2 == 1) {
 			fireStaff();
 		}
+		//Dagger
+		if(rightHandIndexP2 == 2) {
+				stabDagger();
+		}
 	} else {
-		if (playerRanged.leftHandWeapon == "rope") {
+
+		//Grapple Hook
+		if (leftHandIndexP2 == 0) {
 			playerRanged.dashAtMouse();
 		}
 	}
@@ -97,7 +105,7 @@ function keySet(keyEvent, setTo) {
 
 		//player 1 Selector
 		if(setTo && keyEvent.keyCode == KEY_D) {
-			if (cursor2 == 0) {
+			if (cursor1 == 0) {
 				if (classIndexP1 < 2) {
 					classIndexP1 +=1;
 				} else {
@@ -182,19 +190,27 @@ function keySet(keyEvent, setTo) {
 		playerFighter.keyHeld_South = playerFighter.keyHeld_North =
 			playerFighter.keyHeld_East = playerFighter.keyHeld_West = false;
 
-		if(playerFighter.rightHandWeapon == "sword") {
-				swingSword();
-		}
-		if(playerFighter.rightHandWeapon == "spear") {
+		//spear
+		if(rightHandIndexP1 == 0) {
 				stabSpear();
 		}
+		//sword
+		if(rightHandIndexP1 == 1) {
+				swingSword();
+		}
+		//Hammer
+		if(rightHandIndexP1 == 2) {
+				swingHammer();
+		}
+
 
 	}
 	if(setTo && keyEvent.keyCode == KEY_U) {
 		playerFighter.keyHeld_South = playerFighter.keyHeld_North =
 			playerFighter.keyHeld_East = playerFighter.keyHeld_West = false;
 
-		if(playerFighter.leftHandWeapon == "shield") {
+		//Shield
+		if(leftHandIndexP1 == 0) {
 			raiseShield();
 		}
 	}

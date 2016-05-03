@@ -4,14 +4,14 @@ const STUN_TIME = 80;
 var distToRangedPlayer = function(x, y){
 	var distRangedX = Math.abs(x - playerRanged.x);
 	var distRangedY = Math.abs(y - playerRanged.y);
-	
+
 	return Math.sqrt(distRangedX*distRangedX + distRangedY*distRangedY);
 }
 
 var distToFighterPlayer = function(x, y){
 	var distFighterX = Math.abs(x - playerFighter.x);
 	var distFighterY = Math.abs(y - playerFighter.x);
-	
+
 	return Math.sqrt(distFighterX*distFighterX + distFighterY*distFighterY);
 }
 
@@ -27,7 +27,7 @@ function enemyClass() {
 	this.mvSpeed = 4;
 	this.moving;
 	this.probMove;
-	this.targetX; 
+	this.targetX;
 	this.targetY;
 	this.stunTime;
 	var hitEnemySound = new SoundOverlapsClass("audio/hitEnemy")
@@ -49,7 +49,7 @@ function enemyClass() {
 		//this.randDir();
 		this.moving = false;
 		this.probMove = 0.20;
-		this.targetX = this.x; 
+		this.targetX = this.x;
 		this.targetY = this.y;
 		this.decide();
 		this.stunTime = 0;
@@ -107,7 +107,7 @@ function enemyClass() {
 			if(frameToShow<0) {
 				frameToShow+=8;
 			}
-			console.log(frameToShow);
+			//console.log(frameToShow);
 		} else {
 			frameToShow = 0;
 		}
@@ -117,7 +117,7 @@ function enemyClass() {
 		} else {
 			var stunShakeRange = 4;
 			var stunLeft = 1 + stunShakeRange * (STUN_TIME - this.stunTime) / STUN_TIME;
-			drawBitmapCenteredAnimFrame(this.myPic, 
+			drawBitmapCenteredAnimFrame(this.myPic,
 				this.x+Math.random()*stunLeft-Math.random()*stunLeft,
 				this.y+Math.random()*stunLeft-Math.random()*stunLeft, frameToShow);
 		}
@@ -132,11 +132,11 @@ function enemyClass() {
 		var rnd = Math.random();
 		if(rnd < this.probMove) {
 			this.randPos();
-			this.probMove -= 0.15;	
+			this.probMove -= 0.15;
 		} else {
 			this.probMove += 0.001;
 		}
-		
+
 	}
 
 	this.arrived = function() {
@@ -148,7 +148,7 @@ function enemyClass() {
 			this.xv = 0;
 			this.yv = 0;
 			return true;
-		} 
+		}
 		return false;
 	}
 
@@ -183,7 +183,7 @@ function enemyNinjaClass() {
 	this.rangedCooldownTimer = 60;
 	this.target;
 	this.myPic = demonNinjaPic;
-	
+
 	this.rangedAttack = function(targetX, targetY){
 		if(this.rangedCooldownTimer > 0){
 			this.rangedCooldownTimer--;
@@ -197,7 +197,7 @@ function enemyNinjaClass() {
 		shotList.push(newShot);
 		this.rangedCooldownTimer = this.rangedCooldown;
 	}
-	
+
 	this.decide = function() {
 		if(this.moveCounter >= 100) {
 			this.randPos();
@@ -205,11 +205,11 @@ function enemyNinjaClass() {
 		} else {
 			var distRanged = distToRangedPlayer(this.x, this.y);
 			var distFighter = distToFighterPlayer(this.x, this.y);
-			
+
 			var distNearestPlayer = distFighter < distRanged ? distFighter : distRanged;
-			
+
 			this.moveCounter += Math.max((100 - distNearestPlayer/2)/15, 0.35);
-			
+
 			if(distFighter < distRanged){
 				this.rangedAttack(playerFighter.x, playerFighter.y);
 			} else {
