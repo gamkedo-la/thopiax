@@ -8,6 +8,8 @@ const DASH_MAX_SPEED = 11.0;
 const START_LIVES = 100;
 const INVUL_FRAMES = 50;
 
+var healZoneIsUp = false;
+
 function warriorClass() {
 	this.x = 75;
 	this.y = 75;
@@ -47,6 +49,11 @@ function warriorClass() {
 	this.startSide;
 
 	this.ai;
+
+	this.healX;
+	this.healY;
+	this.healCooldown = 0;
+	this.healTimer = 0;
 
 	this.rightHandWeapon;
 	this.leftHandWeapon;
@@ -117,6 +124,17 @@ function warriorClass() {
 		}
 	}
 
+	this.createHealZone = function() {
+		if (this.healCooldown == 0 && this.myLives > 0) {
+			this.healCooldown = 500;
+			this.healX = mouseX;
+			this.healY = mouseY;
+			this.healTimer = 100;
+			healZoneIsUp = true;
+			console.log (this.healX)
+		}
+	}
+
 	this.move = function() {
 		if(this.myLives <= 0) {
 			return;
@@ -177,7 +195,6 @@ function warriorClass() {
 				this.y = nextY;
 				break;
 			case TILE_GOAL:
-				console.log(this.name + " WINS!");
 				loadLevel(levelOne);
 				break;
 			case TILE_DOOR:
@@ -270,5 +287,18 @@ function warriorClass() {
 		if (this.windup > 0) {
 			this.windupCircle()
 		}
+		if (playerRanged.healCooldown > 0) {
+			playerRanged.healCooldown --;
+		}
+		if (healZoneIsUp) {
+			if (this.healX > this.x - 100 && this.healX < this.x + 100) {
+		    if (this.healY > this.y - 100 && this.healY < this.y + 100) {
+					if(this.myLives < 100) {
+						this.myLives ++;
+					}
+				}
+		  }
+		}
+
 	}
 }

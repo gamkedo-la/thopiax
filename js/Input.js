@@ -54,6 +54,10 @@ function mousePressed(evt) {
 		if (leftHandIndexP2 == 0) {
 			playerRanged.dashAtMouse();
 		}
+		//Healing Scroll
+		if (leftHandIndexP2 == 2) {
+			playerRanged.createHealZone();
+		}
 	}
 }
 

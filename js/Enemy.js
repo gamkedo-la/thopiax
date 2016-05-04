@@ -86,7 +86,7 @@ function enemyClass() {
 				} else {
 					this.stunTime = STUN_TIME;
 				}
-				console.log("bumped player!");
+				//console.log("bumped player!");
 			}else if(someShotOrPlayer.doesStun) {
 				this.stunTime = STUN_TIME;
 			} else {

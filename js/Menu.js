@@ -21,7 +21,7 @@ var classListP2 = ["Rogue", "Assassin", "Mage"]
 var rightHandListP1 = ["Spear", "Sword", "Hammer"]
 var rightHandListP2 = ["Bow", "Fire Staff", "Dagger"]
 var leftHandListP1 = ["Shield", "Axe", "Horn"]
-var leftHandListP2 = ["Graple Hook", "Shurikens", "Healing Scroll"]
+var leftHandListP2 = ["Grapple Hook", "Shurikens", "Healing Scroll"]
 
 function runMenu () {
   canvasContext.drawImage(startMenu,0,0);

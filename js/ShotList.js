@@ -17,7 +17,7 @@ const PLAYER_HAMMER_RELOAD = 100;
 const PLAYER_AXE_RELOAD = 30;
 const PLAYER_SPEAR_RELOAD = 5;
 const PLAYER_DAGGER_RELOAD = 5;
-const PLAYER_SHIELD_RELOAD = 15;
+const PLAYER_SHIELD_RELOAD = 60;
 var fireStaffSound = new SoundOverlapsClass("audio/fireball")
 var sliceSound = new SoundOverlapsClass("audio/slice")
 var shieldSound = new SoundOverlapsClass("audio/shield")
@@ -66,7 +66,7 @@ function stabDagger() {
 		fromPlayer.reloadTime = PLAYER_DAGGER_RELOAD;
 
 		var newShot = new shotClass();
-		newShot.reset(playerSlashPic, fromPlayer, 2, mouseX, mouseY, 15, false, false, true);
+		newShot.reset(playerSlashPic, fromPlayer, 8, mouseX, mouseY, 5, false, false, true);
 		shotList.push(newShot);
 		sliceSound.play()
 	}

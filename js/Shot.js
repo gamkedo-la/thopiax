@@ -20,8 +20,8 @@ function shotClass() {
 	this.reset = function(whichImage, firedBy, mvSpeed, atX, atY, lifeFrames, useFacing, vanishOnHit, useRot, stuns) {
 		var startX = firedBy.x + (useFacing ? Math.cos(firedBy.prevMoveAng) * ATTACK_SPAWN_DIST : 0);
 		var faceUp = firedBy.prevMoveAng < 0;
-		console.log(faceUp);
-		var startY = firedBy.y + (useFacing ? Math.sin(firedBy.prevMoveAng) * 
+		//console.log(faceUp);
+		var startY = firedBy.y + (useFacing ? Math.sin(firedBy.prevMoveAng) *
 					(faceUp ? ATTACK_SPAWN_DIST_UP : ATTACK_SPAWN_DIST_DOWN) : 0)
 					+ WAIST_HEIGHT;
 		this.readyToRemove = false;

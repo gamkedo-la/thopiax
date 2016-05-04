@@ -14,6 +14,7 @@ var cursorPic = document.createElement("img");
 var playerArrowPic = document.createElement("img");
 var playerFireballPic = document.createElement("img");
 
+var healingZonePic = document.createElement("img");
 var spearStabPic = document.createElement("img");
 var playerSlashPic = document.createElement("img");
 var playerShieldPic = document.createElement("img");
@@ -53,6 +54,7 @@ function loadImages() {
 		{varName: playerArrowPic, theFile: "arrow.png"},
 		{varName: playerFireballPic, theFile: "fireball.png"},
 
+		{varName: healingZonePic, theFile: "healingZone.png"},
 		{varName: spearStabPic, theFile: "spearStabPic.png"},
 		{varName: playerSlashPic, theFile: "swordswipe.png"},
 		{varName: playerShieldPic, theFile: "shieldblock.png"},

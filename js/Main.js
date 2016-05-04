@@ -59,6 +59,15 @@ function moveAll() {
 
 function drawAll() {
 	drawWorld();
+
+	if (playerRanged.healTimer > 0){
+		canvasContext.drawImage(healingZonePic, playerRanged.healX -100, playerRanged.healY -100)
+		playerRanged.healTimer --;
+	} else {
+		healZoneIsUp = false;
+	}
+
+
 	playerRanged.draw();
 	playerFighter.draw();
 	drawEnemies();
