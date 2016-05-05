@@ -42,6 +42,7 @@ function warriorClass() {
 	this.isMoving;
 
 	this.reloadTime;
+	this.reloadTime2;
 	this.windup;
 	this.radius;
 	this.circleColor;
@@ -74,6 +75,7 @@ function warriorClass() {
 		this.y = 300;
 		this.invulTime = INVUL_FRAMES;
 		this.reloadTime = 0;
+		this.reloadTime2 = 0;
 	}
 
 	this.reset = function(whichImage, whichImageBack, whichImageStand,
@@ -105,24 +107,34 @@ function warriorClass() {
 		}
 	}
 
-	this.dashAtMouse = function() {
-		if(this.myLives <= 0) {
-			return;
-		}
-		if(this.dashTime <= 0) {
-			this.dashHookAtX = mouseX;
-			this.dashHookAtY = mouseY;
-			var dx = mouseX - this.x;
-			var dy = mouseY - this.y;
-			var dist = Math.sqrt(dx*dx + dy*dy);
-			if(dist > 1) {
-				this.dashTime = DASH_DURATION;
-				this.dashXV = dx / dist;
-				this.dashYV = dy / dist;
-				dashSound.play()
-			}
-		}
+	this.dashAtDirectionFaced = function() {
+    this.dashAtPoint(this.x + Math.cos( this.prevMoveAng ) * 100,this.y + Math.sin( this.prevMoveAng ) * 100);
 	}
+	// and
+	this.dashAtMouse = function() {
+	    this.dashAtPoint(mouseX, mouseY);
+	}
+	// both using:
+	this.dashAtPoint = function(toX, toY) {
+	    if(this.myLives <= 0) {
+	        return;
+	    }
+	    if(this.dashTime <= 0) {
+	        this.dashHookAtX = toX;
+					this.dashHookAtY = toY;
+	        var dx = toX - this.x;
+	        var dy = toY - this.y;
+	        var dist = Math.sqrt(dx*dx + dy*dy);
+	        if(dist > 1) {
+	            this.dashTime = DASH_DURATION;
+	            this.dashXV = dx / dist;
+	            this.dashYV = dy / dist;
+	            dashSound.play()
+	        }
+	    }
+	}
+
+
 
 	this.createHealZone = function() {
 		if (this.healCooldown == 0 && this.myLives > 0) {
@@ -245,7 +257,7 @@ function warriorClass() {
 			}
 		}
 
-		if(this.dashTime > 0) {
+		if(this.dashTime > 0 && this.name == "Ranged Dudette") {
 			drawLine(this.x, this.y-10,this.dashHookAtX, this.dashHookAtY,2,'#333333');
 		}
 
@@ -258,8 +270,13 @@ function warriorClass() {
 
 		if(this.reloadTime > 0) {
 			this.reloadTime--;
-			drawEllipse(this.x, this.y+5,
-	      		frameSize/3, frameSize/7,"#cccccc");
+			//drawEllipse(this.x, this.y+5,
+	    //  		frameSize/3, frameSize/7,"#cccccc");
+		}
+		if(this.reloadTime2 > 0) {
+			this.reloadTime2--;
+			//drawEllipse(this.x, this.y+5,
+	    //		frameSize/3, frameSize/7,"#cccccc");
 		}
 
 		canvasContext.save();
