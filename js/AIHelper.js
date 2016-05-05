@@ -254,16 +254,23 @@ AIH.gridDangerScan = function()
 {// Update the danger variables in the grid
 	AIH.runGridCommand(function(_cell) {_cell.danger=0.0;}); 	// Reset.
 	//
-	var dangerRange = 6;
-	for(var i in enemyList) {
-		var enm = enemyList[i];
-		var ex = Math.floor(enm.x / T_WIDTH);
-		var ey = Math.floor(enm.y / T_HEIGHT);
-		var nbhCells = AIH.getGridBlock(ex, ey, 6);
+	var radiateDanger = function(_src) {
+		var dangerRange = 6;
+		var sx = Math.floor(_src.x / T_WIDTH);
+		var sy = Math.floor(_src.y / T_HEIGHT);
+		var nbhCells = AIH.getGridBlock(sx, sy, 6);
 		for(var j in nbhCells) {
 			var cell = nbhCells[j];
-			var ring = Math.max(Math.abs(ex-cell.x), Math.abs(ey-cell.y));
+			var ring = Math.max(Math.abs(sx-cell.x), Math.abs(sy-cell.y));
 			cell.danger = Math.max(100.0 - (AIH.DANGER_FALLOF*ring*ring), cell.danger);
+		}
+	};
+	for(var i in enemyList) {
+		radiateDanger(enemyList[i]);
+	}
+	for(var i in shotList) {
+		if(!shotList[i].friendly) {
+			radiateDanger(shotList[i]);
 		}
 	}
 };
@@ -288,20 +295,21 @@ AIH.isHit = function(_aggressor, _target)
 {
 	var targetPic = AIH.getPic(_target);
 	var dist = Math.sqrt(Math.pow( _aggressor.x - _target.x, 2 ) + Math.pow( _aggressor.y - _target.y, 2 ));
-	return dist < targetPic.width*0.7;
+	return dist < targetPic.height*0.7;
 };
 // Find the correct visual representation of an entity
 AIH.getPic = function(_entity)
 {
 	var name = _entity.constructor.name;
-	if(name == "enemyClass") {
+	if(typeof _entity.myPic != 'undefined') {
 		return _entity.myPic;
-	} else if(name == "shotClass") {
+	} else if(typeof _entity.myShotPic != 'undefined') {
 		return _entity.myShotPic;
-	} else if(name == "enemyClass") {
+	} else if(typeof _entity.myWarriorPic != 'undefined') {
 		return _entity.myWarriorPic;
 	}
-	return "";
+	console.log("no pic found for " + name, _entity);
+	return null;
 };
 
 // Helper for function intersect(). BY Erik Verlage in the Optiverse Origins project

@@ -12,7 +12,10 @@ function shotClass2(firedBy, angle) {
 	this.angle = angle;
 	this.picAngle = angle;
 	this.enemiesHit = [];
-	
+	//
+	// tmp code splice by dalath
+	this.friendly = true;
+	//
 	if(this.velocity === undefined){
 		this.velocity = 1.0;
 	}
@@ -126,7 +129,10 @@ shotClassEnemyFireball.prototype.constructor = shotClassEnemyFireball;
 
 function shotClassEnemyFireball(firedBy, angle) {
 	shotClassFireball.call(this, firedBy, angle);
-	
+	//
+	// tmp code splice by dalath
+	this.friendly = false;
+	//
 	this.checkCollision = function(){
 		if(this.enemiesHit.indexOf(playerRanged) < 0 && playerRanged.hitBy(this)){
 			this.enemiesHit.push(playerRanged);
@@ -160,6 +166,10 @@ function shotClass() {
 	this.vanishOnHit;
 	this.doesStun;
 	this.isSpinningRate;
+	//
+	// tmp code splice by dalath
+	this.friendly = true;
+	//
 
 	this.reset = function(whichImage, firedBy, mvSpeed, atX, atY, lifeFrames, useFacing, vanishOnHit, useRot, stuns) {
 		var startX = firedBy.x + (useFacing ? Math.cos(firedBy.prevMoveAng) * ATTACK_SPAWN_DIST : 0);
