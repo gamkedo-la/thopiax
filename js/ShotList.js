@@ -74,8 +74,8 @@ function stabDagger() {
 
 function raiseShield() {
 	var fromPlayer = playerFighter;
-	if(fromPlayer.myLives > 0 && fromPlayer.reloadTime <= 0) {
-		fromPlayer.reloadTime = PLAYER_SHIELD_RELOAD;
+	if(fromPlayer.myLives > 0 && fromPlayer.reloadTime2 <= 0) {
+		fromPlayer.reloadTime2 = PLAYER_SHIELD_RELOAD;
 		var newShot = new shotClass();
 		newShot.reset(playerShieldPic, fromPlayer, 0, mouseX, mouseY, 60, true, false, false, true);
 		shotList.push(newShot);

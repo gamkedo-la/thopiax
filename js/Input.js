@@ -81,6 +81,7 @@ function keySet(keyEvent, setTo) {
 	if (gameIsGoing == false) {
 		if(setTo && keyEvent.keyCode == KEY_SPACE) {
 			gameIsGoing = true;
+			return;
 		}
 
 		//Player 1 up and down
@@ -218,6 +219,17 @@ function keySet(keyEvent, setTo) {
 			raiseShield();
 		}
 	}
+
+	if(setTo && keyEvent.keyCode == KEY_SPACE) {
+		playerFighter.keyHeld_South = playerFighter.keyHeld_North =
+			playerFighter.keyHeld_East = playerFighter.keyHeld_West = false;
+
+		//Dash
+		if(classIndexP1 == 0) {
+			playerFighter.dashAtDirectionFaced();
+		}
+	}
+
 }
 
 function keyPressed(evt) {
