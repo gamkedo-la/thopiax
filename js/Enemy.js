@@ -30,7 +30,7 @@ function enemyClass() {
 	this.targetX;
 	this.targetY;
 	this.stunTime;
-	this.lives = 3;
+	this.lives = 1;
 	var hitEnemySound = new SoundOverlapsClass("audio/hitEnemy")
 
 	this.randDir = function() {
