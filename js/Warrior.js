@@ -4,6 +4,7 @@ const PLAYER_FRAME_NUM = 60;
 
 const DASH_DURATION = 28.0;
 const DASH_MAX_SPEED = 11.0;
+const BERSERK_COOLDOWN = 50.0;
 
 const START_LIVES = 100;
 const INVUL_FRAMES = 50;
@@ -41,6 +42,9 @@ function warriorClass() {
 	this.dashHookAtY;
 	this.isMoving;
 
+	this.speedBoost;
+
+	this.abilityCD;
 	this.reloadTime;
 	this.reloadTime2;
 	this.windup;
@@ -76,6 +80,7 @@ function warriorClass() {
 		this.invulTime = INVUL_FRAMES;
 		this.reloadTime = 0;
 		this.reloadTime2 = 0;
+		this.abilityCD = 0;
 	}
 
 	this.reset = function(whichImage, whichImageBack, whichImageStand,
@@ -162,20 +167,20 @@ function warriorClass() {
 			nextY += this.ai.moveY;
 		} else {
 			if(this.keyHeld_North) {
-				nextY -= PLAYER_MOVE_SPEED*worldTiltYDampen;
+				nextY -= (PLAYER_MOVE_SPEED*worldTiltYDampen) + this.speedBoost;
 				anyKey = true;
 			}
 			if(this.keyHeld_East) {
-				nextX += PLAYER_MOVE_SPEED;
+				nextX += PLAYER_MOVE_SPEED + this.speedBoost;
 				anyKey = true;
 				this.lastMovedRight = true;
 			}
 			if(this.keyHeld_South) {
-				nextY += PLAYER_MOVE_SPEED*worldTiltYDampen;
+				nextY += (PLAYER_MOVE_SPEED*worldTiltYDampen) + this.speedBoost;
 				anyKey = true;
 			}
 			if(this.keyHeld_West) {
-				nextX -= PLAYER_MOVE_SPEED;
+				nextX -= PLAYER_MOVE_SPEED + this.speedBoost;
 				anyKey = true;
 				this.lastMovedRight = false;
 			}
@@ -236,8 +241,8 @@ function warriorClass() {
 			}
 		}
 	}
-	
-	
+
+
 	this.hitBy = function(enemyShot) {
 		var dx = enemyShot.x - this.x;
 		var dy = enemyShot.y - this.y;
@@ -251,8 +256,8 @@ function warriorClass() {
 		return false;
 	}
 
-	
-	
+
+
 	this.draw = function() {
 		if(this.myLives <= 0) {
 			return;
@@ -291,8 +296,9 @@ function warriorClass() {
 		}
 		if(this.reloadTime2 > 0) {
 			this.reloadTime2--;
-			//drawEllipse(this.x, this.y+5,
-	    //		frameSize/3, frameSize/7,"#cccccc");
+		}
+		if(this.abilityCD > 0) {
+			this.abilityCD--;
 		}
 
 		canvasContext.save();

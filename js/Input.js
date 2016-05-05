@@ -228,6 +228,16 @@ function keySet(keyEvent, setTo) {
 		if(classIndexP1 == 0) {
 			playerFighter.dashAtDirectionFaced();
 		}
+		if(classIndexP1 == 1 && playerFighter.abilityCD <= 0) {
+			playerFighter.abilityCD = BERSERK_COOLDOWN;
+			playerFighter.myLives -= 5;
+		}
+	}
+
+	if(classIndexP2 == 0 && playerRanged.myLives == 100) {
+		playerRanged.speedBoost = 5;
+	} else {
+		playerRanged.speedBoost = 0;
 	}
 
 }
