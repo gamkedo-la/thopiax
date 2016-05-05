@@ -136,6 +136,14 @@ function shotClassEnemyFireball(firedBy, angle) {
 				return;
 			}
 		}
+		if(this.enemiesHit.indexOf(playerFighter) < 0 && playerFighter.hitBy(this)){
+			this.enemiesHit.push(playerFighter);
+			
+			if(this.vanishOnHit) {
+				this.readyToRemove = true;
+				return;
+			}
+		}
 	}
 }
 
