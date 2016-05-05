@@ -30,6 +30,7 @@ function enemyClass() {
 	this.targetX;
 	this.targetY;
 	this.stunTime;
+	this.lives = 3;
 	var hitEnemySound = new SoundOverlapsClass("audio/hitEnemy")
 
 	this.randDir = function() {
@@ -56,6 +57,11 @@ function enemyClass() {
 	} // end of warriorReset func
 
 	this.move = function() {
+		if(this.lives <= 0){
+			this.readyToRemove = true;
+			return;
+		}
+		
 		var nextX = this.x+this.xv;
 		var nextY = this.y+this.yv*worldTiltYDampen;
 
@@ -91,7 +97,9 @@ function enemyClass() {
 				this.stunTime = STUN_TIME;
 			} else {
 				setTimeout(hitEnemySound.play(), 200)
-				this.readyToRemove = true;
+				//this.readyToRemove = true;
+				this.lives--;
+				console.log("I have: " + this.lives + " lives");
 			}
 			return true;
 		}
@@ -189,12 +197,11 @@ function enemyNinjaClass() {
 			this.rangedCooldownTimer--;
 			return;
 		}
-		var fromEnemy = this;
-		//Make sure to manage cooldown timers
-		var newShot = new enemyShotClass();
-		newShot.reset(playerFireballPic, this, this.projectileSpeed, targetX, targetY, this.projectileLife, false, false);
-		newShot.isSpinningRate = 0.7;
+		
+		var angle = Math.atan2(targetY-this.y,targetX-this.x);
+		var newShot = new shotClassEnemyFireball(this, angle);
 		shotList.push(newShot);
+		
 		this.rangedCooldownTimer = this.rangedCooldown;
 	}
 

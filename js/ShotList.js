@@ -4,20 +4,15 @@ function resetShots() {
 	shotList = [];
 }
 
-const PLAYER_ARROW_SPEED = 7.0;
 const PLAYER_ARROW_RELOAD = 35;
-const PLAYER_ARROW_LIFE = 40;
-
-const PLAYER_FIRE_BALL_SPEED = 3.5;
 const PLAYER_FIRE_BALL_RELOAD = 70;
-const PLAYER_FIRE_BALL_LIFE = 120;
-
 const PLAYER_SWORD_RELOAD = 50;
 const PLAYER_HAMMER_RELOAD = 100;
 const PLAYER_AXE_RELOAD = 30;
 const PLAYER_SPEAR_RELOAD = 5;
 const PLAYER_DAGGER_RELOAD = 5;
 const PLAYER_SHIELD_RELOAD = 60;
+
 var fireStaffSound = new SoundOverlapsClass("audio/fireball")
 var sliceSound = new SoundOverlapsClass("audio/slice")
 var shieldSound = new SoundOverlapsClass("audio/shield")
@@ -26,8 +21,10 @@ function arrowShot() {
 	var fromPlayer = playerRanged;
 	if(fromPlayer.myLives > 0 && fromPlayer.reloadTime <= 0) {
 		fromPlayer.reloadTime = PLAYER_ARROW_RELOAD;
-		var newShot = new shotClass();
-		newShot.reset(playerArrowPic, fromPlayer, PLAYER_ARROW_SPEED, mouseX, mouseY, PLAYER_ARROW_LIFE, false, true);
+		
+		var angle = Math.atan2(mouseY-fromPlayer.y,mouseX-fromPlayer.x);
+		var newShot = new shotClassArrow(fromPlayer, angle);
+
 		shotList.push(newShot);
 	}
 }
@@ -36,15 +33,9 @@ function fireStaff() {
 	var fromPlayer = playerRanged;
 	if(fromPlayer.myLives > 0 && fromPlayer.reloadTime <= 0) {
 		fromPlayer.reloadTime = PLAYER_FIRE_BALL_RELOAD;
-		var newShot = new shotClass();
-		newShot.reset(playerFireballPic, fromPlayer, PLAYER_FIRE_BALL_SPEED, mouseX, mouseY, PLAYER_FIRE_BALL_LIFE, false, false);
-		newShot.draw = function() {
-			var shotSize = (newShot.lifeTime/ newShot.maxLifeTime - 1) * -1 + .3
-			drawBitmapCenteredWithRotation(this.myShotPic, this.x,this.y, this.facingAng, shotSize);
-		}
-		newShot.isSpinningRate = 0.7;
+		var angle = Math.atan2(mouseY-fromPlayer.y,mouseX-fromPlayer.x);
+		var newShot = new shotClassFireball(fromPlayer, angle);
 		shotList.push(newShot);
-		fireStaffSound.play()
 	}
 }
 

@@ -236,7 +236,23 @@ function warriorClass() {
 			}
 		}
 	}
+	
+	
+	this.hitBy = function(enemyShot) {
+		var dx = enemyShot.x - this.x;
+		var dy = enemyShot.y - this.y;
+		var dist = Math.sqrt(dx*dx+dy*dy);
+		var myPicHeight = this.myWarriorPic.height + this.myWarriorPicBack.height + this.myWarriorPicStand.height;
 
+		if(dist < myPicHeight*0.7) { // note: .height so it works for animated strips
+			this.myLives-= 10;
+			return true;
+		}
+		return false;
+	}
+
+	
+	
 	this.draw = function() {
 		if(this.myLives <= 0) {
 			return;
