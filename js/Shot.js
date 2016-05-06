@@ -4,20 +4,17 @@ const ATTACK_SPAWN_DIST_DOWN = 40;
 
 const WAIST_HEIGHT = -12;
 
-function shotClass2(firedBy, angle) {
-	console.log("Shot class 2");
-
+function shotClass(firedBy, angle) {
 	this.x = firedBy.x;
 	this.y = firedBy.y + WAIST_HEIGHT;
 	this.angle = angle;
-	this.picAngle = angle;
+	this.picAngle = this.angle;
 	this.enemiesHit = [];
-	//
-	// tmp code splice by dalath
+	this.shotSize = 1;
 	this.friendly = true;
-	//
+	
 	if(this.velocity === undefined){
-		this.velocity = 1.0;
+		this.velocity = 0.0;
 	}
 	
 	this.xv = this.velocity * Math.cos(this.angle);
@@ -28,10 +25,8 @@ function shotClass2(firedBy, angle) {
 	}
 	
 	//TODO select default pic
-//	this.myShotPic = playerArrowPic; // which picture to use
+	this.myShotPic;// = playerArrowPic; // which picture to use
 	this.readyToRemove = false;
-//	this.vanishOnHit = true;
-//	this.doesStun = false;
 	
 	this.checkCollision = function(){
 		for(var i=0; i<enemyList.length; i++) {
@@ -45,7 +40,7 @@ function shotClass2(firedBy, angle) {
 				}
 			}
 		}
-	}
+	};
 
 	this.move = function() {
 		this.lifeTime--;
@@ -75,14 +70,14 @@ function shotClass2(firedBy, angle) {
 				this.readyToRemove = true;
 				break;
 		}
-	}
+	};
 
 	this.draw = function() {
 		drawBitmapCenteredWithRotation(this.myShotPic, this.x,this.y, this.picAngle);
-	}
+	};
 }
 
-shotClassArrow.prototype = Object.create(shotClass2.prototype);;
+shotClassArrow.prototype = Object.create(shotClass.prototype);;
 shotClassArrow.prototype.constructor = shotClassArrow;
 
 function shotClassArrow(firedBy, angle) {
@@ -92,11 +87,11 @@ function shotClassArrow(firedBy, angle) {
 	this.vanishOnHit = true;
 	this.doesStun = false;
 	
-	shotClass2.call(this, firedBy, angle);
+	shotClass.call(this, firedBy, angle);
 }
 
 
-shotClassFireball.prototype = Object.create(shotClass2.prototype);
+shotClassFireball.prototype = Object.create(shotClass.prototype);
 shotClassFireball.prototype.constructor = shotClassFireball;
 
 function shotClassFireball(firedBy, angle) {
@@ -110,141 +105,102 @@ function shotClassFireball(firedBy, angle) {
 	this.doesStun = false;
 	this.isSpinningRate = 0.7;
 
-	shotClass2.call(this, firedBy, angle);
+	shotClass.call(this, firedBy, angle);
 	
 	this.moveParent = this.move;
 	this.move = function(){
 		this.moveParent();
 		this.facingAng += this.isSpinningRate;
-	}
+	};
 	
 	this.draw = function() {
-		var shotSize = (this.lifeTime/ this.maxLifeTime - 1) * -1 + .3
-		drawBitmapCenteredWithRotation(this.myShotPic, this.x,this.y, this.facingAng, shotSize);
-	}
+		this.shotSize = (this.lifeTime/ this.maxLifeTime - 1) * -1 + .3
+		drawBitmapCenteredWithRotation(this.myShotPic, this.x,this.y, this.facingAng, this.shotSize);
+	};
 }
+
+shotClassDagger.prototype = Object.create(shotClass.prototype);
+shotClassDagger.prototype.constructor = shotClassDagger;
+
+function shotClassDagger(firedBy, angle){
+	sliceSound.play()
+	
+	this.myShotPic = playerSlashPic;
+	this.velocity = 12.0;
+	this.lifeTime = 5;
+	this.vanishOnHit = false;
+	this.doesStun = false;
+
+	shotClass.call(this, firedBy, angle);
+}
+
+//shotClassMelee is a child of shotClass
+shotClassMelee.prototype = Object.create(shotClass.prototype);
+shotClassMelee.prototype.constructor = shotClassMelee;
+
+function shotClassMelee(firedBy, angle){
+	shotClass.call(this, firedBy, angle);
+	
+	//Move projectile's initial spawn outside of the player
+	this.x += Math.cos(firedBy.prevMoveAng) * ATTACK_SPAWN_DIST;
+	this.y += Math.sin(firedBy.prevMoveAng) *
+						(firedBy.prevMoveAng < 0 ? ATTACK_SPAWN_DIST_UP : ATTACK_SPAWN_DIST_DOWN);
+}
+
+//shotClassSpear is a child of shotClassMelee
+shotClassSpear.prototype = Object.create(shotClassMelee.prototype);
+shotClassSpear.prototype.constructor = shotClassSpear;
+
+function shotClassSpear(firedBy, angle){
+	sliceSound.play()
+	
+	this.myShotPic = spearStabPic;
+	this.lifeTime = 15;
+	this.vanishOnHit = false;
+	this.doesStun = false;
+
+	shotClassMelee.call(this, firedBy, angle);
+}
+
+shotClassShield.prototype = Object.create(shotClassMelee.prototype);
+shotClassShield.prototype.constructor = shotClassShield;
+
+function shotClassShield(firedBy, angle){
+	shieldSound.play();
+	
+	this.myShotPic = playerShieldPic;
+	this.lifeTime = 60;
+	this.vanishOnHit = false;
+	this.doesStun = true;
+
+	shotClassMelee.call(this, firedBy, 0);
+}
+
+var enemyProjectileCollisionTest = function(){
+	if(this.enemiesHit.indexOf(playerRanged) < 0 && playerRanged.hitBy(this)){
+		this.enemiesHit.push(playerRanged);
+		
+		if(this.vanishOnHit) {
+			this.readyToRemove = true;
+			return;
+		}
+	}
+	if(this.enemiesHit.indexOf(playerFighter) < 0 && playerFighter.hitBy(this)){
+		this.enemiesHit.push(playerFighter);
+		
+		if(this.vanishOnHit) {
+			this.readyToRemove = true;
+			return;
+		}
+	}
+};
 
 shotClassEnemyFireball.prototype = Object.create(shotClassFireball.prototype);
 shotClassEnemyFireball.prototype.constructor = shotClassEnemyFireball;
 
 function shotClassEnemyFireball(firedBy, angle) {
 	shotClassFireball.call(this, firedBy, angle);
-	//
-	// tmp code splice by dalath
+	
 	this.friendly = false;
-	//
-	this.checkCollision = function(){
-		if(this.enemiesHit.indexOf(playerRanged) < 0 && playerRanged.hitBy(this)){
-			this.enemiesHit.push(playerRanged);
-			
-			if(this.vanishOnHit) {
-				this.readyToRemove = true;
-				return;
-			}
-		}
-		if(this.enemiesHit.indexOf(playerFighter) < 0 && playerFighter.hitBy(this)){
-			this.enemiesHit.push(playerFighter);
-			
-			if(this.vanishOnHit) {
-				this.readyToRemove = true;
-				return;
-			}
-		}
-	}
+	this.checkCollision = enemyProjectileCollisionTest;
 }
-
-//*
-function shotClass() {
-	this.x = 75;
-	this.y = 75;
-	this.xv = 1;
-	this.yv = 1;
-	this.lifeTime;
-	this.myShotPic; // which picture to use
-	this.facingAng;
-	this.readyToRemove;
-	this.vanishOnHit;
-	this.doesStun;
-	this.isSpinningRate;
-	//
-	// tmp code splice by dalath
-	this.friendly = true;
-	//
-
-	this.reset = function(whichImage, firedBy, mvSpeed, atX, atY, lifeFrames, useFacing, vanishOnHit, useRot, stuns) {
-		var startX = firedBy.x + (useFacing ? Math.cos(firedBy.prevMoveAng) * ATTACK_SPAWN_DIST : 0);
-		var faceUp = firedBy.prevMoveAng < 0;
-		//console.log(faceUp);
-		var startY = firedBy.y + (useFacing ? Math.sin(firedBy.prevMoveAng) *
-					(faceUp ? ATTACK_SPAWN_DIST_UP : ATTACK_SPAWN_DIST_DOWN) : 0)
-					+ WAIST_HEIGHT;
-		this.readyToRemove = false;
-		this.myShotPic = whichImage;
-		this.isSpinningRate = 0.0;
-		this.x = startX;
-		this.y = startY;
-		var dx = atX-startX;
-		var dy = atY-startY;
-		var magnitude = Math.sqrt(dx*dx + dy*dy);
-		if(useFacing) {
-			if(useRot) {
-				this.facingAng = firedBy.prevMoveAng;
-			} else {
-				this.facingAng = 0;
-			}
-		} else {
-			this.facingAng = Math.atan2(dy,dx);
-		}
-		this.xv = mvSpeed * dx / magnitude;
-		this.yv = mvSpeed * dy / magnitude;
-		this.lifeTime = lifeFrames;
-		this.maxLifeTime = lifeFrames;
-		this.vanishOnHit = vanishOnHit;
-		if(stuns == undefined) {
-			stuns = false;
-		}
-		this.doesStun = stuns;
-	} // end of warriorReset func
-
-	this.move = function() {
-		this.lifeTime--;
-		if(this.lifeTime < 0) {
-			this.readyToRemove = true;
-			return;
-		}
-
-		for(var i=0; i<enemyList.length; i++) {
-			if(enemyList[i].hitBy(this) && this.vanishOnHit) {
-				this.readyToRemove = true;
-				return;
-			}
-		}
-
-		var nextX = this.x+this.xv;
-		var nextY = this.y+this.yv;
-
-		var walkIntoLevelPieceIndex = getLevelPieceIndexAtPixelCoord(nextX, nextY);
-		var walkIntoLevelPieceType = TILE_GROUND;
-
-		if(walkIntoLevelPieceIndex != undefined) {
-			walkIntoLevelPieceType = worldData[walkIntoLevelPieceIndex].kind;
-		}
-
-		switch(walkIntoLevelPieceType) {
-			case TILE_GROUND:
-				this.x = nextX;
-				this.y = nextY;
-				break;
-			default:
-				this.readyToRemove = true;
-				break;
-		}
-
-		this.facingAng += this.isSpinningRate;
-	}
-
-	this.draw = function() {
-		drawBitmapCenteredWithRotation(this.myShotPic, this.x,this.y, this.facingAng);
-	}
-}
-//*/

@@ -33,8 +33,21 @@ function fireStaff() {
 	var fromPlayer = playerRanged;
 	if(fromPlayer.myLives > 0 && fromPlayer.reloadTime <= 0) {
 		fromPlayer.reloadTime = PLAYER_FIRE_BALL_RELOAD;
+		
 		var angle = Math.atan2(mouseY-fromPlayer.y,mouseX-fromPlayer.x);
 		var newShot = new shotClassFireball(fromPlayer, angle);
+		shotList.push(newShot);
+	}
+}
+
+function stabDagger() {
+	var fromPlayer = playerRanged;
+	if(fromPlayer.myLives > 0 && fromPlayer.reloadTime <= 0) {
+		fromPlayer.reloadTime = PLAYER_DAGGER_RELOAD;
+		
+		var angle = Math.atan2(mouseY-fromPlayer.y,mouseX-fromPlayer.x);
+		var newShot = new shotClassDagger(fromPlayer, angle);
+		
 		shotList.push(newShot);
 	}
 }
@@ -43,23 +56,10 @@ function stabSpear() {
 	var fromPlayer = playerFighter;
 	if(fromPlayer.myLives > 0 && fromPlayer.reloadTime <= 0) {
 		fromPlayer.reloadTime = PLAYER_SPEAR_RELOAD;
+		
+		var newShot = new shotClassSpear(fromPlayer, fromPlayer.prevMoveAng);
 
-		var newShot = new shotClass();
-		newShot.reset(spearStabPic, fromPlayer, 0, mouseX, mouseY, 15, true, false, true);
 		shotList.push(newShot);
-		sliceSound.play()
-	}
-}
-
-function stabDagger() {
-	var fromPlayer = playerRanged;
-	if(fromPlayer.myLives > 0 && fromPlayer.reloadTime <= 0) {
-		fromPlayer.reloadTime = PLAYER_DAGGER_RELOAD;
-
-		var newShot = new shotClass();
-		newShot.reset(playerSlashPic, fromPlayer, 8, mouseX, mouseY, 5, false, false, true);
-		shotList.push(newShot);
-		sliceSound.play()
 	}
 }
 
@@ -67,10 +67,10 @@ function raiseShield() {
 	var fromPlayer = playerFighter;
 	if(fromPlayer.myLives > 0 && fromPlayer.reloadTime2 <= 0) {
 		fromPlayer.reloadTime2 = PLAYER_SHIELD_RELOAD;
-		var newShot = new shotClass();
-		newShot.reset(playerShieldPic, fromPlayer, 0, mouseX, mouseY, 60, true, false, false, true);
+		
+		var newShot = new shotClassShield(fromPlayer, fromPlayer.prevMoveAng);
+		
 		shotList.push(newShot);
-		shieldSound.play();
 	}
 }
 
