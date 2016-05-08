@@ -202,5 +202,16 @@ function shotClassEnemyFireball(firedBy, angle) {
 	shotClassFireball.call(this, firedBy, angle);
 	
 	this.friendly = false;
+	this.vanishOnHit
+	this.checkCollision = enemyProjectileCollisionTest;
+}
+
+shotClassEnemyArrow.prototype = Object.create(shotClassArrow.prototype);
+shotClassEnemyArrow.prototype.constructor = shotClassEnemyArrow;
+
+function shotClassEnemyArrow(firedBy, angle) {
+	shotClassArrow.call(this, firedBy, angle);
+	
+	this.friendly = false;
 	this.checkCollision = enemyProjectileCollisionTest;
 }

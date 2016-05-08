@@ -1,6 +1,6 @@
 var enemyList = [];
 
-var enemyWaveLists = [[4, 4], [6, 6]];
+var enemyWaveLists = [[4, 4], [6, 6], [8, 8]];
 var enemyTypes = [enemyClass, enemyNinjaClass];
 var currentWave = 0;
 
@@ -41,6 +41,12 @@ function moveEnemies() {
 		if(enemyList[i].readyToRemove) {
 			enemyList.splice(i,1);
 		}
+	}
+	
+	//not the best place for this code, but it works
+	if(enemyList.length === 0){
+		currentWave++
+		spawnEnemies();
 	}
 }
 

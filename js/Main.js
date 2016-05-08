@@ -9,6 +9,16 @@ var worldTiltYDampen = 5.0/7.0;
 
 var gameIsGoing = false;
 
+document.onselectstart = function()
+{
+    window.getSelection().removeAllRanges();
+};
+
+document.onmousedown = function()
+{
+    window.getSelection().removeAllRanges();
+};
+
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
 	canvasContext = canvas.getContext('2d');
