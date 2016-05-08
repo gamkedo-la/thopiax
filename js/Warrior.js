@@ -29,6 +29,7 @@ function warriorClass() {
 
 	this.myLives;
 	this.invulTime;
+	this.killCount = 0;
 
 	this.controlKeyUp;
 	this.controlKeyRight;

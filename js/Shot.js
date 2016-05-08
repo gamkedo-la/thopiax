@@ -5,6 +5,7 @@ const ATTACK_SPAWN_DIST_DOWN = 40;
 const WAIST_HEIGHT = -12;
 
 function shotClass(firedBy, angle) {
+	this.firedBy = firedBy;
 	this.x = firedBy.x;
 	this.y = firedBy.y + WAIST_HEIGHT;
 	this.angle = angle;

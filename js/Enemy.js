@@ -97,9 +97,12 @@ function enemyClass() {
 				this.stunTime = STUN_TIME;
 			} else {
 				setTimeout(hitEnemySound.play(), 200)
-				//this.readyToRemove = true;
+				
 				this.lives--;
-				console.log("I have: " + this.lives + " lives");
+				if(!this.lives && someShotOrPlayer.firedBy){
+					someShotOrPlayer.firedBy.killCount++;
+					console.log(someShotOrPlayer.firedBy.killCount);
+				}
 			}
 			return true;
 		}

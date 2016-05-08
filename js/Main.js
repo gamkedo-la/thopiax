@@ -9,11 +9,14 @@ var worldTiltYDampen = 5.0/7.0;
 
 var gameIsGoing = false;
 
+
+//Prevents player from drag selecting
 document.onselectstart = function()
 {
     window.getSelection().removeAllRanges();
 };
 
+//Prevents player from drag selecting
 document.onmousedown = function()
 {
     window.getSelection().removeAllRanges();

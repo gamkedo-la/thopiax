@@ -24,13 +24,15 @@ function resetEnemies() {
 
 function spawnEnemies() {
 	var spawnCount = 0;
-	for(var i = 0; i < enemyWaveLists[currentWave].length; i++){
-		for(var j = 0; j < enemyWaveLists[currentWave][i]; j++){
-			var newEnemy = new enemyTypes[i]();
-			newEnemy.reset(spawns[spawnCount % spawns.length].x,
-			               spawns[spawnCount++ % spawns.length].y);
-			
-			enemyList.push(newEnemy);
+	if(currentWave < enemyWaveLists.length){
+		for(var i = 0; i < enemyWaveLists[currentWave].length; i++){
+			for(var j = 0; j < enemyWaveLists[currentWave][i]; j++){
+				var newEnemy = new enemyTypes[i]();
+				newEnemy.reset(spawns[spawnCount % spawns.length].x,
+				               spawns[spawnCount++ % spawns.length].y);
+				
+				enemyList.push(newEnemy);
+			}
 		}
 	}
 }
