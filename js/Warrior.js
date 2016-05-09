@@ -43,7 +43,7 @@ function warriorClass() {
 	this.dashHookAtY;
 	this.isMoving;
 
-	this.speedBoost;
+	this.speedBoost = 0;
 
 	this.abilityCD;
 	this.reloadTime;

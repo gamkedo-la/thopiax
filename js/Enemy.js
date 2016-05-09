@@ -21,7 +21,7 @@ function enemyClass() {
 	this.y = 75;
 	this.xv = 0;
 	this.yv = 0;
-	this.myPic = demonPic;
+	this.myPic = demonNinjaPic;
 	this.facingAng;
 	this.readyToRemove;
 	this.mvSpeed = 4;
