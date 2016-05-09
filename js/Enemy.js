@@ -61,7 +61,7 @@ function enemyClass() {
 			this.readyToRemove = true;
 			return;
 		}
-		
+
 		var nextX = this.x+this.xv;
 		var nextY = this.y+this.yv*worldTiltYDampen;
 
@@ -97,11 +97,14 @@ function enemyClass() {
 				this.stunTime = STUN_TIME;
 			} else {
 				setTimeout(hitEnemySound.play(), 200)
-				
+
 				this.lives--;
 				if(!this.lives && someShotOrPlayer.firedBy){
 					someShotOrPlayer.firedBy.killCount++;
-					console.log(someShotOrPlayer.firedBy.killCount);
+					if (someShotOrPlayer.firedBy == playerRanged && classIndexP2 == 1) {
+						playerRanged.speedBoost = 5;
+						playerRanged.abilityCD = 50;
+					}
 				}
 			}
 			return true;
@@ -200,11 +203,11 @@ function enemyNinjaClass() {
 			this.rangedCooldownTimer--;
 			return;
 		}
-		
+
 		var angle = Math.atan2(targetY-this.y,targetX-this.x);
 		var newShot = new shotClassEnemyFireball(this, angle);
 		shotList.push(newShot);
-		
+
 		this.rangedCooldownTimer = this.rangedCooldown;
 	}
 

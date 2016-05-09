@@ -32,6 +32,7 @@ function runMenu () {
     wobble += wobbleSpeed;
 
     canvasContext.fillStyle = 'Red';
+    canvasContext.font = "15px Arial"
     canvasContext.fillText("Player 1" ,MENU_ROW1, 200);
     canvasContext.fillText("Player 2" ,MENU_ROW2, 200);
     canvasContext.fillText(classListP1[classIndexP1] ,MENU_ROW1, menuColumnPos[0]);
