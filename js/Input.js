@@ -229,16 +229,25 @@ function keySet(keyEvent, setTo) {
 			playerFighter.dashAtDirectionFaced();
 		}
 		if(classIndexP1 == 1 && playerFighter.abilityCD <= 0) {
-			playerFighter.abilityCD = BERSERK_COOLDOWN;
-			playerFighter.myLives -= 5;
+			if (playerFighter.speedBoost < 8) {
+				playerFighter.speedBoost+= 1;
+				playerFighter.myLives -= 10;
+				playerFighter.abilityCD = 50;
+			} else {
+				playerFighter.invulTime = INVUL_FRAMES;
+			}
 		}
 	}
 
-	if(classIndexP2 == 0 && playerRanged.myLives == 100) {
-		playerRanged.speedBoost = 5;
-	} else {
+	//Rogue
+	if(classIndexP2 == 0 && playerRanged.invulTime == 0) {
+		playerRanged.speedBoost = 3;
+		playerRanged.abilityCD = 15;
+	}
+	if(playerRanged.abilityCD < 10) {
 		playerRanged.speedBoost = 0;
 	}
+
 
 }
 
