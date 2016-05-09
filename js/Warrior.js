@@ -5,6 +5,7 @@ const PLAYER_FRAME_NUM = 60;
 const DASH_DURATION = 28.0;
 const DASH_MAX_SPEED = 11.0;
 const BERSERK_COOLDOWN = 50.0;
+const MAGE_CD = 100.0;
 
 const START_LIVES = 100;
 const INVUL_FRAMES = 50;
@@ -170,20 +171,32 @@ function warriorClass() {
 			if(this.keyHeld_North) {
 				nextY -= (PLAYER_MOVE_SPEED*worldTiltYDampen) + this.speedBoost;
 				anyKey = true;
+				if(classIndexP2 == 2 && this.name == "Ranged Dudette") {
+					this.abilityCD = MAGE_CD;
+				}
 			}
 			if(this.keyHeld_East) {
 				nextX += PLAYER_MOVE_SPEED + this.speedBoost;
 				anyKey = true;
 				this.lastMovedRight = true;
+				if(classIndexP2 == 2 && this.name == "Ranged Dudette") {
+					this.abilityCD = MAGE_CD;
+				}
 			}
 			if(this.keyHeld_South) {
 				nextY += (PLAYER_MOVE_SPEED*worldTiltYDampen) + this.speedBoost;
 				anyKey = true;
+				if(classIndexP2 == 2 && this.name == "Ranged Dudette") {
+					this.abilityCD = MAGE_CD;
+				}
 			}
 			if(this.keyHeld_West) {
 				nextX -= PLAYER_MOVE_SPEED + this.speedBoost;
 				anyKey = true;
 				this.lastMovedRight = false;
+				if(classIndexP2 == 2 && this.name == "Ranged Dudette") {
+					this.abilityCD = MAGE_CD;
+				}
 			}
 		}
 
@@ -238,6 +251,10 @@ function warriorClass() {
 				if(enemyList[i].hitBy(this)) {
 					this.myLives -= 10;
 					this.invulTime = INVUL_FRAMES;
+					if (classIndexP2 == 2 && this.name == "Ranged Dudette") {
+						this.myLives -=10;
+						this.abilityCD = MAGE_CD;
+					}
 				}
 			}
 		}
@@ -303,6 +320,11 @@ function warriorClass() {
 		}
 		if(this.abilityCD > 0) {
 			this.abilityCD--;
+		}
+		if(classIndexP2 == 2 && this.name == "Ranged Dudette" && this.abilityCD == 0) {
+			this.reloadTime = 1;
+			this.reloadTime2 = 1;
+			console.log("ping")
 		}
 
 		canvasContext.save();

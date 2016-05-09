@@ -224,10 +224,11 @@ function keySet(keyEvent, setTo) {
 		playerFighter.keyHeld_South = playerFighter.keyHeld_North =
 			playerFighter.keyHeld_East = playerFighter.keyHeld_West = false;
 
-		//Dash
+		//Warrior
 		if(classIndexP1 == 0) {
 			playerFighter.dashAtDirectionFaced();
 		}
+		//Berserker
 		if(classIndexP1 == 1 && playerFighter.abilityCD <= 0) {
 			if (playerFighter.speedBoost < 8) {
 				playerFighter.speedBoost+= 1;
@@ -236,6 +237,14 @@ function keySet(keyEvent, setTo) {
 			} else {
 				playerFighter.invulTime = INVUL_FRAMES;
 			}
+		}
+		//Paladin
+		if(classIndexP1 == 2 && playerFighter.abilityCD <= 0) {
+			playerFighter.myLives += 5;
+			if (playerFighter.myLives > 100) {
+				playerFighter.myLives = 100;
+			}
+			playerFighter.abilityCD = 200;
 		}
 	}
 
