@@ -193,7 +193,7 @@ function enemyNinjaClass() {
 	this.rangedCooldown = 60;
 	this.rangedCooldownTimer = 60;
 	this.target;
-	this.myPic = demonNinjaPic;
+	this.myPic = basicEnemyPic;//demonNinjaPic;
 
 	this.rangedAttack = function(targetX, targetY){
 		if(this.rangedCooldownTimer > 0){
