@@ -24,7 +24,7 @@ function enemyClass() {
 	this.myPic = demonNinjaPic;
 	this.facingAng;
 	this.readyToRemove;
-	this.mvSpeed = 4;
+	this.mvSpeed = 8;
 	this.moving;
 	this.probMove;
 	this.targetX;
@@ -71,13 +71,17 @@ function enemyClass() {
 		}
 
 		if(!AIH.onTileGround( nextX, nextY )) {
-			this.randPos();
+			this.hitTerrain();
 		} else if(this.arrived()) {
 			this.decide();
 		} else {
 			this.x = nextX;
 			this.y = nextY;
 		}
+	}
+	
+	this.hitTerrain = function(){
+		this.randPos();
 	}
 
 	this.hitBy = function(someShotOrPlayer) {
@@ -190,7 +194,7 @@ enemyNinjaClass.prototype.constructor = enemyNinjaClass;
 function enemyNinjaClass() {
 	enemyClass.call(this);
 	this.moveCounter = 100;
-	this.mvSpeed = 8;
+	this.mvSpeed = 5;
 	this.projectileSpeed = 6;
 	this.projectileLife = 100;
 	this.rangedCooldown = 60;
@@ -213,8 +217,12 @@ function enemyNinjaClass() {
 
 	this.decide = function() {
 		if(this.moveCounter >= 100) {
-			this.randPos();
-			this.moveCounter = 0;
+			do{
+				this.randPos();
+				this.moveCounter = 0;
+				console.log("Too close!!!! 1")
+			}while(distToRangedPlayer(this.targetX, this.targetY) < 200
+			    || distToFighterPlayer(this.targetX, this.targetY) < 200);
 		} else {
 			var distRanged = distToRangedPlayer(this.x, this.y);
 			var distFighter = distToFighterPlayer(this.x, this.y);
@@ -228,6 +236,20 @@ function enemyNinjaClass() {
 			} else {
 				this.rangedAttack(playerRanged.x, playerRanged.y);
 			}
+		}
+	}
+	
+	this.hitTerrain = function(){
+		this.targetX = this.x;
+		this.targetY = this.y;
+		this.xv = 0;
+		this.yv = 0;
+		if(distToRangedPlayer(this.targetX, this.targetY) < 200
+		 || distToFighterPlayer(this.targetX, this.targetY) < 200){
+				console.log("Too close!!!! 200")
+			 this.moveCounter = 100;
+		}else{
+			this.decide();
 		}
 	}
 }

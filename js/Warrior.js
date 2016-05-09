@@ -267,15 +267,15 @@ function warriorClass() {
 		var frameNum = sharedAnimCycle % PLAYER_FRAME_NUM;
 
 		if (this.startSide == 0) {
-			canvasContext.fillStyle = 'Black';
+			canvasContext.fillStyle = 'White';
 			canvasContext.fillText("Kills: " + this.killCount ,20, 20);
 			canvasContext.drawImage(healthBarPic, 20,30)
 			for(var i=0;i<this.myLives;i++) {
 				colorRect(22 + i, 32, 1, 20, "green");
 			}
 		} else {
-			canvasContext.fillStyle = 'Black';
-			canvasContext.fillText(this.killCount + " :Kills",740, 20);
+			canvasContext.fillStyle = 'White';
+			canvasContext.fillText("Kills: " + this.killCount,740, 20);
 			canvasContext.drawImage(healthBarPic, 680,30)
 			for(var i=0;i<this.myLives;i++) {
 				colorRect(781 - i, 32, 1, 20, "green");
