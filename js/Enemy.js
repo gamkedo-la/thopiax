@@ -100,20 +100,24 @@ function enemyClass() {
 			}else if(someShotOrPlayer.doesStun) {
 				this.stunTime = STUN_TIME;
 			} else {
-				setTimeout(hitEnemySound.play(), 200)
-
-				this.lives--;
-				if(!this.lives && someShotOrPlayer.firedBy){
-					someShotOrPlayer.firedBy.killCount++;
-					if (someShotOrPlayer.firedBy == playerRanged && classIndexP2 == 1) {
-						playerRanged.speedBoost = 5;
-						playerRanged.abilityCD = 50;
-					}
-				}
+				this.gotHit(someShotOrPlayer.firedBy);
 			}
 			return true;
 		}
 		return false;
+	}
+
+	this.gotHit = function(firedBy) {
+		setTimeout(hitEnemySound.play(), 200)
+
+		this.lives--;
+		if(!this.lives && firedBy){
+			firedBy.killCount++;
+			if (firedBy == playerRanged && classIndexP2 == 1) {
+				playerRanged.speedBoost = 5;
+				playerRanged.abilityCD = 50;
+			}
+		}
 	}
 
 	this.draw = function() {

@@ -110,6 +110,13 @@ function warriorClass() {
 	      		this.radius, this.radius*worldTiltYDampen,this.circleColor);
 
 		if (this.windup == 1) {
+			for(var i=0; i<enemyList.length; i++) {
+				var dx = this.x - enemyList[i].x;
+				var dy = (this.y+5) - enemyList[i].y;
+				if(Math.abs(dx) < this.radius && Math.abs(dy) < this.radius*worldTiltYDampen) {
+					enemyList[i].gotHit(this);
+				}
+			}
 			sliceSound.play()
 		}
 	}
