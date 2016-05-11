@@ -1,5 +1,5 @@
 
-// possible TODO: Have ranged use leading when lining up shots. Evade enemy projectiles.
+// possible TODO: Have ranged use leading when lining up shots. 
 
 
 
@@ -294,8 +294,9 @@ AIH.onTileGround = function(_x, _y)
 AIH.isHit = function(_aggressor, _target)
 {
 	var targetPic = AIH.getPic(_target);
+	var dimSizeCap = Math.min(targetPic.height, 50); // Due to animframes used by enemies. See drawBitmapCenteredAnimFrame in GraphicsCommon.js
 	var dist = Math.sqrt(Math.pow( _aggressor.x - _target.x, 2 ) + Math.pow( _aggressor.y - _target.y, 2 ));
-	return dist < targetPic.height*0.7;
+	return dist < dimSizeCap*0.7;
 };
 // Find the correct visual representation of an entity
 AIH.getPic = function(_entity)

@@ -90,7 +90,11 @@ function enemyClass() {
 		var dy = someShotOrPlayer.y - this.y;
 		var dist = Math.sqrt(dx*dx+dy*dy);
 
-		if(dist < this.myPic.height*0.7) { // note: .height so it works for animated strips
+		//
+		// tmp code splice by dalath
+		var dimSizeCap = Math.min(this.myPic.height, 50); // note: so it works for animated strips
+		//
+		if(dist < dimSizeCap*0.7) { 
 			if(someShotOrPlayer.myLives != undefined) {
 				if(this.stunTime > 0) {
 					return false;
