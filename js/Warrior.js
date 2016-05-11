@@ -168,7 +168,7 @@ function warriorClass() {
 		}
 	}
 
-	this.move = function() {
+	this.move = function(_isAI) { // _isAI provided by a check of controlIndexP 1|2   .../-dalath
 		if(this.myLives <= 0) {
 			return;
 		}
@@ -176,7 +176,7 @@ function warriorClass() {
 		var nextY = this.y;
 		var anyKey = false;
 
-		if(document.getElementById(this.name).checked) {
+		if(_isAI) {
 			this.ai.action();
 			anyKey = this.ai.moved;
 			nextX += this.ai.moveX;

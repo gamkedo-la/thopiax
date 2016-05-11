@@ -70,8 +70,8 @@ function updateAll() {
 }
 
 function moveAll() {
-	playerRanged.move();
-	playerFighter.move();
+	playerRanged.move(controlIndexP2==1);  // the included check is for AI control .../-dalath
+	playerFighter.move(controlIndexP1==1); //
 	moveShots();
 	moveEnemies();
 	AIH.gridDangerScan();	// Need to update the AI Helper "dangerscape" every cycle.
