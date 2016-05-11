@@ -335,9 +335,10 @@ function warriorClass() {
 		if(this.abilityCD > 0) {
 			this.abilityCD--;
 		}
+		//mage
 		if(classIndexP2 == 2 && this.name == "Ranged Dudette" && this.abilityCD == 0) {
-			this.reloadTime = 1;
-			this.reloadTime2 = 1;
+			this.reloadTime = 0;
+			this.reloadTime2 = 0;
 			this.healTimer = HEAL_CD / 10;
 		}
 

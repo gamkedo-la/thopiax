@@ -1,7 +1,8 @@
+const MENU_ROW0 = 150;
 const MENU_ROW1 = 300;
 const MENU_ROW2 = 500;
 
-var menuColumnPos = [250, 300, 350];
+var menuColumnPos = [250, 300, 350, 400];
 
 
 var wobble = 10;
@@ -15,6 +16,8 @@ var rightHandIndexP1 = 0;
 var rightHandIndexP2 = 0;
 var leftHandIndexP1 = 0;
 var leftHandIndexP2 = 0;
+var controlIndexP1 = 0;
+var controlIndexP2 = 0;
 
 var classListP1 = ["Warrior", "Berserker", "Paladin"]
 var classListP2 = ["Rogue", "Assassin", "Mage"]
@@ -22,6 +25,8 @@ var rightHandListP1 = ["Spear", "Sword", "Battle Axe"]
 var rightHandListP2 = ["Bow", "Fire Staff", "Dagger"]
 var leftHandListP1 = ["Shield", "Throwing Axe", "Horn"]
 var leftHandListP2 = ["Grapple Hook", "Shurikens", "Healing Scroll"]
+var controlledByP1 = ["WASD / YU", "AI Controlled", "None"]
+var controlledByP2 = ["Arrows / Mouse", "AI Controlled", "None"]
 
 function runMenu () {
   canvasContext.drawImage(startMenu,0,0);
@@ -31,16 +36,27 @@ function runMenu () {
     }
     wobble += wobbleSpeed;
 
-    canvasContext.fillStyle = 'Red';
+    canvasContext.fillStyle = 'yellow';
     canvasContext.font = "15px Arial"
     canvasContext.fillText("Player 1" ,MENU_ROW1, 200);
     canvasContext.fillText("Player 2" ,MENU_ROW2, 200);
+
+    canvasContext.fillStyle = 'Red';
+    canvasContext.fillText("Ability:" ,MENU_ROW0, menuColumnPos[0]);
     canvasContext.fillText(classListP1[classIndexP1] ,MENU_ROW1, menuColumnPos[0]);
     canvasContext.fillText(classListP2[classIndexP2] ,MENU_ROW2, menuColumnPos[0]);
+    canvasContext.fillStyle = 'blue';
+    canvasContext.fillText("Primary:" ,MENU_ROW0, menuColumnPos[1]);
     canvasContext.fillText(rightHandListP1[rightHandIndexP1] ,MENU_ROW1, menuColumnPos[1]);
     canvasContext.fillText(rightHandListP2[rightHandIndexP2] ,MENU_ROW2, menuColumnPos[1]);
+    canvasContext.fillStyle = 'green';
+    canvasContext.fillText("Secondary:" ,MENU_ROW0, menuColumnPos[2]);
     canvasContext.fillText(leftHandListP1[leftHandIndexP1] ,MENU_ROW1, menuColumnPos[2]);
     canvasContext.fillText(leftHandListP2[leftHandIndexP2] ,MENU_ROW2, menuColumnPos[2]);
+    canvasContext.fillStyle = 'white';
+    canvasContext.fillText("Controls:" ,MENU_ROW0, menuColumnPos[3]);
+    canvasContext.fillText(controlledByP1[controlIndexP1] ,MENU_ROW1, menuColumnPos[3]);
+    canvasContext.fillText(controlledByP2[controlIndexP2] ,MENU_ROW2, menuColumnPos[3]);
 
     canvasContext.drawImage(cursorPic,MENU_ROW1 -20 ,menuColumnPos[cursor1] - wobble);
     canvasContext.drawImage(cursorPic,MENU_ROW2 -20 ,menuColumnPos[cursor2] - wobble);

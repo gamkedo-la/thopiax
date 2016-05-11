@@ -54,6 +54,13 @@ function updateAll() {
 	if (gameIsGoing) {
 		sharedAnimCycle++;
 
+    //check if player is playing
+    if (controlIndexP1 == 2){
+      playerFighter.myLives = 0;
+    }
+    if (controlIndexP2 == 2){
+      playerRanged.myLives = 0;
+    }
 		moveAll();
 		drawAll();
 

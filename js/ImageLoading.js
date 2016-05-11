@@ -21,6 +21,7 @@ var spearStabPic = document.createElement("img");
 var playerSlashPic = document.createElement("img");
 var playerShieldPic = document.createElement("img");
 var demonPic = document.createElement("img");
+var spiderPic = document.createElement("img");
 var demonNinjaPic = document.createElement("img");
 var basicEnemyPic = document.createElement("img");
 var worldPics = [];
@@ -65,6 +66,7 @@ function loadImages() {
 		{varName: playerSlashPic, theFile: "swordswipe.png"},
 		{varName: playerShieldPic, theFile: "shieldblock.png"},
 		{varName: demonPic, theFile: "demon.png"},
+		{varName: spiderPic, theFile: "spiderPic.png"},
 		{varName: demonNinjaPic, theFile: "demonNinja.png"},
 		{varName: basicEnemyPic, theFile: "basicEnemy.png"},
 

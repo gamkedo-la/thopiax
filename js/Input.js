@@ -90,7 +90,7 @@ function keySet(keyEvent, setTo) {
 
 		//Player 1 up and down
 		if(setTo && keyEvent.keyCode == KEY_S) {
-			if (cursor1 < 2){
+			if (cursor1 < 3){
 				cursor1 ++;
 			}
 		}
@@ -102,7 +102,7 @@ function keySet(keyEvent, setTo) {
 
 		//player 2 up and down
 		if(setTo && keyEvent.keyCode == KEY_DOWN_ARROW) {
-			if (cursor2 < 2){
+			if (cursor2 < 3){
 				cursor2 ++;
 			}
 		}
@@ -121,6 +121,7 @@ function keySet(keyEvent, setTo) {
 					classIndexP1 = 0;
 				}
 			}
+
 			if (cursor1 == 1) {
 				if (rightHandIndexP1 < 2) {
 					rightHandIndexP1 +=1;
@@ -136,6 +137,15 @@ function keySet(keyEvent, setTo) {
 					leftHandIndexP1 = 0;
 				}
 			}
+
+			if (cursor1 == 3) {
+				if (controlIndexP1 < 2) {
+					controlIndexP1 +=1;
+				} else {
+					controlIndexP1 = 0;
+				}
+			}
+
 		}
 
 		if(setTo && keyEvent.keyCode == KEY_RIGHT_ARROW) {
@@ -161,6 +171,15 @@ function keySet(keyEvent, setTo) {
 					leftHandIndexP2 = 0;
 				}
 			}
+
+			if (cursor2 == 3) {
+				if (controlIndexP2 < 2) {
+					controlIndexP2 +=1;
+				} else {
+					controlIndexP2 = 0;
+				}
+			}
+
 		}
 
 
