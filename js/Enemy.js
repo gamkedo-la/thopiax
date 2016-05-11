@@ -79,7 +79,7 @@ function enemyClass() {
 			this.y = nextY;
 		}
 	}
-	
+
 	this.hitTerrain = function(){
 		this.randPos();
 	}
@@ -224,7 +224,6 @@ function enemyNinjaClass() {
 			do{
 				this.randPos();
 				this.moveCounter = 0;
-				console.log("Too close!!!! 1")
 			}while(distToRangedPlayer(this.targetX, this.targetY) < 200
 			    || distToFighterPlayer(this.targetX, this.targetY) < 200);
 		} else {
@@ -242,7 +241,7 @@ function enemyNinjaClass() {
 			}
 		}
 	}
-	
+
 	this.hitTerrain = function(){
 		this.targetX = this.x;
 		this.targetY = this.y;
@@ -250,7 +249,6 @@ function enemyNinjaClass() {
 		this.yv = 0;
 		if(distToRangedPlayer(this.targetX, this.targetY) < 200
 		 || distToFighterPlayer(this.targetX, this.targetY) < 200){
-				console.log("Too close!!!! 200")
 			 this.moveCounter = 100;
 		}else{
 			this.decide();

@@ -46,13 +46,17 @@ function mousePressed(evt) {
 		}
 		//Dagger
 		if(rightHandIndexP2 == 2) {
-				stabDagger();
+			stabDagger();
 		}
 	} else {
 
 		//Grapple Hook
 		if (leftHandIndexP2 == 0) {
 			playerRanged.dashAtMouse();
+		}
+		//Shuriken
+		if (leftHandIndexP2 == 1) {
+			throwShuriken();
 		}
 		//Healing Scroll
 		if (leftHandIndexP2 == 2) {
@@ -203,9 +207,9 @@ function keySet(keyEvent, setTo) {
 		if(rightHandIndexP1 == 1) {
 				swingSword();
 		}
-		//Hammer
+		//Battle Axe
 		if(rightHandIndexP1 == 2) {
-				swingHammer();
+				swingBattleAxe();
 		}
 
 
@@ -217,6 +221,14 @@ function keySet(keyEvent, setTo) {
 		//Shield
 		if(leftHandIndexP1 == 0) {
 			raiseShield();
+		}
+		//Throwing Axe
+		if(leftHandIndexP1 == 1) {
+			throwAxe();
+		}
+		//Horn
+		if(leftHandIndexP1 == 2) {
+			blowHorn();
 		}
 	}
 

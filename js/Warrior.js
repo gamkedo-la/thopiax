@@ -6,6 +6,7 @@ const DASH_DURATION = 28.0;
 const DASH_MAX_SPEED = 11.0;
 const BERSERK_COOLDOWN = 50.0;
 const MAGE_CD = 100.0;
+const HEAL_CD = 1000.0;
 
 const START_LIVES = 100;
 const INVUL_FRAMES = 50;
@@ -115,6 +116,13 @@ function warriorClass() {
 				var dy = (this.y+5) - enemyList[i].y;
 				if(Math.abs(dx) < this.radius && Math.abs(dy) < this.radius*worldTiltYDampen) {
 					enemyList[i].gotHit(this);
+					//Battle Axe Heal
+					if (rightHandIndexP1 == 2) {
+						this.myLives += 1;
+						if (this.myLives > 100) {
+							this.myLives = 100;
+						}
+					}
 				}
 			}
 			sliceSound.play()
@@ -152,12 +160,11 @@ function warriorClass() {
 
 	this.createHealZone = function() {
 		if (this.healCooldown == 0 && this.myLives > 0) {
-			this.healCooldown = 500;
+			this.healCooldown = HEAL_CD;
 			this.healX = mouseX;
 			this.healY = mouseY;
 			this.healTimer = 100;
 			healZoneIsUp = true;
-			console.log (this.healX)
 		}
 	}
 
@@ -331,7 +338,7 @@ function warriorClass() {
 		if(classIndexP2 == 2 && this.name == "Ranged Dudette" && this.abilityCD == 0) {
 			this.reloadTime = 1;
 			this.reloadTime2 = 1;
-			console.log("ping")
+			this.healTimer = HEAL_CD / 10;
 		}
 
 		canvasContext.save();

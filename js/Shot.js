@@ -13,28 +13,26 @@ function shotClass(firedBy, angle) {
 	this.enemiesHit = [];
 	this.shotSize = 1;
 	this.friendly = true;
-	
+
 	if(this.velocity === undefined){
 		this.velocity = 0.0;
 	}
-	
+
 	this.xv = this.velocity * Math.cos(this.angle);
 	this.yv = this.velocity * Math.sin(this.angle);
-	
+
 	if(this.lifeTime === undefined){
 		this.lifeTime = 40;
 	}
-	
+
 	//TODO select default pic
 	this.myShotPic;// = playerArrowPic; // which picture to use
 	this.readyToRemove = false;
-	
+
 	this.checkCollision = function(){
 		for(var i=0; i<enemyList.length; i++) {
 			if(this.enemiesHit.indexOf(enemyList[i]) < 0 && enemyList[i].hitBy(this)){
 				this.enemiesHit.push(enemyList[i]);
-				console.log("hit one");
-				
 				if(this.vanishOnHit) {
 					this.readyToRemove = true;
 					return;
@@ -49,9 +47,9 @@ function shotClass(firedBy, angle) {
 			this.readyToRemove = true;
 			return;
 		}
-		
+
 		this.checkCollision();
-		
+
 		var nextX = this.x+this.xv;
 		var nextY = this.y+this.yv;
 
@@ -87,17 +85,42 @@ function shotClassArrow(firedBy, angle) {
 	this.myShotPic = playerArrowPic;
 	this.vanishOnHit = true;
 	this.doesStun = false;
-	
+
 	shotClass.call(this, firedBy, angle);
 }
 
+shotClassThrowingAxe.prototype = Object.create(shotClass.prototype);;
+shotClassThrowingAxe.prototype.constructor = shotClassThrowingAxe;
+
+function shotClassThrowingAxe(firedBy, angle) {
+	this.velocity = 4.0;
+	this.lifeTime = 50;
+	this.myShotPic = throwingAxePic;
+	this.vanishOnHit = false;
+	this.doesStun = false;
+
+	shotClass.call(this, firedBy, angle);
+}
+
+shotClassShuriken.prototype = Object.create(shotClass.prototype);;
+shotClassShuriken.prototype.constructor = shotClassShuriken;
+
+function shotClassShuriken(firedBy, angle) {
+	this.velocity = 15.0;
+	this.lifeTime = 20;
+	this.myShotPic = shurikenPic;
+	this.vanishOnHit = true;
+	this.doesStun = false;
+
+	shotClass.call(this, firedBy, angle);
+}
 
 shotClassFireball.prototype = Object.create(shotClass.prototype);
 shotClassFireball.prototype.constructor = shotClassFireball;
 
 function shotClassFireball(firedBy, angle) {
 	fireStaffSound.play()
-	
+
 	this.velocity = 3.5;
 	this.lifeTime = 120;
 	this.maxLifeTime = this.lifeTime;
@@ -107,13 +130,13 @@ function shotClassFireball(firedBy, angle) {
 	this.isSpinningRate = 0.7;
 
 	shotClass.call(this, firedBy, angle);
-	
+
 	this.moveParent = this.move;
 	this.move = function(){
 		this.moveParent();
 		this.facingAng += this.isSpinningRate;
 	};
-	
+
 	this.draw = function() {
 		this.shotSize = (this.lifeTime/ this.maxLifeTime - 1) * -1 + .3
 		drawBitmapCenteredWithRotation(this.myShotPic, this.x,this.y, this.facingAng, this.shotSize);
@@ -125,7 +148,7 @@ shotClassDagger.prototype.constructor = shotClassDagger;
 
 function shotClassDagger(firedBy, angle){
 	sliceSound.play()
-	
+
 	this.myShotPic = playerSlashPic;
 	this.velocity = 12.0;
 	this.lifeTime = 5;
@@ -141,7 +164,7 @@ shotClassMelee.prototype.constructor = shotClassMelee;
 
 function shotClassMelee(firedBy, angle){
 	shotClass.call(this, firedBy, angle);
-	
+
 	//Move projectile's initial spawn outside of the player
 	this.x += Math.cos(firedBy.prevMoveAng) * ATTACK_SPAWN_DIST;
 	this.y += Math.sin(firedBy.prevMoveAng) *
@@ -154,7 +177,7 @@ shotClassSpear.prototype.constructor = shotClassSpear;
 
 function shotClassSpear(firedBy, angle){
 	sliceSound.play()
-	
+
 	this.myShotPic = spearStabPic;
 	this.lifeTime = 15;
 	this.vanishOnHit = false;
@@ -168,7 +191,7 @@ shotClassShield.prototype.constructor = shotClassShield;
 
 function shotClassShield(firedBy, angle){
 	shieldSound.play();
-	
+
 	this.myShotPic = playerShieldPic;
 	this.lifeTime = 60;
 	this.vanishOnHit = false;
@@ -180,7 +203,7 @@ function shotClassShield(firedBy, angle){
 var enemyProjectileCollisionTest = function(){
 	if(this.enemiesHit.indexOf(playerRanged) < 0 && playerRanged.hitBy(this)){
 		this.enemiesHit.push(playerRanged);
-		
+
 		if(this.vanishOnHit) {
 			this.readyToRemove = true;
 			return;
@@ -188,7 +211,7 @@ var enemyProjectileCollisionTest = function(){
 	}
 	if(this.enemiesHit.indexOf(playerFighter) < 0 && playerFighter.hitBy(this)){
 		this.enemiesHit.push(playerFighter);
-		
+
 		if(this.vanishOnHit) {
 			this.readyToRemove = true;
 			return;
@@ -201,7 +224,7 @@ shotClassEnemyFireball.prototype.constructor = shotClassEnemyFireball;
 
 function shotClassEnemyFireball(firedBy, angle) {
 	shotClassFireball.call(this, firedBy, angle);
-	
+
 	this.friendly = false;
 	this.vanishOnHit
 	this.checkCollision = enemyProjectileCollisionTest;
@@ -212,7 +235,7 @@ shotClassEnemyArrow.prototype.constructor = shotClassEnemyArrow;
 
 function shotClassEnemyArrow(firedBy, angle) {
 	shotClassArrow.call(this, firedBy, angle);
-	
+
 	this.friendly = false;
 	this.checkCollision = enemyProjectileCollisionTest;
 }

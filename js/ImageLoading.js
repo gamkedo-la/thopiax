@@ -11,6 +11,8 @@ var arenaWallsFG = document.createElement("img");
 var startMenu = document.createElement("img");
 var cursorPic = document.createElement("img");
 
+var throwingAxePic = document.createElement("img");
+var shurikenPic = document.createElement("img");
 var playerArrowPic = document.createElement("img");
 var playerFireballPic = document.createElement("img");
 
@@ -52,6 +54,9 @@ function loadImages() {
 		{varName: warrior2PicBack, theFile: "warrior2-back.png"},
 		{varName: warrior2PicStand, theFile: "warrior2.png"},
 		{varName: healthBarPic, theFile: "hpBar.png"},
+
+		{varName: throwingAxePic, theFile: "throwingAxe.png"},
+		{varName: shurikenPic, theFile: "shuriken.png"},
 		{varName: playerArrowPic, theFile: "arrow.png"},
 		{varName: playerFireballPic, theFile: "fireball.png"},
 

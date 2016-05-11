@@ -18,7 +18,7 @@ var leftHandIndexP2 = 0;
 
 var classListP1 = ["Warrior", "Berserker", "Paladin"]
 var classListP2 = ["Rogue", "Assassin", "Mage"]
-var rightHandListP1 = ["Spear", "Sword", "Hammer"]
+var rightHandListP1 = ["Spear", "Sword", "Battle Axe"]
 var rightHandListP2 = ["Bow", "Fire Staff", "Dagger"]
 var leftHandListP1 = ["Shield", "Throwing Axe", "Horn"]
 var leftHandListP2 = ["Grapple Hook", "Shurikens", "Healing Scroll"]
