@@ -21,10 +21,11 @@ function enemyClass() {
 	this.y = 75;
 	this.xv = 0;
 	this.yv = 0;
-	this.myPic = demonNinjaPic;
+	this.myPic = demonPic;//demonNinjaPic;
+	this.hasAnimSheet = true;
 	this.facingAng;
 	this.readyToRemove;
-	this.mvSpeed = 8;
+	this.mvSpeed = 3;
 	this.moving;
 	this.probMove;
 	this.targetX;
@@ -122,26 +123,37 @@ function enemyClass() {
 
 	this.draw = function() {
 		var frameToShow;
+		var stepVertTile;
 
-		if(this.myPic.width > this.myPic.height) { // using height as strip's square size
-			this.facingAng = Math.atan2(this.yv,this.xv);
+		if(this.hasAnimSheet) { // using height as strip's square size
+			if(this.xv != 0 || this.yv != 0 ) {
+				this.facingAng = Math.atan2(this.yv,this.xv);
+				stepVertTile = Math.floor(sharedAnimCycle/10)%4;
+				if(stepVertTile==3) {
+					stepVertTile = 1;
+				}
+			} else {
+				stepVertTile = 0;
+			}
 			frameToShow = Math.round( this.facingAng * 8 / (2 * Math.PI) );
 			if(frameToShow<0) {
 				frameToShow+=8;
 			}
-			//console.log(frameToShow);
+
+ 			//console.log(frameToShow);
 		} else {
 			frameToShow = 0;
+			stepVertTile = 0;
 		}
 
 		if(this.stunTime<=0) {
-			drawBitmapCenteredAnimFrame(this.myPic, this.x,this.y, frameToShow);
+			drawBitmapCenteredAnimFrame(this.myPic, this.x,this.y, frameToShow,stepVertTile);
 		} else {
-			var stunShakeRange = 4;
+			var stunShakeRange = 2;
 			var stunLeft = 1 + stunShakeRange * (STUN_TIME - this.stunTime) / STUN_TIME;
 			drawBitmapCenteredAnimFrame(this.myPic,
 				this.x+Math.random()*stunLeft-Math.random()*stunLeft,
-				this.y+Math.random()*stunLeft-Math.random()*stunLeft, frameToShow);
+				this.y+Math.random()*stunLeft-Math.random()*stunLeft, frameToShow,0);
 		}
 	}
 
@@ -205,6 +217,7 @@ function enemyNinjaClass() {
 	this.rangedCooldownTimer = 60;
 	this.target;
 	this.myPic = basicEnemyPic;//demonNinjaPic;
+	this.hasAnimSheet = false;
 
 	this.rangedAttack = function(targetX, targetY){
 		if(this.rangedCooldownTimer > 0){
