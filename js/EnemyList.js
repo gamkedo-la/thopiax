@@ -1,7 +1,7 @@
 var enemyList = [];
 
-var enemyWaveLists = [[4, 4], [6, 6], [8, 8]];
-var enemyTypes = [enemyClass, enemyNinjaClass];
+var enemyWaveLists = [[0, 0, 6], [6, 6, 1], [8, 8, 2]];
+var enemyTypes = [enemyClass, enemyNinjaClass, enemyMinotaurClass];
 var currentWave = 0;
 
 const START_ENEMY_COUNT = 12;
@@ -39,7 +39,7 @@ function spawnEnemies() {
 
 function moveEnemies() {
 	for(var i=enemyList.length-1; i>=0; i--) {
-		enemyList[i].move();
+		enemyList[i].act();
 		if(enemyList[i].readyToRemove) {
 			enemyList.splice(i,1);
 		}

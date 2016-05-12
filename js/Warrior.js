@@ -8,7 +8,7 @@ const BERSERK_COOLDOWN = 50.0;
 const MAGE_CD = 100.0;
 const HEAL_CD = 1000.0;
 
-const START_LIVES = 100;
+const START_LIVES = 1000;
 const INVUL_FRAMES = 50;
 
 var healZoneIsUp = false;
@@ -170,6 +170,8 @@ function warriorClass() {
 
 	this.move = function(_isAI) { // _isAI provided by a check of controlIndexP 1|2   .../-dalath
 		if(this.myLives <= 0) {
+			this.x = 10000;
+			this.y = 10000;
 			return;
 		}
 		var nextX = this.x;

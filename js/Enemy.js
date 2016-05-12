@@ -27,11 +27,11 @@ function enemyClass() {
 	this.readyToRemove;
 	this.mvSpeed = 3;
 	this.moving;
-	this.probMove;
+	//this.probMove;
 	this.targetX;
 	this.targetY;
 	this.stunTime;
-	this.lives = 1;
+	this.lives = 2;
 	var hitEnemySound = new SoundOverlapsClass("audio/hitEnemy")
 
 	this.randDir = function() {
@@ -50,14 +50,15 @@ function enemyClass() {
 		this.y = spawnY;
 		//this.randDir();
 		this.moving = false;
-		this.probMove = 0.20;
+		//this.probMove = 0.20;
 		this.targetX = this.x;
 		this.targetY = this.y;
 		this.decide();
 		this.stunTime = 0;
 	} // end of warriorReset func
 
-	this.move = function() {
+	this.act = function() {
+		console.log("act");
 		if(this.lives <= 0){
 			this.readyToRemove = true;
 			return;
@@ -76,11 +77,15 @@ function enemyClass() {
 		} else if(this.arrived()) {
 			this.decide();
 		} else {
-			this.x = nextX;
-			this.y = nextY;
+			this.move(nextX, nextY);
 		}
 	}
-
+	
+	this.move = function(xIn, yIn){
+		this.x = xIn;
+		this.y = yIn;
+	}
+	
 	this.hitTerrain = function(){
 		this.randPos();
 	}
@@ -167,6 +172,8 @@ function enemyClass() {
 	//----------- START ------------//
 	//
 	this.decide = function() {
+		this.randPos();
+		/*
 		var rnd = Math.random();
 		if(rnd < this.probMove) {
 			this.randPos();
@@ -174,7 +181,7 @@ function enemyClass() {
 		} else {
 			this.probMove += 0.001;
 		}
-
+*/
 	}
 
 	this.arrived = function() {
@@ -220,7 +227,7 @@ function enemyNinjaClass() {
 	this.rangedCooldown = 60;
 	this.rangedCooldownTimer = 60;
 	this.target;
-	this.myPic = basicEnemyPic;//demonNinjaPic;
+	this.myPic = basicEnemyPic;
 	this.hasAnimSheet = false;
 
 	this.rangedAttack = function(targetX, targetY){
@@ -270,5 +277,94 @@ function enemyNinjaClass() {
 		}else{
 			this.decide();
 		}
+	}
+}
+
+
+enemyMinotaurClass.prototype = new enemyClass();
+enemyMinotaurClass.prototype.constructor = enemyMinotaurClass;
+
+function enemyMinotaurClass() {
+	enemyClass.call(this);
+	this.chargeSpeed = 10;
+	this.walkSpeed = 3;
+	this.mvSpeed = this.walkSpeed;
+	this.cooldown = 150;
+	this.cooldownTimer = 150;
+	this.bounceTimer = 0;
+	this.bounceDuration = 20;
+	this.target;// = playerFighter;
+	this.targetIsMoving = true;
+	this.myPic = demonPic;
+
+	this.chargeAttackStart = function(){
+		this.targetIsMoving = false;
+		this.mvSpeed = this.chargeSpeed;
+		this.cooldownTimer = this.cooldown;
+		
+		this.target = {
+			x: this.target.x,
+			y: this.target.y
+		}
+	}
+
+	this.chargeAttackStop = function(){
+		this.targetIsMoving = true;
+		
+		var distRanged = distToRangedPlayer(this.x, this.y);
+		var distFighter = distToFighterPlayer(this.x, this.y);
+		this.target = distFighter < distRanged ? playerFighter : playerRanged;
+		
+		this.targetX = this.target.x;
+		this.targetY = this.target.y;
+		
+		this.mvSpeed = this.walkSpeed;
+	}
+	
+	this.decide = function() {
+		console.log("decide");
+		this.chargeAttackStop();
+	}
+
+	this.hitTerrain = function(){
+		console.log("hit");
+		this.chargeAttackStop();
+		this.randPos();
+		
+		if(this.bounceTimer <= 0){
+			this.bounceTimer = this.bounceDuration;
+		}
+	}
+	
+	this.move = function(xIn, yIn) {
+		console.log("move");
+		this.x = xIn;
+		this.y = yIn;
+		
+		this.cooldownTimer--;
+		
+		if(this.bounceTimer > 0)
+		{
+			this.bounceTimer--;
+			return;
+		}
+		
+		if(this.cooldownTimer <= 0 && this.targetIsMoving){
+			this.chargeAttackStart();
+		}
+		
+		if(this.targetIsMoving) {
+			var distRanged = distToRangedPlayer(this.x, this.y);
+			var distFighter = distToFighterPlayer(this.x, this.y);
+			
+			this.target = distFighter < distRanged ? playerFighter : playerRanged;
+		}
+		
+		this.targetX = this.target.x;
+		this.targetY = this.target.y;
+		
+		var angle = Math.atan2(this.target.y-this.y,this.target.x-this.x);
+		this.xv = this.mvSpeed * Math.cos(angle);
+		this.yv = this.mvSpeed * Math.sin(angle);
 	}
 }
