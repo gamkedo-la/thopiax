@@ -29,9 +29,8 @@ function spawnEnemies() {
 	if(currentWave < enemyWaveLists.length){
 		for(var i = 0; i < enemyWaveLists[currentWave].length; i++){
 			for(var j = 0; j < enemyWaveLists[currentWave][i]; j++){
-				var newEnemy = new enemyTypes[i]();
-				newEnemy.reset(spawns[spawnCount % spawns.length].x,
-				               spawns[spawnCount++ % spawns.length].y);
+				var newEnemy = new enemyTypes[i](spawns[spawnCount % spawns.length].x,
+				                                 spawns[spawnCount++ % spawns.length].y);
 				
 				enemyList.push(newEnemy);
 			}

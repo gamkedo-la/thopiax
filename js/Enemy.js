@@ -16,9 +16,9 @@ var distToFighterPlayer = function(x, y){
 };
 
 
-function enemyClass() {
-	this.x = 75;
-	this.y = 75;
+function enemyClass(spawnX, spawnY) {
+	this.x = spawnX;
+	this.y = spawnY;
 	this.xv = 0;
 	this.yv = 0;
 	this.myPic = spiderPic;
@@ -26,12 +26,11 @@ function enemyClass() {
 	this.facingOptions = 0;
 
 	this.facingAng;
-	this.readyToRemove;
+	this.readyToRemove = false;
 	this.mvSpeed = 3;
-	this.moving;
-	this.targetX;
-	this.targetY;
-	this.stunTime;
+	this.targetX = this.x;
+	this.targetY = this.y;
+	this.stunTime = 0;
 	this.lives = 1;
 	this.hitEnemySound = new SoundOverlapsClass("audio/hitEnemy")
 
@@ -43,17 +42,6 @@ function enemyClass() {
 		this.xv = mvSpeed * Math.sin(newDir);
 		this.yv = mvSpeed * Math.cos(newDir);
 	};
-
-	this.reset = function(spawnX, spawnY) {
-		this.readyToRemove = false;
-		this.x = spawnX;
-		this.y = spawnY;
-		this.moving = false;
-		this.targetX = this.x;
-		this.targetY = this.y;
-		this.decide();
-		this.stunTime = 0;
-	}; // end of warriorReset func
 
 	this.act = function() {
 		if(this.lives <= 0){
@@ -207,8 +195,8 @@ function enemyClass() {
 enemyNinjaClass.prototype = new enemyClass();
 enemyNinjaClass.prototype.constructor = enemyNinjaClass;
 
-function enemyNinjaClass() {
-	enemyClass.call(this);
+function enemyNinjaClass(spawnX, spawnY) {
+	enemyClass.call(this, spawnX, spawnY);
 	this.moveCounter = 100;
 	this.mvSpeed = 5;
 	this.projectileSpeed = 6;
@@ -281,8 +269,8 @@ function enemyNinjaClass() {
 enemySkeletonClass.prototype = new enemyNinjaClass();
 enemySkeletonClass.prototype.constructor = enemySkeletonClass;
 
-function enemySkeletonClass() {
-	enemyNinjaClass.call(this);
+function enemySkeletonClass(spawnX, spawnY) {
+	enemyNinjaClass.call(this, spawnX, spawnY);
 	this.mvSpeed = 4;
 	this.myPic = skeletonPic;
 	this.animSheetDim = 50;
@@ -293,8 +281,8 @@ function enemySkeletonClass() {
 enemyMinotaurClass.prototype = new enemyClass();
 enemyMinotaurClass.prototype.constructor = enemyMinotaurClass;
 
-function enemyMinotaurClass() {
-	enemyClass.call(this);
+function enemyMinotaurClass(spawnX, spawnY) {
+	enemyClass.call(this, spawnX, spawnY);
 	this.chargeSpeed = 10;
 	this.walkSpeed = 2;
 	this.mvSpeed = this.walkSpeed;
