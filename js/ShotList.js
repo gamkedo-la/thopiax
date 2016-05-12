@@ -10,7 +10,7 @@ const PLAYER_ARROW_RELOAD = 30;
 const PLAYER_SHURIKEN_RELOAD = 100;
 const PLAYER_FIRE_BALL_RELOAD = 70;
 const PLAYER_SWORD_RELOAD = 40;
-const PLAYER_BATTLE_AXE_RELOAD = 100;
+const PLAYER_BATTLE_AXE_RELOAD = 75;
 const PLAYER_THROWING_AXE_RELOAD = 50;
 const PLAYER_SPEAR_RELOAD = 5;
 const PLAYER_DAGGER_RELOAD = 5;
@@ -133,7 +133,8 @@ function swingBattleAxe() {
 	if(fromPlayer.myLives > 0 && fromPlayer.reloadTime <= 0) {
 		fromPlayer.reloadTime = PLAYER_BATTLE_AXE_RELOAD;
 		fromPlayer.windup = PLAYER_BATTLE_AXE_RELOAD - 10;
-		fromPlayer.radius = 200;
+		fromPlayer.frozenTime = fromPlayer.windup;
+		fromPlayer.radius = 220;
 		fromPlayer.circleColor = "Red"
 	}
 }

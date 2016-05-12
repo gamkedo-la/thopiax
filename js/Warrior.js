@@ -51,6 +51,7 @@ function warriorClass() {
 	this.reloadTime;
 	this.reloadTime2;
 	this.windup;
+	this.frozenTime;
 	this.radius;
 	this.circleColor;
 
@@ -117,7 +118,7 @@ function warriorClass() {
 				if(Math.abs(dx) < this.radius && Math.abs(dy) < this.radius*worldTiltYDampen) {
 					enemyList[i].gotHit(this);
 					//Battle Axe Heal
-					if (rightHandIndexP1 == 2) {
+					if (rightHandIndexP1 == RIGHT_P1_AXE) {
 						this.myLives += 1;
 						if (this.myLives > 100) {
 							this.myLives = 100;
@@ -174,6 +175,25 @@ function warriorClass() {
 			this.y = 10000;
 			return;
 		}
+
+		if(this.invulTime <= 0) {
+			for(var i=0; i<enemyList.length; i++) {
+				if(enemyList[i].hitBy(this)) {
+					this.myLives -= 10;
+					this.invulTime = INVUL_FRAMES;
+					if (classIndexP2 == CLASS_P2_MAGE && this.name == "Ranged Dudette") {
+						this.myLives -=10;
+						this.abilityCD = MAGE_CD;
+					}
+				}
+			}
+		}
+
+		if(this.frozenTime != undefined && this.frozenTime > 0) {
+			this.isMoving = false;
+			return;
+		}
+
 		var nextX = this.x;
 		var nextY = this.y;
 		var anyKey = false;
@@ -187,7 +207,7 @@ function warriorClass() {
 			if(this.keyHeld_North) {
 				nextY -= (PLAYER_MOVE_SPEED*worldTiltYDampen) + this.speedBoost;
 				anyKey = true;
-				if(classIndexP2 == 2 && this.name == "Ranged Dudette") {
+				if(classIndexP2 == CLASS_P2_MAGE && this.name == "Ranged Dudette") {
 					this.abilityCD = MAGE_CD;
 				}
 			}
@@ -195,14 +215,14 @@ function warriorClass() {
 				nextX += PLAYER_MOVE_SPEED + this.speedBoost;
 				anyKey = true;
 				this.lastMovedRight = true;
-				if(classIndexP2 == 2 && this.name == "Ranged Dudette") {
+				if(classIndexP2 == CLASS_P2_MAGE && this.name == "Ranged Dudette") {
 					this.abilityCD = MAGE_CD;
 				}
 			}
 			if(this.keyHeld_South) {
 				nextY += (PLAYER_MOVE_SPEED*worldTiltYDampen) + this.speedBoost;
 				anyKey = true;
-				if(classIndexP2 == 2 && this.name == "Ranged Dudette") {
+				if(classIndexP2 == CLASS_P2_MAGE && this.name == "Ranged Dudette") {
 					this.abilityCD = MAGE_CD;
 				}
 			}
@@ -210,7 +230,7 @@ function warriorClass() {
 				nextX -= PLAYER_MOVE_SPEED + this.speedBoost;
 				anyKey = true;
 				this.lastMovedRight = false;
-				if(classIndexP2 == 2 && this.name == "Ranged Dudette") {
+				if(classIndexP2 == CLASS_P2_MAGE && this.name == "Ranged Dudette") {
 					this.abilityCD = MAGE_CD;
 				}
 			}
@@ -260,19 +280,6 @@ function warriorClass() {
 				this.dashTime = 0;
 			default:
 				break;
-		}
-
-		if(this.invulTime <= 0) {
-			for(var i=0; i<enemyList.length; i++) {
-				if(enemyList[i].hitBy(this)) {
-					this.myLives -= 10;
-					this.invulTime = INVUL_FRAMES;
-					if (classIndexP2 == 2 && this.name == "Ranged Dudette") {
-						this.myLives -=10;
-						this.abilityCD = MAGE_CD;
-					}
-				}
-			}
 		}
 	}
 
@@ -338,7 +345,7 @@ function warriorClass() {
 			this.abilityCD--;
 		}
 		//mage
-		if(classIndexP2 == 2 && this.name == "Ranged Dudette" && this.abilityCD == 0) {
+		if(classIndexP2 == CLASS_P2_MAGE && this.name == "Ranged Dudette" && this.abilityCD == 0) {
 			this.reloadTime = 0;
 			this.reloadTime2 = 0;
 			this.healTimer = HEAL_CD / 10;
@@ -366,6 +373,9 @@ function warriorClass() {
 
 		canvasContext.restore();
 
+		if(this.frozenTime != undefined && this.frozenTime > 0) {
+			this.frozenTime--;
+		}
 		if (this.windup > 0) {
 			this.windupCircle()
 		}

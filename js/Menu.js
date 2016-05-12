@@ -77,7 +77,7 @@ function runMenu () {
     wobble += wobbleSpeed;
 
     canvasContext.fillStyle = 'yellow';
-    canvasContext.font = "15px Arial"
+    canvasContext.font = "15px MedievalSharp"
     canvasContext.fillText("Player 1" ,MENU_ROW1, 200);
     canvasContext.fillText("Player 2" ,MENU_ROW2, 200);
 

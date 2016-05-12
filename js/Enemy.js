@@ -155,7 +155,7 @@ function enemyClass() {
 			drawBitmapCenteredAnimFrame(this.myPic, this.x,this.y,
 				frameToShow,stepVertTile, this.animSheetDim);
 		} else {
-			var stunShakeRange = 2;
+			var stunShakeRange = 3;
 			var stunLeft = 1 + stunShakeRange * (STUN_TIME - this.stunTime) / STUN_TIME;
 			drawBitmapCenteredAnimFrame(this.myPic,
 				this.x+Math.random()*stunLeft-Math.random()*stunLeft,
