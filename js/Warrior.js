@@ -7,7 +7,7 @@ const DASH_MAX_SPEED = 11.0;
 const BERSERK_COOLDOWN = 50.0;
 const MAGE_CD = 100.0;
 
-const START_LIVES = 100;
+const START_LIVES = 1000;
 const INVUL_FRAMES = 50;
 
 var healZoneIsUp = false;
@@ -156,6 +156,8 @@ function warriorClass() {
 
 	this.move = function() {
 		if(this.myLives <= 0) {
+			this.x = 10000;
+			this.y = 10000;
 			return;
 		}
 		var nextX = this.x;
