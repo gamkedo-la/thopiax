@@ -1,6 +1,12 @@
 var enemyList = [];
 
-var enemyWaveLists = [[4, 0, 0], [8, 0, 0], [4, 2, 0], [6, 4, 0], [2, 2, 1], [6, 4, 2], [8, 4, 4]];
+var enemyWaveLists = [[1, 0, 0, 0],
+					  [0, 0, 0, 4],
+					  [3, 0, 1, 0],
+					  [4, 0, 0, 4],
+					  [0, 0, 2, 4],
+					  [6, 0, 0, 6],
+					  [8, 0, 4, 4]];
 var enemyTypes = [enemyClass, enemyNinjaClass, enemyMinotaurClass, enemySkeletonClass];
 var currentWave = 0;
 
