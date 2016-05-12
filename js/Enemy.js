@@ -31,7 +31,7 @@ function enemyClass() {
 	this.targetY;
 	this.stunTime;
 	this.lives = 1;
-	var hitEnemySound = new SoundOverlapsClass("audio/hitEnemy")
+	this.hitEnemySound = new SoundOverlapsClass("audio/hitEnemy")
 
 	this.randDir = function() {
 		var newDir = Math.PI * 2.0 * Math.random();
@@ -113,7 +113,7 @@ function enemyClass() {
 	}
 
 	this.gotHit = function(firedBy) {
-		setTimeout(hitEnemySound.play(), 200)
+		setTimeout(this.hitEnemySound.play(), 200)
 
 		this.lives--;
 		if(!this.lives && firedBy){
@@ -276,7 +276,7 @@ function enemyNinjaClass() {
 	}
 	
 	this.gotHit = function(firedBy) {
-		setTimeout(hitEnemySound.play(), 200)
+		setTimeout(this.hitEnemySound.play(), 200)
 
 		this.lives--;
 		if(!this.lives && firedBy){
