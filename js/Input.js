@@ -85,6 +85,7 @@ function keySet(keyEvent, setTo) {
 	if (gameIsGoing == false) {
 		if(setTo && keyEvent.keyCode == KEY_SPACE) {
 			gameIsGoing = true;
+			gameMusic.loopSong("audio/soundtrack2");
 			return;
 		}
 

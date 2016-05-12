@@ -23,6 +23,8 @@ function resetEnemies() {
 }
 
 function spawnEnemies() {
+	resetEnemies();
+	
 	var spawnCount = 0;
 	if(currentWave < enemyWaveLists.length){
 		for(var i = 0; i < enemyWaveLists[currentWave].length; i++){

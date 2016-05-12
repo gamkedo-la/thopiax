@@ -1,4 +1,5 @@
 var canvas, canvasContext;
+var gameMusic = new BackgroundMusicClass();
 
 var playerRanged = new warriorClass();
 var playerFighter = new warriorClass();
@@ -28,6 +29,8 @@ window.onload = function() {
 
 	colorRect(0,0, canvas.width,canvas.height, 'black');
 	colorText("LOADING IMAGES", canvas.width/2, canvas.height/2, 'white');
+
+	gameMusic.loopSong("audio/soundtrack1");
 
 	loadImages();
 }
@@ -72,6 +75,14 @@ function updateAll() {
 function moveAll() {
 	playerRanged.move(controlIndexP2==1);  // the included check is for AI control .../-dalath
 	playerFighter.move(controlIndexP1==1); //
+
+	if(playerRanged.myLives <= 0 && playerFighter.myLives <= 0) {
+		loadLevel(levelOne);
+		gameIsGoing = false;
+		gameMusic.loopSong("audio/soundtrack1");
+	}
+
+
 	moveShots();
 	moveEnemies();
 	AIH.gridDangerScan();	// Need to update the AI Helper "dangerscape" every cycle.
