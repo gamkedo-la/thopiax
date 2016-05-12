@@ -275,7 +275,7 @@ function enemySkeletonClass(spawnX, spawnY) {
 	this.myPic = skeletonPic;
 	this.animSheetDim = 50;
 	this.facingOptions = 4;
-	this.lives = 6;
+	this.lives = 3;
 }
 
 enemyMinotaurClass.prototype = new enemyClass();
