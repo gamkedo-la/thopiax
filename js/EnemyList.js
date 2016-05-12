@@ -1,7 +1,7 @@
 var enemyList = [];
 
 var enemyWaveLists = [[4, 0, 0], [8, 0, 0], [4, 2, 0], [6, 4, 0], [2, 2, 1], [6, 4, 2], [8, 4, 4]];
-var enemyTypes = [enemyClass, enemyNinjaClass, enemyMinotaurClass];
+var enemyTypes = [enemyClass, enemyNinjaClass, enemyMinotaurClass, enemySkeletonClass];
 var currentWave = 0;
 
 const START_ENEMY_COUNT = 12;

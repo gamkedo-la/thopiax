@@ -24,6 +24,7 @@ var demonPic = document.createElement("img");
 var spiderPic = document.createElement("img");
 var demonNinjaPic = document.createElement("img");
 var basicEnemyPic = document.createElement("img");
+var skeletonPic = document.createElement("img");
 var worldPics = [];
 
 var picsToLoad = 0; // set automatically based on imageList in loadImages()
@@ -69,6 +70,7 @@ function loadImages() {
 		{varName: spiderPic, theFile: "spiderPic.png"},
 		{varName: demonNinjaPic, theFile: "demonNinja.png"},
 		{varName: basicEnemyPic, theFile: "basicEnemy.png"},
+		{varName: skeletonPic, theFile: "skeleton.png"},
 
 		{varName: arenaWallsBG, theFile: "arena-back.png"},
 		{varName: arenaWallsFG, theFile: "arena-fg.png"},

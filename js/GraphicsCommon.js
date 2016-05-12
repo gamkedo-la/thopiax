@@ -7,8 +7,13 @@ function drawBitmapCenteredWithRotation(useBitmap, atX,atY, withAng, scale) {
 	canvasContext.restore();
 }
 
-function drawBitmapCenteredAnimFrame(useBitmap, atX,atY, frameNum, vertNum) {
-	var dimSize = 100;
+function drawBitmapCenteredAnimFrame(useBitmap, atX,atY, frameNum, vertNum, frameDim) {
+	var dimSize;
+	if(frameDim == undefined || frameDim == 0) {
+		dimSize = useBitmap.height;
+	} else {
+		dimSize = frameDim; 
+	}
 	canvasContext.drawImage(useBitmap,
 		frameNum*dimSize,vertNum*dimSize,
 		dimSize,dimSize,

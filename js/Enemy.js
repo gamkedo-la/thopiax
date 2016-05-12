@@ -22,7 +22,9 @@ function enemyClass() {
 	this.xv = 0;
 	this.yv = 0;
 	this.myPic = spiderPic;
-	this.hasAnimSheet = false;
+	this.animSheetDim = 0;
+	this.facingOptions = 0;
+
 	this.facingAng;
 	this.readyToRemove;
 	this.mvSpeed = 3;
@@ -54,7 +56,6 @@ function enemyClass() {
 	} // end of warriorReset func
 
 	this.act = function() {
-		console.log("act");
 		if(this.lives <= 0){
 			this.readyToRemove = true;
 			return;
@@ -93,7 +94,12 @@ function enemyClass() {
 
 		//
 		// tmp code splice by dalath
-		var dimSizeCap = Math.min(this.myPic.height, 50); // note: so it works for animated strips
+		var dimSizeCap;
+		if(this.animSheetDim != 0) {
+			dimSizeCap = this.animSheetDim;
+		} else {
+			dimSizeCap = Math.min(this.myPic.height, 50);
+		}
 		//
 		if(dist < dimSizeCap*0.7) { 
 			if(someShotOrPlayer.myLives != undefined) {
@@ -126,10 +132,10 @@ function enemyClass() {
 	}
 
 	this.draw = function() {
-		var frameToShow;
-		var stepVertTile;
+		var frameToShow = 0;
+		var stepVertTile = 0;
 
-		if(this.hasAnimSheet) { // using height as strip's square size
+		if(this.animSheetDim != 0) {
 			if(this.xv != 0 || this.yv != 0 ) {
 				this.facingAng = Math.atan2(this.yv,this.xv);
 				stepVertTile = Math.floor(sharedAnimCycle/10)%4;
@@ -139,25 +145,22 @@ function enemyClass() {
 			} else {
 				stepVertTile = 0;
 			}
-			frameToShow = Math.round( this.facingAng * 8 / (2 * Math.PI) );
+			frameToShow = Math.round( this.facingAng * this.facingOptions / (2 * Math.PI) );
 			if(frameToShow<0) {
-				frameToShow+=8;
+				frameToShow+=this.facingOptions;
 			}
-
- 			//console.log(frameToShow);
-		} else {
-			frameToShow = 0;
-			stepVertTile = 0;
 		}
 
 		if(this.stunTime<=0) {
-			drawBitmapCenteredAnimFrame(this.myPic, this.x,this.y, frameToShow,stepVertTile);
+			drawBitmapCenteredAnimFrame(this.myPic, this.x,this.y,
+				frameToShow,stepVertTile, this.animSheetDim);
 		} else {
 			var stunShakeRange = 2;
 			var stunLeft = 1 + stunShakeRange * (STUN_TIME - this.stunTime) / STUN_TIME;
 			drawBitmapCenteredAnimFrame(this.myPic,
 				this.x+Math.random()*stunLeft-Math.random()*stunLeft,
-				this.y+Math.random()*stunLeft-Math.random()*stunLeft, frameToShow,0);
+				this.y+Math.random()*stunLeft-Math.random()*stunLeft,
+				frameToShow,0, this.animSheetDim);
 		}
 	}
 
@@ -224,7 +227,7 @@ function enemyNinjaClass() {
 	this.target;
 	this.myPic = basicEnemyPic;
 	this.lives = 2;
-	this.hasAnimSheet = false;
+	this.animSheetDim = 0;
 
 	this.rangedAttack = function(targetX, targetY){
 		if(this.rangedCooldownTimer > 0){
@@ -291,6 +294,17 @@ function enemyNinjaClass() {
 	}
 }
 
+enemySkeletonClass.prototype = new enemyNinjaClass();
+enemySkeletonClass.prototype.constructor = enemySkeletonClass;
+
+function enemySkeletonClass() {
+	enemyNinjaClass.call(this);
+	this.mvSpeed = 4;
+	this.myPic = skeletonPic;
+	this.animSheetDim = 50;
+	this.facingOptions = 4;
+	this.lives = 6;
+}
 
 enemyMinotaurClass.prototype = new enemyClass();
 enemyMinotaurClass.prototype.constructor = enemyMinotaurClass;
@@ -307,6 +321,8 @@ function enemyMinotaurClass() {
 	this.target;// = playerFighter;
 	this.targetIsMoving = true;
 	this.myPic = demonPic;
+	this.animSheetDim = 100;
+	this.facingOptions = 8;
 
 	this.chargeAttackStart = function(){
 		this.targetIsMoving = false;
