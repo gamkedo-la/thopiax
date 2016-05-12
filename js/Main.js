@@ -82,7 +82,6 @@ function moveAll() {
 		gameMusic.loopSong("audio/soundtrack1");
 	}
 
-
 	moveShots();
 	moveEnemies();
 	AIH.gridDangerScan();	// Need to update the AI Helper "dangerscape" every cycle.

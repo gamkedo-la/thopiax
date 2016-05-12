@@ -79,6 +79,88 @@ function updateMousePos(evt) {
 	carSpeedY = -4;*/
 }
 
+function P1MenuCycle(inDir) {
+	switch(cursor1) {
+		case MENU_CLASS:
+			classIndexP1+=inDir;
+			if (classIndexP1 >= CLASS_P1_NUM) {
+				classIndexP1 = 0;
+			}
+			if (classIndexP1 < 0) {
+				classIndexP1 = CLASS_P1_NUM-1;
+			}
+			break;
+		case MENU_HAND_RIGHT:
+			rightHandIndexP1+=inDir;
+			if (rightHandIndexP1 >= RIGHT_P1_NUM) {
+				rightHandIndexP1 = 0;
+			}
+			if (rightHandIndexP1 < 0) {
+				rightHandIndexP1 = RIGHT_P1_NUM-1;
+			}
+			break;
+		case MENU_HAND_LEFT:
+			leftHandIndexP1+=inDir;
+			if (leftHandIndexP1 >= LEFT_P1_NUM) {
+				leftHandIndexP1 = 0;
+			}
+			if (leftHandIndexP1 < 0) {
+				leftHandIndexP1 = LEFT_P1_NUM-1;
+			}
+			break;
+		case MENU_CONTROL:
+			controlIndexP1+=inDir;
+			if (controlIndexP1 >= CONTROL_NUM) {
+				controlIndexP1 = 0;
+			}
+			if (controlIndexP1 < 0) {
+				controlIndexP1 = CONTROL_NUM-1;
+			}
+			break;
+	}
+}
+
+function P2MenuCycle(inDir) {
+	switch(cursor2) {
+		case MENU_CLASS:
+			classIndexP2+=inDir;
+			if (classIndexP2 >= CLASS_P2_NUM) {
+				classIndexP2 = 0;
+			}
+			if (classIndexP2 < 0) {
+				classIndexP2 = CLASS_P2_NUM-1;
+			}
+			break;
+		case MENU_HAND_RIGHT:
+			rightHandIndexP2+=inDir;
+			if (rightHandIndexP2 >= RIGHT_P2_NUM) {
+				rightHandIndexP2 = 0;
+			}
+			if (rightHandIndexP2 < 0) {
+				rightHandIndexP2 = RIGHT_P2_NUM-1;
+			}
+			break;
+		case MENU_HAND_LEFT:
+			leftHandIndexP2+=inDir;
+			if (leftHandIndexP2 >= LEFT_P2_NUM) {
+				leftHandIndexP2 = 0;
+			}
+			if (leftHandIndexP2 < 0) {
+				leftHandIndexP2 = LEFT_P2_NUM-1;
+			}
+			break;
+		case MENU_CONTROL:
+			controlIndexP2+=inDir;
+			if (controlIndexP2 >= CONTROL_NUM) {
+				controlIndexP2 = 0;
+			}
+			if (controlIndexP2 < 0) {
+				controlIndexP2 = CONTROL_NUM-1;
+			}
+			break;
+	}
+}
+
 function keySet(keyEvent, setTo) {
 
 	//Menu Input Code
@@ -91,8 +173,9 @@ function keySet(keyEvent, setTo) {
 
 		//Player 1 up and down
 		if(setTo && keyEvent.keyCode == KEY_S) {
-			if (cursor1 < 3){
-				cursor1 ++;
+			cursor1++;
+			if (cursor1 >= MENU_NUM){
+				cursor1 = MENU_NUM-1;
 			}
 		}
 		if(setTo && keyEvent.keyCode == KEY_W) {
@@ -103,8 +186,9 @@ function keySet(keyEvent, setTo) {
 
 		//player 2 up and down
 		if(setTo && keyEvent.keyCode == KEY_DOWN_ARROW) {
-			if (cursor2 < 3){
-				cursor2 ++;
+			cursor2++;
+			if (cursor2 >= MENU_NUM){
+				cursor2 = MENU_NUM-1;
 			}
 		}
 		if(setTo && keyEvent.keyCode == KEY_UP_ARROW) {
@@ -114,73 +198,18 @@ function keySet(keyEvent, setTo) {
 		}
 
 		//player 1 Selector
+		if(setTo && keyEvent.keyCode == KEY_A) {
+			P1MenuCycle(-1);
+		}
 		if(setTo && keyEvent.keyCode == KEY_D) {
-			if (cursor1 == 0) {
-				if (classIndexP1 < 2) {
-					classIndexP1 +=1;
-				} else {
-					classIndexP1 = 0;
-				}
-			}
-
-			if (cursor1 == 1) {
-				if (rightHandIndexP1 < 2) {
-					rightHandIndexP1 +=1;
-				} else {
-					rightHandIndexP1 = 0;
-				}
-			}
-
-			if (cursor1 == 2) {
-				if (leftHandIndexP1 < 2) {
-					leftHandIndexP1 +=1;
-				} else {
-					leftHandIndexP1 = 0;
-				}
-			}
-
-			if (cursor1 == 3) {
-				if (controlIndexP1 < 2) {
-					controlIndexP1 +=1;
-				} else {
-					controlIndexP1 = 0;
-				}
-			}
-
+			P1MenuCycle(1);
 		}
 
+		if(setTo && keyEvent.keyCode == KEY_LEFT_ARROW) {
+			P2MenuCycle(-1);
+		}
 		if(setTo && keyEvent.keyCode == KEY_RIGHT_ARROW) {
-			if (cursor2 == 0) {
-				if (classIndexP2 < 2) {
-					classIndexP2 +=1;
-				} else {
-					classIndexP2 = 0;
-				}
-			}
-			if (cursor2 == 1) {
-				if (rightHandIndexP2 < 2) {
-					rightHandIndexP2 +=1;
-				} else {
-					rightHandIndexP2 = 0;
-				}
-			}
-
-			if (cursor2 == 2) {
-				if (leftHandIndexP2 < 2) {
-					leftHandIndexP2 +=1;
-				} else {
-					leftHandIndexP2 = 0;
-				}
-			}
-
-			if (cursor2 == 3) {
-				if (controlIndexP2 < 2) {
-					controlIndexP2 +=1;
-				} else {
-					controlIndexP2 = 0;
-				}
-			}
-
+			P2MenuCycle(1);
 		}
 
 
@@ -219,36 +248,32 @@ function keySet(keyEvent, setTo) {
 		playerFighter.keyHeld_South = playerFighter.keyHeld_North =
 			playerFighter.keyHeld_East = playerFighter.keyHeld_West = false;
 
-		//spear
-		if(rightHandIndexP1 == 0) {
-				stabSpear();
-		}
-		//sword
-		if(rightHandIndexP1 == 1) {
-				swingSword();
-		}
-		//Battle Axe
-		if(rightHandIndexP1 == 2) {
-				swingBattleAxe();
-		}
-
-
+			switch(rightHandIndexP1) {
+				case RIGHT_P1_SPEAR:
+					stabSpear();
+					break;
+				case RIGHT_P1_SWORD:
+					swingSword();
+					break;
+				case RIGHT_P1_AXE:
+					swingBattleAxe();
+					break;
+			}
 	}
 	if(setTo && keyEvent.keyCode == KEY_U) {
 		playerFighter.keyHeld_South = playerFighter.keyHeld_North =
 			playerFighter.keyHeld_East = playerFighter.keyHeld_West = false;
 
-		//Shield
-		if(leftHandIndexP1 == 0) {
-			raiseShield();
-		}
-		//Throwing Axe
-		if(leftHandIndexP1 == 1) {
-			throwAxe();
-		}
-		//Horn
-		if(leftHandIndexP1 == 2) {
-			blowHorn();
+		switch(leftHandIndexP1) {
+			case LEFT_P1_SHIELD:
+				raiseShield();
+				break;
+			case LEFT_P1_AXE:
+				throwAxe();
+				break;
+			case LEFT_P1_HORN:
+				blowHorn();
+				break;
 		}
 	}
 
@@ -257,11 +282,11 @@ function keySet(keyEvent, setTo) {
 			playerFighter.keyHeld_East = playerFighter.keyHeld_West = false;
 
 		//Warrior
-		if(classIndexP1 == 0) {
+		if(classIndexP1 == CLASS_P1_WARRIOR) {
 			playerFighter.dashAtDirectionFaced();
 		}
 		//Berserker
-		if(classIndexP1 == 1 && playerFighter.abilityCD <= 0) {
+		if(classIndexP1 == CLASS_P1_BERSERKER && playerFighter.abilityCD <= 0) {
 			if (playerFighter.speedBoost < 8) {
 				playerFighter.speedBoost+= 1;
 				playerFighter.myLives -= 10;
@@ -271,7 +296,7 @@ function keySet(keyEvent, setTo) {
 			}
 		}
 		//Paladin
-		if(classIndexP1 == 2 && playerFighter.abilityCD <= 0) {
+		if(classIndexP1 == CLASS_P1_PALADIN && playerFighter.abilityCD <= 0) {
 			playerFighter.myLives += 5;
 			if (playerFighter.myLives > 100) {
 				playerFighter.myLives = 100;
@@ -281,7 +306,7 @@ function keySet(keyEvent, setTo) {
 	}
 
 	//Rogue
-	if(classIndexP2 == 0 && playerRanged.invulTime == 0) {
+	if(classIndexP2 == CLASS_P2_ROGUE && playerRanged.invulTime == 0) {
 		playerRanged.speedBoost = 3;
 		playerRanged.abilityCD = 15;
 	}
