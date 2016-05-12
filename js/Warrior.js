@@ -8,7 +8,7 @@ const BERSERK_COOLDOWN = 50.0;
 const MAGE_CD = 100.0;
 const HEAL_CD = 1000.0;
 
-const START_LIVES = 1000;
+const START_LIVES = 100;
 const INVUL_FRAMES = 50;
 
 var healZoneIsUp = false;

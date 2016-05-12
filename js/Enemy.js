@@ -21,17 +21,16 @@ function enemyClass() {
 	this.y = 75;
 	this.xv = 0;
 	this.yv = 0;
-	this.myPic = demonPic;//demonNinjaPic;
-	this.hasAnimSheet = true;
+	this.myPic = spiderPic;
+	this.hasAnimSheet = false;
 	this.facingAng;
 	this.readyToRemove;
 	this.mvSpeed = 3;
 	this.moving;
-	//this.probMove;
 	this.targetX;
 	this.targetY;
 	this.stunTime;
-	this.lives = 2;
+	this.lives = 1;
 	var hitEnemySound = new SoundOverlapsClass("audio/hitEnemy")
 
 	this.randDir = function() {
@@ -45,12 +44,9 @@ function enemyClass() {
 
 	this.reset = function(spawnX, spawnY) {
 		this.readyToRemove = false;
-//		this.myPic = whichImage;
 		this.x = spawnX;
 		this.y = spawnY;
-		//this.randDir();
 		this.moving = false;
-		//this.probMove = 0.20;
 		this.targetX = this.x;
 		this.targetY = this.y;
 		this.decide();
@@ -106,7 +102,6 @@ function enemyClass() {
 				} else {
 					this.stunTime = STUN_TIME;
 				}
-				//console.log("bumped player!");
 			}else if(someShotOrPlayer.doesStun) {
 				this.stunTime = STUN_TIME;
 			} else {
@@ -228,6 +223,7 @@ function enemyNinjaClass() {
 	this.rangedCooldownTimer = 60;
 	this.target;
 	this.myPic = basicEnemyPic;
+	this.lives = 2;
 	this.hasAnimSheet = false;
 
 	this.rangedAttack = function(targetX, targetY){
@@ -277,6 +273,21 @@ function enemyNinjaClass() {
 		}else{
 			this.decide();
 		}
+	}
+	
+	this.gotHit = function(firedBy) {
+		setTimeout(hitEnemySound.play(), 200)
+
+		this.lives--;
+		if(!this.lives && firedBy){
+			firedBy.killCount++;
+			if (firedBy == playerRanged && classIndexP2 == 1) {
+				playerRanged.speedBoost = 5;
+				playerRanged.abilityCD = 50;
+			}
+		}
+		
+		this.moveCounter = 100;
 	}
 }
 
