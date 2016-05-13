@@ -49,6 +49,10 @@ function moveEnemies() {
 	//not the best place for this code, but it works
 	if(enemyList.length === 0){
 		currentWave++
+		if(currentWave > 6){
+			enemyWaveLists[currentWave] = [8 + currentWave*3, 4 + currentWave*2, 4 + currentWave];
+		}
+		
 		spawnEnemies();
 	}
 }

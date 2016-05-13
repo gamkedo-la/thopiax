@@ -289,7 +289,7 @@ function warriorClass() {
 		var dy = enemyShot.y - this.y;
 		var dist = Math.sqrt(dx*dx+dy*dy);
 
-		if(dist < enemyShot.myShotPic.height*0.7) { // note: .height so it works for animated strips
+		if(dist < enemyShot.myShotPic.height*0.7 * enemyShot.shotSize) { // note: .height so it works for animated strips
 			this.myLives-= 10;
 			return true;
 		}

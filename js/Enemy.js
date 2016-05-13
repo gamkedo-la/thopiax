@@ -79,7 +79,10 @@ function enemyClass(spawnX, spawnY) {
 		var dx = someShotOrPlayer.x - this.x;
 		var dy = someShotOrPlayer.y - this.y;
 		var dist = Math.sqrt(dx*dx+dy*dy);
-
+		
+		if(someShotOrPlayer.shotSize){
+			dimSizeCap += someShotOrPlayer.shotSize;
+		}
 		//
 		// tmp code splice by dalath
 		var dimSizeCap;
@@ -89,7 +92,11 @@ function enemyClass(spawnX, spawnY) {
 			dimSizeCap = Math.min(this.myPic.height, 50);
 		}
 		//
-		if(dist < dimSizeCap*0.7) { 
+		if(someShotOrPlayer.shotSize){
+			dimSizeCap += someShotOrPlayer.shotSize * someShotOrPlayer.myShotPic.height - someShotOrPlayer.shotSize;
+		}
+
+		if(dist < dimSizeCap*0.7) {
 			if(someShotOrPlayer.myLives != undefined) {
 				if(this.stunTime > 0) {
 					return false;

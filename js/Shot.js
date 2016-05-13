@@ -228,9 +228,10 @@ function shotClassEnemyFireball(firedBy, angle) {
 	this.friendly = false;
 	this.vanishOnHit
 	this.checkCollision = enemyProjectileCollisionTest;
+	this.shotSize = 0.5;
 	
 	this.draw = function() {
-		drawBitmapCenteredWithRotation(this.myShotPic, this.x,this.y, this.facingAng);
+		drawBitmapCenteredWithRotation(this.myShotPic, this.x,this.y, this.facingAng, this.shotSize);
 	};
 }
 
