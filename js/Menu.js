@@ -78,18 +78,18 @@ function runMenu () {
 
     canvasContext.fillStyle = 'yellow';
     canvasContext.font = "15px MedievalSharp"
-    canvasContext.fillText("Player 1" ,MENU_ROW1, 200);
-    canvasContext.fillText("Player 2" ,MENU_ROW2, 200);
+    canvasContext.fillText("Fighter Player" ,MENU_ROW1, 220);
+    canvasContext.fillText("Ranged Player" ,MENU_ROW2, 220);
 
-    canvasContext.fillStyle = 'Red';
+    canvasContext.fillStyle = '#ff2222';
     canvasContext.fillText("Ability:" ,MENU_ROW0, menuColumnPos[0]);
     canvasContext.fillText(classListP1[classIndexP1] ,MENU_ROW1, menuColumnPos[0]);
     canvasContext.fillText(classListP2[classIndexP2] ,MENU_ROW2, menuColumnPos[0]);
-    canvasContext.fillStyle = 'blue';
+    canvasContext.fillStyle = '#44aaff';
     canvasContext.fillText("Primary:" ,MENU_ROW0, menuColumnPos[1]);
     canvasContext.fillText(rightHandListP1[rightHandIndexP1] ,MENU_ROW1, menuColumnPos[1]);
     canvasContext.fillText(rightHandListP2[rightHandIndexP2] ,MENU_ROW2, menuColumnPos[1]);
-    canvasContext.fillStyle = 'green';
+    canvasContext.fillStyle = '#44cc44';
     canvasContext.fillText("Secondary:" ,MENU_ROW0, menuColumnPos[2]);
     canvasContext.fillText(leftHandListP1[leftHandIndexP1] ,MENU_ROW1, menuColumnPos[2]);
     canvasContext.fillText(leftHandListP2[leftHandIndexP2] ,MENU_ROW2, menuColumnPos[2]);

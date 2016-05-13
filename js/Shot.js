@@ -2,6 +2,8 @@ const ATTACK_SPAWN_DIST = 37; // side
 const ATTACK_SPAWN_DIST_UP = 57;
 const ATTACK_SPAWN_DIST_DOWN = 40;
 
+const SHIELD_BLOCK_FIREBALL_RADIUS = 25;
+
 const WAIST_HEIGHT = -12;
 
 function shotClass(firedBy, angle) {
@@ -147,7 +149,7 @@ shotClassDagger.prototype = Object.create(shotClass.prototype);
 shotClassDagger.prototype.constructor = shotClassDagger;
 
 function shotClassDagger(firedBy, angle){
-	sliceSound.play()
+	sliceSound.play();
 
 	this.myShotPic = playerSlashPic;
 	this.velocity = 12.0;
@@ -217,6 +219,18 @@ var enemyProjectileCollisionTest = function(){
 			return;
 		}
 	}
+
+	// let shields (stun objects) block enemy projectiles
+	for(var i=0; i<shotList.length; i++) {
+		if(shotList[i].doesStun) {
+			var shotDX = shotList[i].x-this.x;
+			var shotDY = shotList[i].y-this.y;
+			var shotDist = Math.sqrt(shotDX*shotDX+shotDY*shotDY);
+			if(shotDist < SHIELD_BLOCK_FIREBALL_RADIUS){
+				this.readyToRemove = true;
+			}
+		}
+	}
 };
 
 shotClassEnemyFireball.prototype = Object.create(shotClassFireball.prototype);
@@ -226,7 +240,7 @@ function shotClassEnemyFireball(firedBy, angle) {
 	shotClassFireball.call(this, firedBy, angle);
 
 	this.friendly = false;
-	this.vanishOnHit
+	this.vanishOnHit;
 	this.checkCollision = enemyProjectileCollisionTest;
 	this.shotSize = 0.5;
 	
