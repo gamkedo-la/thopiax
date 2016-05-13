@@ -176,15 +176,13 @@ function warriorClass() {
 			return;
 		}
 
-		if(this.invulTime <= 0) {
-			for(var i=0; i<enemyList.length; i++) {
-				if(enemyList[i].hitBy(this)) {
-					this.myLives -= 10;
-					this.invulTime = INVUL_FRAMES;
-					if (classIndexP2 == CLASS_P2_MAGE && this.name == "Ranged Dudette") {
-						this.myLives -=10;
-						this.abilityCD = MAGE_CD;
-					}
+		for(var i=0; i<enemyList.length; i++) {
+			if(this.invulTime <= 0 && enemyList[i].hitBy(this)) {
+				this.myLives -= 10;
+				this.invulTime = INVUL_FRAMES;
+				if (classIndexP2 == CLASS_P2_MAGE && this.name == "Ranged Dudette") {
+					this.myLives -=10;
+					this.abilityCD = MAGE_CD;
 				}
 			}
 		}
