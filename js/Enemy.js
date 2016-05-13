@@ -208,8 +208,8 @@ function enemyNinjaClass(spawnX, spawnY) {
 	this.mvSpeed = 5;
 	this.projectileSpeed = 6;
 	this.projectileLife = 100;
-	this.rangedCooldown = 60;
-	this.rangedCooldownTimer = 60;
+	this.rangedCooldown = 90;
+	this.rangedCooldownTimer = 90;
 	this.target;
 	this.myPic = basicEnemyPic;
 	this.lives = 2;
@@ -329,12 +329,10 @@ function enemyMinotaurClass(spawnX, spawnY) {
 	};
 	
 	this.decide = function() {
-		console.log("decide");
 		this.chargeAttackStop();
 	};
 
 	this.hitTerrain = function(){
-		console.log("hit");
 		this.chargeAttackStop();
 		this.randPos();
 		
@@ -344,7 +342,6 @@ function enemyMinotaurClass(spawnX, spawnY) {
 	};
 	
 	this.move = function(xIn, yIn) {
-		console.log("move");
 		this.x = xIn;
 		this.y = yIn;
 		
