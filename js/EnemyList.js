@@ -1,6 +1,6 @@
 var enemyList = [];
 
-var enemyWaveLists = [[2, 0, 0],
+var enemyWaveLists = [[2, 0, 2],
                       [4, 0, 0],
                       [2, 2, 0],
                       [4, 4, 0],
@@ -69,7 +69,6 @@ function moveEnemies() {
 		currentWave++
 		if(currentWave > lastScriptedWave){
 			var wavesPastLast = currentWave-lastScriptedWave;
-			console.log(wavesPastLast);
 			enemyWaveLists[currentWave] = [enemyWaveLists[lastScriptedWave][0] + wavesPastLast,
 			                               enemyWaveLists[lastScriptedWave][1] + Math.floor(wavesPastLast/2),
 			                               enemyWaveLists[lastScriptedWave][2] + additionalMinotaurs(wavesPastLast)];

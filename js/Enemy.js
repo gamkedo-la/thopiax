@@ -24,6 +24,8 @@ function enemyClass(spawnX, spawnY) {
 	this.myPic = spiderPic;
 	this.animSheetDim = 0;
 	this.facingOptions = 0;
+	this.hitboxScale = 1;
+	this.hitboxYOffset = 0;
 
 	this.facingAng;
 	this.readyToRemove = false;
@@ -77,7 +79,7 @@ function enemyClass(spawnX, spawnY) {
 
 	this.hitBy = function(someShotOrPlayer) {
 		var dx = someShotOrPlayer.x - this.x;
-		var dy = someShotOrPlayer.y - this.y;
+		var dy = someShotOrPlayer.y - this.y + this.hitboxYOffset;
 		var dist = Math.sqrt(dx*dx+dy*dy);
 		
 		if(someShotOrPlayer.shotSize){
@@ -95,6 +97,8 @@ function enemyClass(spawnX, spawnY) {
 		if(someShotOrPlayer.shotSize){
 			dimSizeCap += someShotOrPlayer.shotSize * someShotOrPlayer.myShotPic.height - someShotOrPlayer.shotSize;
 		}
+		
+		dimSizeCap *= this.hitboxScale;
 
 		if(dist < dimSizeCap*0.7) {
 			if(someShotOrPlayer.myLives != undefined) {
@@ -303,7 +307,9 @@ function enemyMinotaurClass(spawnX, spawnY) {
 	this.animSheetDim = 100;
 	this.facingOptions = 8;
 	this.lives = 6;
-
+	this.hitboxScale = 0.6;
+	this.hitboxYOffset = -this.animSheetDim / 2 * this.hitboxScale;
+	
 	this.chargeAttackStart = function(){
 		this.targetIsMoving = false;
 		this.mvSpeed = this.chargeSpeed;

@@ -2,7 +2,7 @@ const MENU_ROW0 = 150;
 const MENU_ROW1 = 300;
 const MENU_ROW2 = 500;
 
-var menuColumnPos = [250, 300, 350, 400];
+var menuColumnPos = [250, 300, 350, 400, 450];
 
 
 var wobble = 10;
@@ -69,7 +69,7 @@ const MENU_CONTROL = 3;
 const MENU_NUM = 4;
 
 function runMenu () {
-  canvasContext.drawImage(startMenu,0,0);
+    canvasContext.drawImage(startMenu,0,0);
 
     if (wobble > 13 || wobble < 9) {
       wobbleSpeed *= -1;
@@ -97,7 +97,11 @@ function runMenu () {
     canvasContext.fillText("Controls:" ,MENU_ROW0, menuColumnPos[3]);
     canvasContext.fillText(controlledByP1[controlIndexP1] ,MENU_ROW1, menuColumnPos[3]);
     canvasContext.fillText(controlledByP2[controlIndexP2] ,MENU_ROW2, menuColumnPos[3]);
-
+    if(previousFighterKillCount > 0 || previousRangedKillCount > 0){
+			canvasContext.fillText("Last Score:" ,MENU_ROW0, menuColumnPos[4]);
+			canvasContext.fillText(previousFighterKillCount, MENU_ROW1, menuColumnPos[4]);
+			canvasContext.fillText(previousRangedKillCount, MENU_ROW2, menuColumnPos[4]);
+		}
     canvasContext.drawImage(cursorPic,MENU_ROW1 -20 ,menuColumnPos[cursor1] - wobble);
     canvasContext.drawImage(cursorPic,MENU_ROW2 -20 ,menuColumnPos[cursor2] - wobble);
 }
