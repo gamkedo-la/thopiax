@@ -245,8 +245,8 @@ function keySet(keyEvent, setTo) {
 		playerFighter.keyHeld_South = setTo;
 	}
 	if(setTo && keyEvent.keyCode == KEY_Y) {
-		playerFighter.keyHeld_South = playerFighter.keyHeld_North =
-			playerFighter.keyHeld_East = playerFighter.keyHeld_West = false;
+//		playerFighter.keyHeld_South = playerFighter.keyHeld_North =
+	//		playerFighter.keyHeld_East = playerFighter.keyHeld_West = false;
 
 			switch(rightHandIndexP1) {
 				case RIGHT_P1_SPEAR:
@@ -261,8 +261,8 @@ function keySet(keyEvent, setTo) {
 			}
 	}
 	if(setTo && keyEvent.keyCode == KEY_U) {
-		playerFighter.keyHeld_South = playerFighter.keyHeld_North =
-			playerFighter.keyHeld_East = playerFighter.keyHeld_West = false;
+//		playerFighter.keyHeld_South = playerFighter.keyHeld_North =
+	//		playerFighter.keyHeld_East = playerFighter.keyHeld_West = false;
 
 		switch(leftHandIndexP1) {
 			case LEFT_P1_SHIELD:

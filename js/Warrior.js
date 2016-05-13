@@ -290,6 +290,7 @@ function warriorClass() {
 
 		if(dist < enemyShot.myShotPic.height*0.7 * enemyShot.shotSize) { // note: .height so it works for animated strips
 			this.myLives-= 10;
+			this.invulTime = INVUL_FRAMES;
 			return true;
 		}
 		return false;

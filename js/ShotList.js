@@ -100,7 +100,8 @@ function raiseShield() {
 	var fromPlayer = playerFighter;
 	if(fromPlayer.myLives > 0 && fromPlayer.reloadTime2 <= 0) {
 		fromPlayer.reloadTime2 = PLAYER_SHIELD_RELOAD;
-
+		fromPlayer.frozenTime = 7;
+		
 		var newShot = new shotClassShield(fromPlayer, fromPlayer.prevMoveAng);
 
 		shotList.push(newShot);
