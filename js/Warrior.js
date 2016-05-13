@@ -85,6 +85,7 @@ function warriorClass() {
 		this.reloadTime = 0;
 		this.reloadTime2 = 0;
 		this.abilityCD = 0;
+		this.killCount = 0;
 	}
 
 	this.reset = function(whichImage, whichImageBack, whichImageStand,
