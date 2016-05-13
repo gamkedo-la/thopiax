@@ -15,6 +15,7 @@ function shotClass(firedBy, angle) {
 	this.enemiesHit = [];
 	this.shotSize = 1;
 	this.friendly = true;
+	this.removeOnTerrain = true;
 
 	if(this.velocity === undefined){
 		this.velocity = 0.0;
@@ -68,7 +69,9 @@ function shotClass(firedBy, angle) {
 				this.y = nextY;
 				break;
 			default:
-				this.readyToRemove = true;
+				if(this.removeOnTerrain){
+					this.readyToRemove = true;
+				}
 				break;
 		}
 	};
@@ -166,7 +169,8 @@ shotClassMelee.prototype.constructor = shotClassMelee;
 
 function shotClassMelee(firedBy, angle){
 	shotClass.call(this, firedBy, angle);
-
+	this.removeOnTerrain = false;
+	
 	//Move projectile's initial spawn outside of the player
 	this.x += Math.cos(firedBy.prevMoveAng) * ATTACK_SPAWN_DIST;
 	this.y += Math.sin(firedBy.prevMoveAng) *
