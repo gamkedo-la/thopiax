@@ -12,6 +12,10 @@ var worldTiltYDampen = 5.0/7.0;
 
 var gameIsGoing = false;
 
+var sndButtonDim=20;
+var sndButtonMargin=10;
+var sndMute = false;
+var musMute = false;
 
 //Prevents player from drag selecting
 document.onselectstart = function()
@@ -60,19 +64,22 @@ function updateAll() {
 	if (gameIsGoing) {
 		sharedAnimCycle++;
 
-    //check if player is playing
-    if (controlIndexP1 == 2){
-      playerFighter.myLives = 0;
-    }
-    if (controlIndexP2 == 2){
-      playerRanged.myLives = 0;
-    }
+	    //check if player is playing // -prob not needed in updateAll?
+	    if (controlIndexP1 == 2){
+	      playerFighter.myLives = 0;
+	    }
+	    if (controlIndexP2 == 2){
+	      playerRanged.myLives = 0;
+	    }
+
 		moveAll();
 		drawAll();
 
 	} else {
 		runMenu();
 	}
+
+	drawAudioUI();
 }
 
 function moveAll() {
@@ -92,6 +99,19 @@ function moveAll() {
 	moveShots();
 	moveEnemies();
 	AIH.gridDangerScan();	// Need to update the AI Helper "dangerscape" every cycle.
+}
+
+function drawAudioUI() {
+	canvasContext.drawImage(audioIcons,
+		(sndMute ? sndButtonDim : 0),0,sndButtonDim,sndButtonDim,
+		canvas.width-2*sndButtonDim-2*sndButtonMargin,
+			canvas.height-sndButtonDim-sndButtonMargin,
+		sndButtonDim,sndButtonDim);
+	canvasContext.drawImage(audioIcons,
+		2*sndButtonDim+(musMute ? sndButtonDim : 0),0,sndButtonDim,sndButtonDim,
+		canvas.width-sndButtonDim-sndButtonMargin,
+			canvas.height-sndButtonDim-sndButtonMargin,
+		sndButtonDim,sndButtonDim);
 }
 
 function drawAll() {

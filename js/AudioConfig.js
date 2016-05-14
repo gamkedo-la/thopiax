@@ -21,9 +21,14 @@ function BackgroundMusicClass() {
       musicSound.pause();
       musicSound = null;
     }
+
     musicSound = new Audio(filenameWithPath+audioFormat);
     musicSound.loop = true;
     musicSound.play();
+
+    if(musMute) {
+      this.startOrStopMusic();
+    }
   }
   
   this.startOrStopMusic = function() {

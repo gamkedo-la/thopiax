@@ -17,6 +17,8 @@ var playerArrowPic = document.createElement("img");
 var playerFireballPic = document.createElement("img");
 var playerEnemyFireballPic = document.createElement("img");
 
+var audioIcons = document.createElement("img");
+
 var healingZonePic = document.createElement("img");
 var spearStabPic = document.createElement("img");
 var playerSlashPic = document.createElement("img");
@@ -78,6 +80,7 @@ function loadImages() {
 		{varName: startMenu, theFile: "startMenu.png"},
 		{varName: cursorPic, theFile: "cursor.png"},
 
+		{varName: audioIcons, theFile: "audioIcons.png"},
 
 		{worldType: TILE_GROUND, theFile: "world_ground.png"},
 		{worldType: TILE_WALL, theFile: "world_wall.png"},

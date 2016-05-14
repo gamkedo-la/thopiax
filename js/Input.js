@@ -34,6 +34,19 @@ function setupInput() {
 }
 
 function mousePressed(evt) {
+	var audioUILeft = canvas.width-2*sndButtonDim-2*sndButtonMargin;
+	var audioUISplitX = canvas.width-sndButtonDim-sndButtonMargin*0.5;
+	var audioUITop = canvas.height-sndButtonDim-sndButtonMargin;
+	if(mouseX > audioUILeft && mouseY > audioUITop) {
+		if(mouseX<audioUISplitX) {
+			sndMute=!sndMute;
+			soundIsOn = !sndMute;
+		} else {
+			musMute=!musMute;
+			gameMusic.startOrStopMusic();
+		}
+	}
+
 	var leftMouseButton = (evt.button == 0);
 	if(leftMouseButton) {
 		//Bow
