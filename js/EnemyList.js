@@ -15,15 +15,10 @@ const START_ENEMY_COUNT = 12;
 
 var whichGate = 1;
 
-var spawn = function(_x, _y){
-	this.x = _x;
-	this.y = _y;
-};
-
-var spawns = [new spawn(400, 50),
-              new spawn(750, 300),
-              new spawn(400, 550),
-              new spawn(50, 300)];
+var spawns = [new point(400, 50),
+              new point(750, 300),
+              new point(400, 550),
+              new point(50, 300)];
 
 function resetEnemies() {
 	enemyList = [];

@@ -4,12 +4,12 @@ const MENU_ROW2 = 500;
 
 var menuColumnPos = [250, 300, 350, 400, 450];
 
-
 var wobble = 10;
 var wobbleSpeed = 0.25;
 var cursor1 = 0;
 var cursor2 = 0;
 
+//-----BEGIN GLOBAL SETTINGS-----//
 var classIndexP1 = 0;
 var classIndexP2 = 0;
 var rightHandIndexP1 = 0;
@@ -67,20 +67,24 @@ const MENU_HAND_RIGHT = 1;
 const MENU_HAND_LEFT = 2;
 const MENU_CONTROL = 3;
 const MENU_NUM = 4;
+//-----END GLOBAL SETTINGS-----//
 
 function runMenu () {
     canvasContext.drawImage(startMenu,0,0);
-
+		
+		//Wobble the cursors back and forth
     if (wobble > 13 || wobble < 9) {
       wobbleSpeed *= -1;
     }
     wobble += wobbleSpeed;
-
+		
+		//Draw menu collumn titles
     canvasContext.fillStyle = 'yellow';
     canvasContext.font = "15px MedievalSharp"
     canvasContext.fillText("Fighter Player" ,MENU_ROW1, 220);
     canvasContext.fillText("Ranged Player" ,MENU_ROW2, 220);
-
+		
+		//Draw menu options
     canvasContext.fillStyle = '#ff2222';
     canvasContext.fillText("Ability:" ,MENU_ROW0, menuColumnPos[0]);
     canvasContext.fillText(classListP1[classIndexP1] ,MENU_ROW1, menuColumnPos[0]);
@@ -97,11 +101,15 @@ function runMenu () {
     canvasContext.fillText("Controls:" ,MENU_ROW0, menuColumnPos[3]);
     canvasContext.fillText(controlledByP1[controlIndexP1] ,MENU_ROW1, menuColumnPos[3]);
     canvasContext.fillText(controlledByP2[controlIndexP2] ,MENU_ROW2, menuColumnPos[3]);
+		
+		//Display previous score only if both players have died
     if(previousFighterKillCount > 0 || previousRangedKillCount > 0){
 			canvasContext.fillText("Last Score:" ,MENU_ROW0, menuColumnPos[4]);
 			canvasContext.fillText(previousFighterKillCount, MENU_ROW1, menuColumnPos[4]);
 			canvasContext.fillText(previousRangedKillCount, MENU_ROW2, menuColumnPos[4]);
 		}
+		
+		//Draw cursor
     canvasContext.drawImage(cursorPic,MENU_ROW1 -20 ,menuColumnPos[cursor1] - wobble);
     canvasContext.drawImage(cursorPic,MENU_ROW2 -20 ,menuColumnPos[cursor2] - wobble);
 }

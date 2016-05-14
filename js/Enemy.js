@@ -1,12 +1,19 @@
 const STUN_TIME = 80;
 
-var distToRangedPlayer = function(x, y){
-	return distanceBetween(x, y, playerRanged.x, playerRanged.y);
-};
+function getClosestPlayer(x, y){
+	var distRanged = distanceBetween(x, y, playerRanged.x, playerRanged.y);
+	var distFighter = distanceBetween(x, y, playerFighter.x, playerFighter.y);
+	return distFighter < distRanged ? playerFighter : playerRanged;
+}
 
-var distToFighterPlayer = function(x, y){
-	return distanceBetween(x, y, playerFighter.x, playerFighter.y);
-};
+function distToClosestPlayer(x, y){
+	var closestPlayer = getClosestPlayer(x, y);
+	if(closestPlayer === playerFighter){
+		return distanceBetween(x, y, playerFighter.x, playerFighter.y);
+	} else {
+		return distanceBetween(x, y, playerRanged.x, playerRanged.y);
+	}
+}
 
 function enemyClass(spawnX, spawnY) {
 	this.x = spawnX;
@@ -229,17 +236,13 @@ function enemyNinjaClass(spawnX, spawnY) {
 			do{
 				this.randPos();
 				this.moveCounter = 0;
-			}while(distToRangedPlayer(this.targetX, this.targetY) < 200
-			    || distToFighterPlayer(this.targetX, this.targetY) < 200);
+			}while(distToClosestPlayer(this.targetX, this.targetY) < 200);
 		} else {
-			var distRanged = distToRangedPlayer(this.x, this.y);
-			var distFighter = distToFighterPlayer(this.x, this.y);
-
-			var distNearestPlayer = distFighter < distRanged ? distFighter : distRanged;
+			var distNearestPlayer = distToClosestPlayer(this.x, this.y);
 
 			this.moveCounter += Math.max((100 - distNearestPlayer/2)/15, 0.35);
 
-			if(distFighter < distRanged){
+			if(getClosestPlayer(this.x, this.y) === playerFighter){
 				this.rangedAttack(playerFighter.x, playerFighter.y);
 			} else {
 				this.rangedAttack(playerRanged.x, playerRanged.y);
@@ -252,9 +255,9 @@ function enemyNinjaClass(spawnX, spawnY) {
 		this.targetY = this.y;
 		this.xv = 0;
 		this.yv = 0;
-		if(distToRangedPlayer(this.targetX, this.targetY) < 200
-		 || distToFighterPlayer(this.targetX, this.targetY) < 200){
-			 this.moveCounter = 100;
+		
+		if(distToClosestPlayer(this.targetX, this.targetY) < 200){
+			this.moveCounter = 100;
 		}else{
 			this.decide();
 		}
@@ -316,9 +319,7 @@ function enemyMinotaurClass(spawnX, spawnY) {
 	this.chargeAttackStop = function(){
 		this.targetIsMoving = true;
 		
-		var distRanged = distToRangedPlayer(this.x, this.y);
-		var distFighter = distToFighterPlayer(this.x, this.y);
-		this.target = distFighter < distRanged ? playerFighter : playerRanged;
+		this.target = getClosestPlayer(this.x, this.y);
 		
 		this.targetX = this.target.x;
 		this.targetY = this.target.y;
@@ -356,10 +357,7 @@ function enemyMinotaurClass(spawnX, spawnY) {
 		}
 		
 		if(this.targetIsMoving) {
-			var distRanged = distToRangedPlayer(this.x, this.y);
-			var distFighter = distToFighterPlayer(this.x, this.y);
-			
-			this.target = distFighter < distRanged ? playerFighter : playerRanged;
+			this.target = getClosestPlayer(this.x, this.y);
 		}
 		
 		this.targetX = this.target.x;
