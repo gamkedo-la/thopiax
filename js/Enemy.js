@@ -117,7 +117,9 @@ function enemyClass(spawnX, spawnY) {
 	};
 
 	this.gotHit = function(firedBy) {
-		setTimeout(this.hitEnemySound.play(), 200)
+		if(soundIsOn){
+			setTimeout(this.hitEnemySound.play(), 200);
+		}
 
 		this.lives--;
 		if(!this.lives && firedBy){

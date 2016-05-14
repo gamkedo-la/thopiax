@@ -31,7 +31,7 @@ const CLASS_P2_ASSASSIN = 1;
 const CLASS_P2_MAGE = 2;
 const CLASS_P2_NUM = 3;
 
-var rightHandListP1 = ["Spear", "Sword", "Battle Axe"]
+var rightHandListP1 = ["Spear", "Sword", "Vampire Axe"]
 const RIGHT_P1_SPEAR = 0;
 const RIGHT_P1_SWORD = 1;
 const RIGHT_P1_AXE = 2;

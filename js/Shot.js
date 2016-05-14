@@ -123,7 +123,9 @@ shotClassFireball.prototype = Object.create(shotClass.prototype);
 shotClassFireball.prototype.constructor = shotClassFireball;
 
 function shotClassFireball(firedBy, angle) {
-	fireStaffSound.play()
+	if(soundIsOn){
+		fireStaffSound.play();
+	}
 
 	this.velocity = 3.5;
 	this.lifeTime = 120;
@@ -151,7 +153,9 @@ shotClassDagger.prototype = Object.create(shotClass.prototype);
 shotClassDagger.prototype.constructor = shotClassDagger;
 
 function shotClassDagger(firedBy, angle){
-	sliceSound.play();
+	if(soundIsOn){
+		sliceSound.play();
+	}
 
 	this.myShotPic = playerSlashPic;
 	this.velocity = 12.0;
@@ -181,7 +185,9 @@ shotClassSpear.prototype = Object.create(shotClassMelee.prototype);
 shotClassSpear.prototype.constructor = shotClassSpear;
 
 function shotClassSpear(firedBy, angle){
-	sliceSound.play()
+	if(soundIsOn){
+		sliceSound.play();
+	}
 
 	this.myShotPic = spearStabPic;
 	this.lifeTime = 15;
@@ -195,7 +201,9 @@ shotClassShield.prototype = Object.create(shotClassMelee.prototype);
 shotClassShield.prototype.constructor = shotClassShield;
 
 function shotClassShield(firedBy, angle){
-	shieldSound.play();
+	if(soundIsOn){
+		shieldSound.play();
+	}
 
 	this.myShotPic = playerShieldPic;
 	this.lifeTime = 60;

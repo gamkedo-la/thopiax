@@ -1,4 +1,5 @@
 var audioFormat;
+var soundIsOn = true;
 
 function setFormat() {
   var audio = new Audio();

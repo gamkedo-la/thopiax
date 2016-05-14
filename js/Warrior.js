@@ -137,7 +137,9 @@ function warriorClass() {
 					}
 				}
 			}
-			sliceSound.play()
+			if(soundIsOn){
+				sliceSound.play();
+			}
 		}
 	}
 
@@ -160,7 +162,9 @@ function warriorClass() {
 				this.dashTime = DASH_DURATION;
 				this.dashXV = (this.dashHookAtX - this.x) / dist;
 				this.dashYV = (this.dashHookAtY - this.y) / dist;
-				dashSound.play()
+				if(soundIsOn){
+					dashSound.play();
+				}
 			}
 		}
 	}
