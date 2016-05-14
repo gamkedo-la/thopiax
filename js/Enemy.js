@@ -380,3 +380,27 @@ function enemyMinotaurClass(spawnX, spawnY) {
 	
 	this.randPos();
 }
+
+
+enemyDummyClass.prototype = new enemyClass();
+enemyDummyClass.prototype.constructor = enemyDummyClass;
+
+function enemyDummyClass(spawnX, spawnY) {
+	enemyClass.call(this, spawnX, spawnY);
+	this.lives = 100;
+	
+	this.act = function(){
+			if(this.stunTime>0) {
+			this.stunTime--;
+			return;
+		}
+
+	};
+	
+	this.gotHitOld = this.gotHit;
+	
+	this.gotHit = function(firedBy){
+		this.gotHitOld(firedBy);
+		this.stunTime = STUN_TIME;
+	};
+}

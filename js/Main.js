@@ -8,8 +8,6 @@ var previousFighterKillCount;
 
 var sharedAnimCycle = 0;
 
-var worldTiltYDampen = 5.0/7.0;
-
 var gameIsGoing = false;
 
 var sndButtonDim=20;
