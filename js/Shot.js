@@ -247,6 +247,7 @@ function shotClassEnemyFireball(firedBy, angle) {
 	this.vanishOnHit;
 	this.checkCollision = enemyProjectileCollisionTest;
 	this.shotSize = 0.5;
+	this.myShotPic = playerEnemyFireballPic;
 	
 	this.draw = function() {
 		drawBitmapCenteredWithRotation(this.myShotPic, this.x,this.y, this.facingAng, this.shotSize);

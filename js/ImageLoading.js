@@ -15,6 +15,7 @@ var throwingAxePic = document.createElement("img");
 var shurikenPic = document.createElement("img");
 var playerArrowPic = document.createElement("img");
 var playerFireballPic = document.createElement("img");
+var playerEnemyFireballPic = document.createElement("img");
 
 var healingZonePic = document.createElement("img");
 var spearStabPic = document.createElement("img");
@@ -61,6 +62,7 @@ function loadImages() {
 		{varName: shurikenPic, theFile: "shuriken.png"},
 		{varName: playerArrowPic, theFile: "arrow.png"},
 		{varName: playerFireballPic, theFile: "fireball.png"},
+		{varName: playerEnemyFireballPic, theFile: "enemyFireball.png"},
 
 		{varName: healingZonePic, theFile: "healingZone.png"},
 		{varName: spearStabPic, theFile: "spearStabPic.png"},

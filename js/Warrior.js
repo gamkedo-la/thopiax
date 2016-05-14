@@ -13,6 +13,20 @@ const INVUL_FRAMES = 50;
 
 var healZoneIsUp = false;
 
+var distanceBetween = function(x1, y1, x2, y2){
+	var distX = Math.abs(x1 - x2);
+	var distY = Math.abs(y1 - y2);
+
+	return Math.sqrt(distX*distX + distY*distY);
+};
+
+var healZone = {
+	isUp: false,
+	x: 0,
+	y: 0,
+	timer: 0
+};
+
 function warriorClass() {
 	this.x = 75;
 	this.y = 75;
@@ -51,6 +65,7 @@ function warriorClass() {
 	this.reloadTime;
 	this.reloadTime2;
 	this.windup;
+	this.maxWindup;
 	this.frozenTime;
 	this.radius;
 	this.circleColor;
@@ -62,7 +77,6 @@ function warriorClass() {
 	this.healX;
 	this.healY;
 	this.healCooldown = 0;
-	this.healTimer = 0;
 
 	this.rightHandWeapon;
 	this.leftHandWeapon;
@@ -105,22 +119,37 @@ function warriorClass() {
 	this.updateKeyReadout = function() {
 		// document.getElementById("debugText").innerHTML = "Keys: " + this.keysHeld;
 	}
+	
+	
 
+	
+	
 	this.windupCircle = function () {
 		this.windup --;
 
-		drawEllipse(this.x, this.y+5,
-	      		this.radius, this.radius*worldTiltYDampen,this.circleColor);
+		drawEllipse(this.x, this.y,
+		            this.radius*2,
+		            this.radius*worldTiltYDampen*2,
+		            this.circleColor);
+		drawEllipse(this.x, this.y,
+	              (this.radius - this.radius * (this.windup)/this.maxWindup)*2,
+		            (this.radius*worldTiltYDampen - this.radius*worldTiltYDampen*(this.windup)/this.maxWindup)*2,
+		            this.circleColor);
+		
+
 
 		if (this.windup == 1) {
 			for(var i=0; i<enemyList.length; i++) {
-				var dx = this.x - enemyList[i].x;
-				var dy = (this.y+5) - enemyList[i].y;
-				if(Math.abs(dx) < this.radius && Math.abs(dy) < this.radius*worldTiltYDampen) {
+//				var dx = this.x - enemyList[i].x;
+//				var dy = this.y - enemyList[i].y + enemyList[i].hitboxYOffset;
+				if(distanceBetween(this.x,this.y*worldTiltYDampen,
+				                   enemyList[i].x, enemyList[i].y + enemyList[i].hitboxYOffset)
+				                   < this.radius){
+//				if(Math.abs(dx) < this.radius && Math.abs(dy) < this.radius*worldTiltYDampen) {
 					enemyList[i].gotHit(this);
 					//Battle Axe Heal
-					if (rightHandIndexP1 == RIGHT_P1_AXE) {
-						this.myLives += 1;
+					if (rightHandIndexP1 === RIGHT_P1_AXE) {
+						this.myLives += 5;
 						if (this.myLives > 100) {
 							this.myLives = 100;
 						}
@@ -163,10 +192,10 @@ function warriorClass() {
 	this.createHealZone = function() {
 		if (this.healCooldown == 0 && this.myLives > 0) {
 			this.healCooldown = HEAL_CD;
-			this.healX = mouseX;
-			this.healY = mouseY;
-			this.healTimer = 100;
-			healZoneIsUp = true;
+			healZone.x = mouseX;
+			healZone.y = mouseY;
+			healZone.timer = 100;
+			healZone.isUp = true;
 		}
 	}
 
@@ -348,7 +377,7 @@ function warriorClass() {
 		if(classIndexP2 == CLASS_P2_MAGE && this.name == "Ranged Dudette" && this.abilityCD == 0) {
 			this.reloadTime = 0;
 			this.reloadTime2 = 0;
-			this.healTimer = HEAL_CD / 10;
+			healZone.timer = HEAL_CD / 10;
 		}
 
 		canvasContext.save();
@@ -382,9 +411,9 @@ function warriorClass() {
 		if (playerRanged.healCooldown > 0) {
 			playerRanged.healCooldown --;
 		}
-		if (healZoneIsUp) {
-			if (this.healX > this.x - 100 && this.healX < this.x + 100) {
-		    if (this.healY > this.y - 100 && this.healY < this.y + 100) {
+		if (healZone.isUp) {
+			if (healZone.x > this.x - 100 && healZone.x < this.x + 100) {
+		    if (healZone.y > this.y - 100 && healZone.y < this.y + 100) {
 					if(this.myLives < 100) {
 						this.myLives ++;
 					}

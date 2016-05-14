@@ -124,6 +124,7 @@ function swingSword() {
 	if(fromPlayer.myLives > 0 && fromPlayer.reloadTime <= 0) {
 		fromPlayer.reloadTime = PLAYER_SWORD_RELOAD;
 		fromPlayer.windup = PLAYER_SWORD_RELOAD - 10;
+		fromPlayer.maxWindup = PLAYER_SWORD_RELOAD - 10;
 		fromPlayer.radius = 120;
 		fromPlayer.circleColor = "Blue"
 	}
@@ -134,8 +135,9 @@ function swingBattleAxe() {
 	if(fromPlayer.myLives > 0 && fromPlayer.reloadTime <= 0) {
 		fromPlayer.reloadTime = PLAYER_BATTLE_AXE_RELOAD;
 		fromPlayer.windup = PLAYER_BATTLE_AXE_RELOAD - 10;
+		fromPlayer.maxWindup = PLAYER_BATTLE_AXE_RELOAD - 10;
 		fromPlayer.frozenTime = fromPlayer.windup;
-		fromPlayer.radius = 220;
+		fromPlayer.radius = 200;
 		fromPlayer.circleColor = "Red"
 	}
 }
