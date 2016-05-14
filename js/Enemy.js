@@ -1,20 +1,12 @@
 const STUN_TIME = 80;
 
-
 var distToRangedPlayer = function(x, y){
-	var distRangedX = Math.abs(x - playerRanged.x);
-	var distRangedY = Math.abs(y - playerRanged.y);
-
-	return Math.sqrt(distRangedX*distRangedX + distRangedY*distRangedY);
+	return distanceBetween(x, y, playerRanged.x, playerRanged.y);
 };
 
 var distToFighterPlayer = function(x, y){
-	var distFighterX = Math.abs(x - playerFighter.x);
-	var distFighterY = Math.abs(y - playerFighter.x);
-
-	return Math.sqrt(distFighterX*distFighterX + distFighterY*distFighterY);
+	return distanceBetween(x, y, playerFighter.x, playerFighter.y);
 };
-
 
 function enemyClass(spawnX, spawnY) {
 	this.x = spawnX;
@@ -301,7 +293,7 @@ function enemyMinotaurClass(spawnX, spawnY) {
 	this.cooldownTimer = 150;
 	this.bounceTimer = 45;
 	this.bounceDuration = 30;
-	this.target;// = playerFighter;
+	this.target;
 	this.targetIsMoving = true;
 	this.myPic = demonPic;
 	this.animSheetDim = 100;

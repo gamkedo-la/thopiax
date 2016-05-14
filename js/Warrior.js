@@ -13,13 +13,6 @@ const INVUL_FRAMES = 50;
 
 var healZoneIsUp = false;
 
-var distanceBetween = function(x1, y1, x2, y2){
-	var distX = Math.abs(x1 - x2);
-	var distY = Math.abs(y1 - y2);
-
-	return Math.sqrt(distX*distX + distY*distY);
-};
-
 var healZone = {
 	isUp: false,
 	x: 0,
@@ -109,20 +102,11 @@ function warriorClass() {
 		this.myWarriorPicBack = whichImageBack;
 		this.myWarriorPicStand = whichImageStand;
 		this.keysHeld = 0;
-		this.updateKeyReadout();
 		this.startSide = startPos;
 		this.myLives = START_LIVES+1; // so that first respawn won't count
 		this.ai = new AIH(this);
 		this.respawn();
 	} // end of warriorReset func
-
-	this.updateKeyReadout = function() {
-		// document.getElementById("debugText").innerHTML = "Keys: " + this.keysHeld;
-	}
-	
-	
-
-	
 	
 	this.windupCircle = function () {
 		this.windup --;
@@ -140,12 +124,9 @@ function warriorClass() {
 
 		if (this.windup == 1) {
 			for(var i=0; i<enemyList.length; i++) {
-//				var dx = this.x - enemyList[i].x;
-//				var dy = this.y - enemyList[i].y + enemyList[i].hitboxYOffset;
 				if(distanceBetween(this.x,this.y*worldTiltYDampen,
 				                   enemyList[i].x, enemyList[i].y + enemyList[i].hitboxYOffset)
 				                   < this.radius){
-//				if(Math.abs(dx) < this.radius && Math.abs(dy) < this.radius*worldTiltYDampen) {
 					enemyList[i].gotHit(this);
 					//Battle Axe Heal
 					if (rightHandIndexP1 === RIGHT_P1_AXE) {
@@ -160,31 +141,28 @@ function warriorClass() {
 		}
 	}
 
-	this.dashAtDirectionFaced = function() {
-    this.dashAtPoint(this.x + Math.cos( this.prevMoveAng ) * 100,this.y + Math.sin( this.prevMoveAng ) * 100);
-	}
-	// and
-	this.dashAtMouse = function() {
-	    this.dashAtPoint(mouseX, mouseY);
-	}
-	// both using:
-	this.dashAtPoint = function(toX, toY) {
-	    if(this.myLives <= 0) {
-	        return;
-	    }
-	    if(this.dashTime <= 0) {
-	        this.dashHookAtX = toX;
-					this.dashHookAtY = toY;
-	        var dx = toX - this.x;
-	        var dy = toY - this.y;
-	        var dist = Math.sqrt(dx*dx + dy*dy);
-	        if(dist > 1) {
-	            this.dashTime = DASH_DURATION;
-	            this.dashXV = dx / dist;
-	            this.dashYV = dy / dist;
-	            dashSound.play()
-	        }
-	    }
+	this.dashAtPoint = function(atMouse) {
+		if(this.myLives <= 0) {
+			return;
+		}
+		
+		if(atMouse){
+			this.dashHookAtX = mouseX;
+			this.dashHookAtY = mouseY;
+		} else {
+			this.dashHookAtX = this.x + Math.cos( this.prevMoveAng ) * 100;
+			this.dashHookAtY = this.y + Math.sin( this.prevMoveAng ) * 100;
+		}
+		
+		if(this.dashTime <= 0) {
+			var dist = distanceBetween(this.dashHookAtX, this.dashHookAtY, this.x, this.y);
+			if(dist > 1) {
+				this.dashTime = DASH_DURATION;
+				this.dashXV = (this.dashHookAtX - this.x) / dist;
+				this.dashYV = (this.dashHookAtY - this.y) / dist;
+				dashSound.play()
+			}
+		}
 	}
 
 
@@ -295,13 +273,11 @@ function warriorClass() {
 			case TILE_DOOR:
 				if(this.keysHeld > 0) {
 					this.keysHeld--; // one less key
-					this.updateKeyReadout();
 					worldData[walkIntoLevelPieceIndex].kind = TILE_GROUND;
 				}
 				break;
 			case TILE_KEY:
 				this.keysHeld++; // one more key
-				this.updateKeyReadout();
 				worldData[walkIntoLevelPieceIndex].kind = TILE_GROUND;
 				break;
 			case TILE_WALL:
@@ -364,8 +340,6 @@ function warriorClass() {
 
 		if(this.reloadTime > 0) {
 			this.reloadTime--;
-			//drawEllipse(this.x, this.y+5,
-	    //  		frameSize/3, frameSize/7,"#cccccc");
 		}
 		if(this.reloadTime2 > 0) {
 			this.reloadTime2--;

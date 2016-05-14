@@ -38,7 +38,6 @@ function throwAxe() {
 	if(fromPlayer.myLives > 0 && fromPlayer.reloadTime2 <= 0) {
 		fromPlayer.reloadTime2 = PLAYER_THROWING_AXE_RELOAD;
 
-		//var angle = Math.atan2(fromPlayer.x + Math.cos( fromPlayer.prevMoveAng ) * 100,fromPlayer.y + Math.sin( fromPlayer.prevMoveAng ) * 100);
 		var newShot = new shotClassThrowingAxe(fromPlayer, fromPlayer.prevMoveAng);
 
 		shotList.push(newShot);

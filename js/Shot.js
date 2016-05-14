@@ -28,8 +28,7 @@ function shotClass(firedBy, angle) {
 		this.lifeTime = 40;
 	}
 
-	//TODO select default pic
-	this.myShotPic;// = playerArrowPic; // which picture to use
+	this.myShotPic;
 	this.readyToRemove = false;
 
 	this.checkCollision = function(){

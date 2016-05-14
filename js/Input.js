@@ -52,7 +52,7 @@ function mousePressed(evt) {
 
 		//Grapple Hook
 		if (leftHandIndexP2 == 0) {
-			playerRanged.dashAtMouse();
+			playerRanged.dashAtPoint(true);
 		}
 		//Shuriken
 		if (leftHandIndexP2 == 1) {
@@ -71,12 +71,6 @@ function updateMousePos(evt) {
 
 	mouseX = evt.clientX - rect.left - root.scrollLeft;
 	mouseY = evt.clientY - rect.top - root.scrollTop;
-
-	// cheat / hack to test car in any position
-	/*carX = mouseX;
-	carY = mouseY;
-	carSpeedX = 4;
-	carSpeedY = -4;*/
 }
 
 function P1MenuCycle(inDir) {
@@ -245,9 +239,6 @@ function keySet(keyEvent, setTo) {
 		playerFighter.keyHeld_South = setTo;
 	}
 	if(setTo && keyEvent.keyCode == KEY_Y) {
-//		playerFighter.keyHeld_South = playerFighter.keyHeld_North =
-	//		playerFighter.keyHeld_East = playerFighter.keyHeld_West = false;
-
 			switch(rightHandIndexP1) {
 				case RIGHT_P1_SPEAR:
 					stabSpear();
@@ -261,9 +252,6 @@ function keySet(keyEvent, setTo) {
 			}
 	}
 	if(setTo && keyEvent.keyCode == KEY_U) {
-//		playerFighter.keyHeld_South = playerFighter.keyHeld_North =
-	//		playerFighter.keyHeld_East = playerFighter.keyHeld_West = false;
-
 		switch(leftHandIndexP1) {
 			case LEFT_P1_SHIELD:
 				raiseShield();
@@ -278,12 +266,9 @@ function keySet(keyEvent, setTo) {
 	}
 
 	if(setTo && keyEvent.keyCode == KEY_SPACE) {
-		playerFighter.keyHeld_South = playerFighter.keyHeld_North =
-			playerFighter.keyHeld_East = playerFighter.keyHeld_West = false;
-
 		//Warrior
 		if(classIndexP1 == CLASS_P1_WARRIOR) {
-			playerFighter.dashAtDirectionFaced();
+			playerFighter.dashAtPoint(false);
 		}
 		//Berserker
 		if(classIndexP1 == CLASS_P1_BERSERKER && playerFighter.abilityCD <= 0) {
@@ -318,13 +303,11 @@ function keySet(keyEvent, setTo) {
 }
 
 function keyPressed(evt) {
-	// console.log("Key pressed: "+evt.keyCode);
 	keySet(evt, true);
 
 	evt.preventDefault();
 }
 
 function keyReleased(evt) {
-	// console.log("Key pressed: "+evt.keyCode);
 	keySet(evt, false);
 }
