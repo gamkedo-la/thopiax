@@ -80,7 +80,7 @@ function loadImages() {
 		{varName: startMenu, theFile: "startMenu.png"},
 		{varName: cursorPic, theFile: "cursor.png"},
 
-		{varName: audioIcons, theFile: "audioIcons.png"},
+		{varName: audioIcons, theFile: "audioicons.png"},
 
 		{worldType: TILE_GROUND, theFile: "world_ground.png"},
 		{worldType: TILE_WALL, theFile: "world_wall.png"},
