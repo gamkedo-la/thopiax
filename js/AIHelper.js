@@ -657,7 +657,7 @@ AIH.prototype.shoot = function(_insta)
 	var inRange = [];
 	var atk_range = ATTACK_SPAWN_DIST * (_insta ? 1 : 8);	
 	for(var i in enemyList) {
-		if(distToRangedPlayer(enemyList[i].x, enemyList[i].y) < atk_range) {
+		if(distanceBetweenPoints(playerRanged, enemyList[i]) < atk_range){
 			inRange.push(enemyList[i]);
 		}
 	}
