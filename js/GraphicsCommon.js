@@ -30,18 +30,31 @@ function drawLine(fromX,fromY,toX,toY,thickness,color) {
 	canvasContext.stroke();
 }
 
+/*
+         , - ~ ~ ~ - ,
+     , '       |       ' ,
+   ,           |           ,
+  ,            |height      ,
+ ,             |             ,
+ ,_____________|_____________,
+ ,   width     |             ,
+  ,            |            ,
+   ,           |           ,
+     ,         |        , '
+       ' - , _ | _ ,  '
+	Height and width are full height and width (diameter) not half (radius)
+*/
 function drawEllipse(centerX, centerY, width, height, lineColor) {
+	width = width/2;
+	height = height/2;
   canvasContext.lineWidth = 1;
+	
   canvasContext.beginPath();
-  canvasContext.moveTo(centerX - width*0.5, centerY); // A1
-  canvasContext.bezierCurveTo(
-    centerX - width*0.5, centerY + height*0.5, // C1
-    centerX + width*0.5, centerY + height*0.5, // C2
-    centerX + width*0.5, centerY); // A2
-  canvasContext.bezierCurveTo(
-    centerX + width*0.5, centerY - height*0.5, // C3
-    centerX - width*0.5, centerY - height*0.5, // C4
-    centerX - width*0.5, centerY); // A1
+	canvasContext.save();
+	canvasContext.scale(width, height);
+	canvasContext.arc(centerX/width, centerY/height, 1, 0, 1 * Math.PI);
+	canvasContext.arc(centerX/width, centerY/height, 1, 1 * Math.PI, 2 * Math.PI);
+	canvasContext.restore();
   canvasContext.strokeStyle = lineColor;
   canvasContext.closePath();	
   canvasContext.stroke();	

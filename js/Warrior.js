@@ -125,9 +125,6 @@ function warriorClass() {
 		if (this.windup == 1) {
 			for(var i=0; i<enemyList.length; i++) {
 				if(dampPointDist(this, enemyList[i]) < this.radius){
-					//distanceBetween(this.x,this.y,
-				  //                 enemyList[i].x, enemyList[i].y + enemyList[i].hitboxYOffset)
-				  //                 < this.radius){
 					enemyList[i].gotHit(this);
 					//Battle Axe Heal
 					if (rightHandIndexP1 === RIGHT_P1_AXE) {

@@ -26,7 +26,7 @@ function distanceBetweenPoints(p1, p2){
 
 function dampPointDist(p1, p2){
 	var distX = Math.abs(p1.x - p2.x);
-	var distY = Math.abs(p1.y - p2.y)/(worldTiltYDampen * worldTiltYDampen);
+	var distY = Math.abs(p1.y - p2.y)/(worldTiltYDampen);
 
 	return Math.sqrt(distX*distX + distY*distY);
 }
