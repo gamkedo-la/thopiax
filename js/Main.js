@@ -116,7 +116,8 @@ function drawAll() {
 	drawWorld();
 
 	if (healZone.timer > 0){
-		canvasContext.drawImage(healingZonePic, healZone.x -100, healZone.y -100)
+		drawEllipseFill(healZone.x, healZone.y, healZone.diameter, healZone.diameter*worldTiltYDampen, "Green", 0.5);
+		drawEllipse(healZone.x, healZone.y, healZone.diameter, healZone.diameter*worldTiltYDampen, "Yellow", 1, 5);
 		healZone.timer--;
 	} else {
 		healZone.isUp = false;

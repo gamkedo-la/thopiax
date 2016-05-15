@@ -44,10 +44,19 @@ function drawLine(fromX,fromY,toX,toY,thickness,color) {
        ' - , _ | _ ,  '
 	Height and width are full height and width (diameter) not half (radius)
 */
-function drawEllipse(centerX, centerY, width, height, lineColor) {
+function drawEllipse(centerX, centerY, width, height, lineColor, alpha, lineThickness) {
 	width = width/2;
 	height = height/2;
-  canvasContext.lineWidth = 1;
+	
+	if(lineThickness === undefined){
+		lineThickness = 1;
+	}
+  canvasContext.lineWidth = lineThickness;
+	
+	if(alpha === undefined)
+	{
+		alpha = 1;
+	}
 	
   canvasContext.beginPath();
 	canvasContext.save();
@@ -57,9 +66,32 @@ function drawEllipse(centerX, centerY, width, height, lineColor) {
 	canvasContext.restore();
   canvasContext.strokeStyle = lineColor;
   canvasContext.closePath();	
+	canvasContext.globalAlpha = alpha;
   canvasContext.stroke();	
+	canvasContext.restore();
 }
 
+function drawEllipseFill(centerX, centerY, width, height, lineColor, alpha) {
+	width = width/2;
+	height = height/2;
+  canvasContext.lineWidth = 1;
+	
+	if(alpha === undefined)
+	{
+		alpha = 1;
+	}
+	
+  canvasContext.beginPath();
+	canvasContext.save();
+	canvasContext.scale(width, height);
+	canvasContext.arc(centerX/width, centerY/height, 1, 0, 1 * Math.PI);
+	canvasContext.arc(centerX/width, centerY/height, 1, 1 * Math.PI, 2 * Math.PI);
+	canvasContext.globalAlpha = alpha;
+  canvasContext.strokeStyle = lineColor;
+  canvasContext.closePath();
+  canvasContext.fill();
+	canvasContext.restore();
+}
 
 function colorRect(topLeftX,topLeftY, boxWidth,boxHeight, fillColor) {
 	canvasContext.fillStyle = fillColor;

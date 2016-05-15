@@ -63,8 +63,8 @@ function drawStory() {
 	canvasContext.drawImage(storyFadeBG,0,0);
 	//console.log(storyY);
 	for(var i=0;i<storyText.length;i++) {
-			canvasContext.fillText(storyText[i],40, storyY+textY);
-			textY += 20;
+		canvasContext.fillText(storyText[i],40, storyY+textY);
+		textY += 20;
 	}
 	canvasContext.drawImage(storyFadeFG,0,0);
 	

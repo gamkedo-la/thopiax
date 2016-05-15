@@ -17,6 +17,7 @@ var healZone = {
 	isUp: false,
 	x: 0,
 	y: 0,
+	diameter: 200,
 	timer: 0
 };
 
@@ -388,14 +389,9 @@ function warriorClass() {
 			playerRanged.healCooldown --;
 		}
 		if (healZone.isUp) {
-			if (healZone.x > this.x - 100 && healZone.x < this.x + 100) {
-		    if (healZone.y > this.y - 100 && healZone.y < this.y + 100) {
-					if(this.myLives < 100) {
-						this.myLives ++;
-					}
-				}
-		  }
+			if(dampPointDist(healZone, this) < 100 && this.myLives < 100){
+				this.myLives++;
+			}
 		}
-
 	}
 }
