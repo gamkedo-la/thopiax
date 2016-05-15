@@ -30,6 +30,9 @@ var basicEnemyPic = document.createElement("img");
 var skeletonPic = document.createElement("img");
 var worldPics = [];
 
+var storyFadeBG = document.createElement("img");
+var storyFadeFG = document.createElement("img");
+
 var picsToLoad = 0; // set automatically based on imageList in loadImages()
 
 function countLoadedImagesAndLaunchIfReady() {
@@ -81,6 +84,9 @@ function loadImages() {
 		{varName: cursorPic, theFile: "cursor.png"},
 
 		{varName: audioIcons, theFile: "audioicons2.png"},
+
+		{varName: storyFadeBG, theFile: "storyfadebg.jpg"},
+		{varName: storyFadeFG, theFile: "storyfadeover.png"},
 
 		{worldType: TILE_GROUND, theFile: "world_ground.png"},
 		{worldType: TILE_WALL, theFile: "world_wall.png"},

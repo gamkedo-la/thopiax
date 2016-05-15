@@ -11,6 +11,7 @@ const KEY_Y = 89;
 const KEY_U = 85;
 
 const KEY_SPACE = 32;
+const KEY_RETURN = 13;
 
 var mouseX = 0;
 var mouseY = 0;
@@ -316,6 +317,10 @@ function keySet(keyEvent, setTo) {
 }
 
 function keyPressed(evt) {
+	if(evt.keyCode == KEY_RETURN) {
+		skipStory();
+	}
+
 	keySet(evt, true);
 
 	evt.preventDefault();

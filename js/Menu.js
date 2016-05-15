@@ -71,6 +71,11 @@ const MENU_NUM = 4;
 
 function runMenu () {
     canvasContext.drawImage(startMenu,0,0);
+
+    drawStory();
+    if(isShowingStory()) {
+        return;
+    }
 		
 		//Wobble the cursors back and forth
     if (wobble > 13 || wobble < 9) {
