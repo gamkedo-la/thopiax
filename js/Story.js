@@ -45,30 +45,30 @@ var storyY = 600;
 const STORY_DONE_Y = -780;
 
 function skipStory() {
-    storyY = STORY_DONE_Y;
+	storyY = STORY_DONE_Y;
 }
 
 function isShowingStory() {
-    return storyY > STORY_DONE_Y;
+	return storyY > STORY_DONE_Y;
 }
 
 function drawStory() {
-    if( isShowingStory() == false ) {
-        return;
-    }
-    canvasContext.fillStyle = 'orange';
-    canvasContext.font = "18px MedievalSharp"
-    var textY = 0;
-    storyY-=1.2;
-    canvasContext.drawImage(storyFadeBG,0,0);
-    //console.log(storyY);
-    for(var i=0;i<storyText.length;i++) {
-        canvasContext.fillText(storyText[i],40, storyY+textY);
-        textY += 20;
-    }
-    canvasContext.drawImage(storyFadeFG,0,0);
-
-    canvasContext.fillStyle = '#aaaaaa';
-    canvasContext.font = "18px MedievalSharp"
-    canvasContext.fillText("Press Return to Skip Intro",40, canvas.height-30);
- }
+	if( isShowingStory() == false ) {
+		return;
+	}
+	canvasContext.fillStyle = 'orange';
+	canvasContext.font = "18px MedievalSharp"
+	var textY = 0;
+	storyY-=1.2;
+	canvasContext.drawImage(storyFadeBG,0,0);
+	//console.log(storyY);
+	for(var i=0;i<storyText.length;i++) {
+			canvasContext.fillText(storyText[i],40, storyY+textY);
+			textY += 20;
+	}
+	canvasContext.drawImage(storyFadeFG,0,0);
+	
+	canvasContext.fillStyle = '#aaaaaa';
+	canvasContext.font = "18px MedievalSharp"
+	canvasContext.fillText("Press Space to Skip Intro",40, canvas.height-30);
+}

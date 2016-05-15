@@ -174,8 +174,12 @@ function keySet(keyEvent, setTo) {
 	//Menu Input Code
 	if (gameIsGoing == false) {
 		if(setTo && keyEvent.keyCode == KEY_SPACE) {
-			gameIsGoing = true;
-			gameMusic.loopSong("audio/soundtrack2");
+			if(isShowingStory()){
+				skipStory();
+			} else {
+				gameIsGoing = true;
+				gameMusic.loopSong("audio/soundtrack2");
+			}
 			return;
 		}
 
@@ -317,10 +321,6 @@ function keySet(keyEvent, setTo) {
 }
 
 function keyPressed(evt) {
-	if(evt.keyCode == KEY_RETURN) {
-		skipStory();
-	}
-
 	keySet(evt, true);
 
 	evt.preventDefault();
