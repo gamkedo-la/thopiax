@@ -66,5 +66,5 @@ function drawWorld() {
 		if(worldData[i].kind != TILE_GROUND) { // skip these as "removed"
 			canvasContext.drawImage(worldPics[worldData[i].kind],worldData[i].x,worldData[i].y);
 		}
-	};
+	}
 } // end of drawWorld func

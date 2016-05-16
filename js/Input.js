@@ -177,8 +177,9 @@ function keySet(keyEvent, setTo) {
 			if(isShowingStory()){
 				skipStory();
 			} else {
-				gameIsGoing = true;
-				gameMusic.loopSong("audio/soundtrack2");
+				gameStart();
+				//gameIsGoing = true;
+				//gameMusic.loopSong("audio/soundtrack2");
 			}
 			return;
 		}
@@ -284,6 +285,10 @@ function keySet(keyEvent, setTo) {
 	}
 
 	if(setTo && keyEvent.keyCode == KEY_SPACE) {
+		if(activePlayers === 0){
+			gameEnd();
+		}
+		
 		//Warrior
 		if(classIndexP1 == CLASS_P1_WARRIOR) {
 			playerFighter.dashAtPoint(false);

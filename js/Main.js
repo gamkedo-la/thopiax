@@ -5,6 +5,7 @@ var playerRanged = new warriorClass();
 var playerFighter = new warriorClass();
 var previousRangedKillCount;
 var previousFighterKillCount;
+var activePlayers;
 
 var sharedAnimCycle = 0;
 
@@ -57,18 +58,45 @@ function loadLevel(whichLevel) {
 	spawnEnemies();
 }
 
+function gameStart(){
+	if(controlIndexP1 == 2 && controlIndexP2 == 2){
+		return;
+	}
+	
+	activePlayers = 2;
+	currentWave = 0; // reset to first level when players die
+	loadLevel(levelOne);
+	gameIsGoing = true;
+	gameMusic.loopSong("audio/soundtrack2");
+	
+	//Check how many playes are playing
+	if(controlIndexP1 >= CONTROL_AI){
+		activePlayers--;
+	}
+	if(controlIndexP2 >= CONTROL_AI){
+		activePlayers--;
+	}
+	
+	//Kill players controlled by "None"
+	if (controlIndexP1 == 2){
+		playerFighter.myLives = 0;
+	}
+	if (controlIndexP2 == 2){
+		playerRanged.myLives = 0;
+	}
+}
+
+function gameEnd(){
+	previousRangedKillCount = playerRanged.killCount;
+	previousFighterKillCount = playerFighter.killCount;
+	gameIsGoing = false;
+	gameMusic.loopSong("audio/soundtrack1");
+}
+
 function updateAll() {
 
 	if (gameIsGoing) {
 		sharedAnimCycle++;
-
-	    //check if player is playing // -prob not needed in updateAll?
-	    if (controlIndexP1 == 2){
-	      playerFighter.myLives = 0;
-	    }
-	    if (controlIndexP2 == 2){
-	      playerRanged.myLives = 0;
-	    }
 
 		moveAll();
 		drawAll();
@@ -85,13 +113,14 @@ function moveAll() {
 	playerFighter.move(controlIndexP1==1); //
 
 	if(playerRanged.myLives <= 0 && playerFighter.myLives <= 0) {
-		previousRangedKillCount = playerRanged.killCount;
-		previousFighterKillCount = playerFighter.killCount;
+//		previousRangedKillCount = playerRanged.killCount;
+//		previousFighterKillCount = playerFighter.killCount;
 
-		currentWave = 0; // reset to first level when players die
-		loadLevel(levelOne);
-		gameIsGoing = false;
-		gameMusic.loopSong("audio/soundtrack1");
+//		currentWave = 0; // reset to first level when players die
+//		loadLevel(levelOne);
+//		gameIsGoing = false;
+//		gameMusic.loopSong("audio/soundtrack1");
+		gameEnd();
 	}
 
 	moveShots();
