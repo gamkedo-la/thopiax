@@ -68,10 +68,6 @@ function warriorClass() {
 
 	this.ai;
 
-	this.healX;
-	this.healY;
-	this.healCooldown = 0;
-
 	this.rightHandWeapon;
 	this.leftHandWeapon;
 
@@ -171,8 +167,8 @@ function warriorClass() {
 
 
 	this.createHealZone = function() {
-		if (this.healCooldown == 0 && this.myLives > 0) {
-			this.healCooldown = HEAL_CD;
+		if (this.reloadTime2 == 0 && this.myLives > 0) {
+			this.reloadTime2 = HEAL_CD;
 			healZone.x = mouseX;
 			healZone.y = mouseY;
 			healZone.timer = 100;
@@ -354,7 +350,6 @@ function warriorClass() {
 		if(classIndexP2 == CLASS_P2_MAGE && this.name == "Ranged Dudette" && this.abilityCD == 0) {
 			this.reloadTime = 0;
 			this.reloadTime2 = 0;
-			healZone.timer = HEAL_CD / 10;
 		}
 
 		canvasContext.save();
@@ -384,9 +379,6 @@ function warriorClass() {
 		}
 		if (this.windup > 0) {
 			this.windupCircle()
-		}
-		if (playerRanged.healCooldown > 0) {
-			playerRanged.healCooldown --;
 		}
 		if (healZone.isUp) {
 			if(dampPointDist(healZone, this) < 100 && this.myLives < 100){
