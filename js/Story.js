@@ -42,7 +42,7 @@ var storyText =
 ];
 
 var storyY = 600;
-const STORY_DONE_Y = -780;
+const STORY_DONE_Y = -680;
 
 function skipStory() {
 	storyY = STORY_DONE_Y;
@@ -58,8 +58,8 @@ function drawStory() {
 	}
 	canvasContext.fillStyle = 'orange';
 	canvasContext.font = "18px MedievalSharp"
-	var textY = 0;
-	storyY-=1.2;
+	var textY = -40;
+	storyY-=0.8;
 	canvasContext.drawImage(storyFadeBG,0,0);
 	//console.log(storyY);
 	for(var i=0;i<storyText.length;i++) {
