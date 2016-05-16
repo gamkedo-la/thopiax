@@ -160,4 +160,9 @@ function drawAll() {
 
 	canvasContext.drawImage(arenaWallsFG,
 		0,canvas.height-arenaWallsFG.height);
+	if(activePlayers === 0){
+		canvasContext.fillStyle = '#ffffff';
+		canvasContext.font = "18px MedievalSharp"
+		canvasContext.fillText("Press Space to Return to Main Menu",20, canvas.height-20);
+	}
 }
