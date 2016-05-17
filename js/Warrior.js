@@ -143,16 +143,19 @@ function warriorClass() {
 			return;
 		}
 		
+		var dash = false;
+		
 		if(this.name === "Ranged Dudette" && this.reloadTime2 <= 0){
 			this.reloadTime2 = DASH_DURATION;
 			this.dashHookAtX = mouseX;
 			this.dashHookAtY = mouseY;
+			dash = true;
 		} else if(this.name === "Melee Dude"){
 			this.dashHookAtX = this.x + Math.cos( this.prevMoveAng ) * 100;
 			this.dashHookAtY = this.y + Math.sin( this.prevMoveAng ) * 100;
 		}
 		
-		if(this.dashTime <= 0) {
+		if(dash){//this.dashTime <= 0) {
 			var dist = distanceBetween(this.dashHookAtX, this.dashHookAtY, this.x, this.y);
 			if(dist > 1) {
 				this.dashTime = DASH_DURATION;
@@ -165,7 +168,14 @@ function warriorClass() {
 		}
 	}
 
-
+	this.assassinHeal = function(){
+		if(classIndexP2 === CLASS_P2_ASSASSIN && this.name == "Ranged Dudette"){
+			this.myLives++;
+			if(this.myLives > 100){
+				this.myLives = 100;
+			}
+		}
+	}
 
 	this.createHealZone = function() {
 		if (this.reloadTime2 <= 0 && this.myLives > 0) {
@@ -181,6 +191,9 @@ function warriorClass() {
 
 	this.move = function(_isAI) { // _isAI provided by a check of controlIndexP 1|2   .../-dalath
 		if(this.myLives <= 0) {
+			if(!_isAI && this.x < 9000){
+				activePlayers--;
+			}
 			this.x = 10000;
 			this.y = 10000;
 			return;
@@ -284,7 +297,9 @@ function warriorClass() {
 				break;
 			case TILE_WALL:
 				this.dashTime = 0;
-				this.reloadTime2 = 0;
+				if(leftHandIndexP2 === LEFT_P2_HOOK){
+//					this.reloadTime2 = 0;
+				}
 			default:
 				break;
 		}
@@ -334,32 +349,43 @@ function warriorClass() {
 			drawLine(this.x, this.y-10,this.dashHookAtX, this.dashHookAtY,2,'#333333');
 		}
 
+		if (healZone.isUp) {
+			if(dampPointDist(healZone, this) < 100 && this.myLives < 100){
+				this.myLives++;
+			}
+		}
+		
 		if(this.invulTime > 0) {
 			this.invulTime--;
+			
+			//This is the code that implements blinking and also slows down cooldowns
 			if(this.invulTime%5 < 2) {
+				if(this.name == "Ranged Dudette" && leftHandIndexP2 != LEFT_P2_HOOK){
+					this.reloadTime2--;
+				}
 				return;
 			}
 		}
-
+		
+		//-----This is all delayed during invul frames-----//
 		if(this.reloadTime > 0) {
 			this.reloadTime--;
+			
+			//Mage faster cooldown standing still
 			if(classIndexP2 == CLASS_P2_MAGE && this.name == "Ranged Dudette" && this.abilityCD == 0){
 				this.reloadTime-= 1;
 			}
 		}
 		if(this.reloadTime2 > 0) {
 			this.reloadTime2--;
+			
+			//Mage faster cooldown standing still
 			if(classIndexP2 == CLASS_P2_MAGE && this.name == "Ranged Dudette" && this.abilityCD == 0 && leftHandIndexP2 != LEFT_P2_HOOK){
 				this.reloadTime2-= 1;
 			}
 		}
 		if(this.abilityCD > 0) {
 			this.abilityCD--;
-		}
-		//mage
-		if(classIndexP2 == CLASS_P2_MAGE && this.name == "Ranged Dudette" && this.abilityCD == 0) {
-//			this.reloadTime = 0;
-	//		this.reloadTime2 = 0;
 		}
 
 		canvasContext.save();
@@ -390,10 +416,6 @@ function warriorClass() {
 		if (this.windup > 0) {
 			this.windupCircle()
 		}
-		if (healZone.isUp) {
-			if(dampPointDist(healZone, this) < 100 && this.myLives < 100){
-				this.myLives++;
-			}
-		}
+		//-----End of invul frame delayed section-----//
 	}
 }

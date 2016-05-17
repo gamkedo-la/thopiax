@@ -84,8 +84,8 @@ shotClassArrow.prototype = Object.create(shotClass.prototype);;
 shotClassArrow.prototype.constructor = shotClassArrow;
 
 function shotClassArrow(firedBy, angle) {
-	this.velocity = 7.0;
-	this.lifeTime = 40;
+	this.velocity = 17.0;
+	this.lifeTime = 60;
 	this.myShotPic = playerArrowPic;
 	this.vanishOnHit = true;
 	this.doesStun = false;

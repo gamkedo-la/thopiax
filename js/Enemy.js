@@ -120,10 +120,11 @@ function enemyClass(spawnX, spawnY) {
 		if(soundIsOn){
 			setTimeout(this.hitEnemySound.play(), 200);
 		}
-
+		
 		this.lives--;
 		if(!this.lives && firedBy){
 			firedBy.killCount++;
+			firedBy.assassinHeal();
 			if (firedBy == playerRanged && classIndexP2 == 1) {
 				playerRanged.speedBoost = 5;
 				playerRanged.abilityCD = 50;

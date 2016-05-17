@@ -128,7 +128,7 @@ function playerAbilities() {
 		}
 	}
 	
-	if(keySpaceDown && playerFighter.abilityCD <= 0){
+	if(keySpaceDown && playerFighter.abilityCD <= 0 && !controlIndexP1){
 		switch(classIndexP1) {
 			case CLASS_P1_WARRIOR:
 				playerFighter.dashAtPoint(false);
@@ -355,7 +355,7 @@ function keySet(keyEvent, setTo) {
 
 	//Rogue
 	if(classIndexP2 == CLASS_P2_ROGUE && playerRanged.invulTime == 0) {
-		playerRanged.speedBoost = 3;
+		playerRanged.speedBoost = 4;
 		playerRanged.abilityCD = 15;
 	}
 	if(playerRanged.abilityCD < 10) {
