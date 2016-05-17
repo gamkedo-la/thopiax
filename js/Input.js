@@ -11,6 +11,7 @@ const KEY_Y = 89;
 const KEY_U = 85;
 var keyYDown = false;
 var keyUDown = false;
+var keySpaceDown = false;
 
 const KEY_SPACE = 32;
 const KEY_RETURN = 13;
@@ -72,7 +73,7 @@ function mouseReleased(evt) {
 
 function playerAbilities() {
 	//Ranged
-	if(mouseLeftButton) {
+	if(mouseLeftButton && !controlIndexP2) {
 		switch(rightHandIndexP2) {
 			case RIGHT_P2_BOW:
 				arrowShot();
@@ -85,7 +86,7 @@ function playerAbilities() {
 				break;
 		}
 	}
-	if(mouseOtherButton) {
+	if(mouseOtherButton && !controlIndexP2) {
 		switch(leftHandIndexP2) {
 			case LEFT_P2_HOOK:
 				playerRanged.dashAtPoint(true);
@@ -100,7 +101,7 @@ function playerAbilities() {
 	}
 	
 	//Fighter
-	if(keyYDown) {
+	if(keyYDown && !controlIndexP1) {
 		switch(rightHandIndexP1) {
 			case RIGHT_P1_SPEAR:
 				stabSpear();
@@ -113,7 +114,7 @@ function playerAbilities() {
 				break;
 		}
 	}
-	if(keyUDown) {
+	if(keyUDown && !controlIndexP1) {
 		switch(leftHandIndexP1) {
 			case LEFT_P1_SHIELD:
 				raiseShield();
@@ -127,8 +128,33 @@ function playerAbilities() {
 		}
 	}
 	
+	if(keySpaceDown && playerFighter.abilityCD <= 0){
+		switch(classIndexP1) {
+			case CLASS_P1_WARRIOR:
+				playerFighter.dashAtPoint(false);
+				break;
+			case CLASS_P1_BERSERKER:
+				if (playerFighter.speedBoost < 8) {
+					playerFighter.speedBoost+= 1;
+					playerFighter.myLives -= 10;
+					playerFighter.abilityCD = 50;
+				} else {
+					playerFighter.invulTime = INVUL_FRAMES;
+				}
+				break;
+			case CLASS_P1_PALADIN:
+				playerFighter.myLives += 5;
+				if (playerFighter.myLives > 100) {
+					playerFighter.myLives = 100;
+				}
+				playerFighter.abilityCD = 200;
+				break;
+		}
+	}
+	
 	keyUDown = false;
 	keyYDown = false;
+	keySpaceDown = false;
 }
 
 function updateMousePos(evt) {
@@ -320,30 +346,11 @@ function keySet(keyEvent, setTo) {
 	if(setTo && keyEvent.keyCode == KEY_SPACE) {
 		if(activePlayers === 0){
 			gameEnd();
+		}else {
+			keySpaceDown = true;
 		}
-		
-		//Warrior
-		if(classIndexP1 == CLASS_P1_WARRIOR) {
-			playerFighter.dashAtPoint(false);
-		}
-		//Berserker
-		if(classIndexP1 == CLASS_P1_BERSERKER && playerFighter.abilityCD <= 0) {
-			if (playerFighter.speedBoost < 8) {
-				playerFighter.speedBoost+= 1;
-				playerFighter.myLives -= 10;
-				playerFighter.abilityCD = 50;
-			} else {
-				playerFighter.invulTime = INVUL_FRAMES;
-			}
-		}
-		//Paladin
-		if(classIndexP1 == CLASS_P1_PALADIN && playerFighter.abilityCD <= 0) {
-			playerFighter.myLives += 5;
-			if (playerFighter.myLives > 100) {
-				playerFighter.myLives = 100;
-			}
-			playerFighter.abilityCD = 200;
-		}
+	} else if(keyEvent.keyCode == KEY_SPACE){
+		keySpaceDown = false;
 	}
 
 	//Rogue
