@@ -94,7 +94,6 @@ function gameEnd(){
 }
 
 function updateAll() {
-
 	if (gameIsGoing) {
 		sharedAnimCycle++;
 
@@ -113,16 +112,10 @@ function moveAll() {
 	playerFighter.move(controlIndexP1==1); //
 
 	if(playerRanged.myLives <= 0 && playerFighter.myLives <= 0) {
-//		previousRangedKillCount = playerRanged.killCount;
-//		previousFighterKillCount = playerFighter.killCount;
-
-//		currentWave = 0; // reset to first level when players die
-//		loadLevel(levelOne);
-//		gameIsGoing = false;
-//		gameMusic.loopSong("audio/soundtrack1");
 		gameEnd();
 	}
-
+	
+	playerAbilities();
 	moveShots();
 	moveEnemies();
 	AIH.gridDangerScan();	// Need to update the AI Helper "dangerscape" every cycle.

@@ -15,10 +15,13 @@ const KEY_RETURN = 13;
 
 var mouseX = 0;
 var mouseY = 0;
+var mouseLeftButton = false;
+var mouseOtherButton = false;
 
 function setupInput() {
 	canvas.addEventListener('mousemove', updateMousePos);
 	canvas.addEventListener('mousedown', mousePressed);
+	canvas.addEventListener('mouseup', mouseReleased);
 
 	document.addEventListener('keydown', keyPressed);
 	document.addEventListener('keyup', keyReleased);
@@ -50,6 +53,23 @@ function mousePressed(evt) {
 
 	var leftMouseButton = (evt.button == 0);
 	if(leftMouseButton) {
+		mouseLeftButton = true;
+	} else {
+		mouseOtherButton = true;
+	}
+}
+
+function mouseReleased(evt) {
+	var leftMouseButton = (evt.button == 0);
+	if(leftMouseButton) {
+		mouseLeftButton = false;
+	} else {
+		mouseOtherButton = false;
+	}
+}
+
+function playerAbilities() {
+	if(mouseLeftButton) {
 		//Bow
 		if (rightHandIndexP2 == 0) {
 			arrowShot();
@@ -62,8 +82,8 @@ function mousePressed(evt) {
 		if(rightHandIndexP2 == 2) {
 			stabDagger();
 		}
-	} else {
-
+	}
+	if(mouseOtherButton) {
 		//Grapple Hook
 		if (leftHandIndexP2 == 0) {
 			playerRanged.dashAtPoint(true);
@@ -178,8 +198,6 @@ function keySet(keyEvent, setTo) {
 				skipStory();
 			} else {
 				gameStart();
-				//gameIsGoing = true;
-				//gameMusic.loopSong("audio/soundtrack2");
 			}
 			return;
 		}
@@ -227,9 +245,6 @@ function keySet(keyEvent, setTo) {
 
 
 	}
-
-
-
 
 	if(keyEvent.keyCode == playerRanged.controlKeyLeft) {
 		playerRanged.keyHeld_West = setTo;
@@ -321,8 +336,6 @@ function keySet(keyEvent, setTo) {
 	if(playerRanged.abilityCD < 10) {
 		playerRanged.speedBoost = 0;
 	}
-
-
 }
 
 function keyPressed(evt) {

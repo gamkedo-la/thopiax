@@ -30,7 +30,9 @@ function arrowShot() {
 		var newShot = new shotClassArrow(fromPlayer, angle);
 
 		shotList.push(newShot);
+		return true;
 	}
+	return false;
 }
 
 function throwAxe() {
@@ -58,7 +60,9 @@ function throwShuriken() {
 		shotList.push(newShot0);
 		shotList.push(newShot1);
 		shotList.push(newShot2);
+		return true;
 	}
+	return false;
 }
 
 function fireStaff() {
@@ -69,7 +73,9 @@ function fireStaff() {
 		var angle = Math.atan2(mouseY-fromPlayer.y,mouseX-fromPlayer.x);
 		var newShot = new shotClassFireball(fromPlayer, angle);
 		shotList.push(newShot);
+		return true;
 	}
+	return false;
 }
 
 function stabDagger() {
@@ -81,7 +87,9 @@ function stabDagger() {
 		var newShot = new shotClassDagger(fromPlayer, angle);
 
 		shotList.push(newShot);
+		return true;
 	}
+	return false;
 }
 
 function stabSpear() {

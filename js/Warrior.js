@@ -5,7 +5,7 @@ const PLAYER_FRAME_NUM = 60;
 const DASH_DURATION = 28.0;
 const DASH_MAX_SPEED = 11.0;
 const BERSERK_COOLDOWN = 50.0;
-const MAGE_CD = 100.0;
+const MAGE_CD = 1.0;
 const HEAL_CD = 1000.0;
 
 const START_LIVES = 100;
@@ -143,10 +143,11 @@ function warriorClass() {
 			return;
 		}
 		
-		if(atMouse){
+		if(this.name === "Ranged Dudette" && this.reloadTime2 <= 0){
+			this.reloadTime2 = DASH_DURATION;
 			this.dashHookAtX = mouseX;
 			this.dashHookAtY = mouseY;
-		} else {
+		} else if(this.name === "Melee Dude"){
 			this.dashHookAtX = this.x + Math.cos( this.prevMoveAng ) * 100;
 			this.dashHookAtY = this.y + Math.sin( this.prevMoveAng ) * 100;
 		}
@@ -167,13 +168,15 @@ function warriorClass() {
 
 
 	this.createHealZone = function() {
-		if (this.reloadTime2 == 0 && this.myLives > 0) {
+		if (this.reloadTime2 <= 0 && this.myLives > 0) {
 			this.reloadTime2 = HEAL_CD;
 			healZone.x = mouseX;
 			healZone.y = mouseY;
 			healZone.timer = 100;
 			healZone.isUp = true;
+			return true;
 		}
+		return false;
 	}
 
 	this.move = function(_isAI) { // _isAI provided by a check of controlIndexP 1|2   .../-dalath
@@ -281,6 +284,7 @@ function warriorClass() {
 				break;
 			case TILE_WALL:
 				this.dashTime = 0;
+				this.reloadTime2 = 0;
 			default:
 				break;
 		}
@@ -339,17 +343,23 @@ function warriorClass() {
 
 		if(this.reloadTime > 0) {
 			this.reloadTime--;
+			if(classIndexP2 == CLASS_P2_MAGE && this.name == "Ranged Dudette" && this.abilityCD == 0){
+				this.reloadTime-= 1;
+			}
 		}
 		if(this.reloadTime2 > 0) {
 			this.reloadTime2--;
+			if(classIndexP2 == CLASS_P2_MAGE && this.name == "Ranged Dudette" && this.abilityCD == 0 && leftHandIndexP2 != LEFT_P2_HOOK){
+				this.reloadTime2-= 1;
+			}
 		}
 		if(this.abilityCD > 0) {
 			this.abilityCD--;
 		}
 		//mage
 		if(classIndexP2 == CLASS_P2_MAGE && this.name == "Ranged Dudette" && this.abilityCD == 0) {
-			this.reloadTime = 0;
-			this.reloadTime2 = 0;
+//			this.reloadTime = 0;
+	//		this.reloadTime2 = 0;
 		}
 
 		canvasContext.save();
