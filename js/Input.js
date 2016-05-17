@@ -9,6 +9,8 @@ const KEY_S = 83;
 const KEY_D = 68;
 const KEY_Y = 89;
 const KEY_U = 85;
+var keyYDown = false;
+var keyUDown = false;
 
 const KEY_SPACE = 32;
 const KEY_RETURN = 13;
@@ -69,34 +71,64 @@ function mouseReleased(evt) {
 }
 
 function playerAbilities() {
+	//Ranged
 	if(mouseLeftButton) {
-		//Bow
-		if (rightHandIndexP2 == 0) {
-			arrowShot();
-		}
-		//Fire Staff
-		if (rightHandIndexP2 == 1) {
-			fireStaff();
-		}
-		//Dagger
-		if(rightHandIndexP2 == 2) {
-			stabDagger();
+		switch(rightHandIndexP2) {
+			case RIGHT_P2_BOW:
+				arrowShot();
+				break;
+			case RIGHT_P2_STAFF:
+				fireStaff();
+				break;
+			case RIGHT_P2_DAGGER:
+				stabDagger();
+				break;
 		}
 	}
 	if(mouseOtherButton) {
-		//Grapple Hook
-		if (leftHandIndexP2 == 0) {
-			playerRanged.dashAtPoint(true);
-		}
-		//Shuriken
-		if (leftHandIndexP2 == 1) {
-			throwShuriken();
-		}
-		//Healing Scroll
-		if (leftHandIndexP2 == 2) {
-			playerRanged.createHealZone();
+		switch(leftHandIndexP2) {
+			case LEFT_P2_HOOK:
+				playerRanged.dashAtPoint(true);
+				break;
+			case LEFT_P2_SHURIKENS:
+				throwShuriken();
+				break;
+			case LEFT_P2_SCROLL:
+				playerRanged.createHealZone();
+				break;
 		}
 	}
+	
+	//Fighter
+	if(keyYDown) {
+		switch(rightHandIndexP1) {
+			case RIGHT_P1_SPEAR:
+				stabSpear();
+				break;
+			case RIGHT_P1_SWORD:
+				swingSword();
+				break;
+			case RIGHT_P1_AXE:
+				swingBattleAxe();
+				break;
+		}
+	}
+	if(keyUDown) {
+		switch(leftHandIndexP1) {
+			case LEFT_P1_SHIELD:
+				raiseShield();
+				break;
+			case LEFT_P1_AXE:
+				throwAxe();
+				break;
+			case LEFT_P1_HORN:
+				blowHorn();
+				break;
+		}
+	}
+	
+	keyUDown = false;
+	keyYDown = false;
 }
 
 function updateMousePos(evt) {
@@ -273,31 +305,17 @@ function keySet(keyEvent, setTo) {
 		playerFighter.keyHeld_South = setTo;
 	}
 	if(setTo && keyEvent.keyCode == KEY_Y) {
-			switch(rightHandIndexP1) {
-				case RIGHT_P1_SPEAR:
-					stabSpear();
-					break;
-				case RIGHT_P1_SWORD:
-					swingSword();
-					break;
-				case RIGHT_P1_AXE:
-					swingBattleAxe();
-					break;
-			}
+		keyYDown = true;
 	}
 	if(setTo && keyEvent.keyCode == KEY_U) {
-		switch(leftHandIndexP1) {
-			case LEFT_P1_SHIELD:
-				raiseShield();
-				break;
-			case LEFT_P1_AXE:
-				throwAxe();
-				break;
-			case LEFT_P1_HORN:
-				blowHorn();
-				break;
-		}
+		keyUDown = true;
 	}
+//	if(!setTo && keyEvent.keyCode == KEY_Y) {
+//		keyYDown = false;
+//	}
+//	if(!setTo && keyEvent.keyCode == KEY_U) {
+//		keyUDown = false;
+//	}
 
 	if(setTo && keyEvent.keyCode == KEY_SPACE) {
 		if(activePlayers === 0){
