@@ -137,20 +137,21 @@ function playerAbilities() {
 				if (playerFighter.speedBoost < 8) {
 					playerFighter.speedBoost+= 1;
 					playerFighter.myLives -= 10;
-					playerFighter.abilityCD = 50;
+					playerFighter.abilityCD = playerFighter.abilityCDMax;
 				} else {
 					playerFighter.invulTime = INVUL_FRAMES;
 				}
 				break;
 			case CLASS_P1_PALADIN:
-				playerFighter.myLives += 5;
-				if (playerFighter.myLives > 100) {
-					playerFighter.myLives = 100;
-				}
-				playerFighter.abilityCD = 200;
+//				playerFighter.myLives += 5;
+	//			if (playerFighter.myLives > 100) {
+		//			playerFighter.myLives = 100;
+			//	}
+				playerFighter.abilityCD = playerFighter.abilityCDMax;
 				break;
 		}
 	}
+	playerFighter.paladinHeal();
 	
 	keyUDown = false;
 	keyYDown = false;

@@ -56,6 +56,7 @@ function warriorClass() {
 	this.speedBoost = 0;
 
 	this.abilityCD;
+	this.abilityCDMax = 1;
 	this.reloadTime;
 	this.reloadTime2;
 	this.windup;
@@ -176,6 +177,15 @@ function warriorClass() {
 			}
 		}
 	}
+	
+	this.paladinHeal = function(){
+		if(classIndexP1 === CLASS_P1_PALADIN){
+			this.myLives += 1/30;
+			if(this.myLives > 100){
+				this.myLives = 100;
+			}
+		}
+	}
 
 	this.createHealZone = function() {
 		if (this.reloadTime2 <= 0 && this.myLives > 0) {
@@ -187,6 +197,14 @@ function warriorClass() {
 			return true;
 		}
 		return false;
+	}
+	
+	this.drawCooldown = function(){
+		if(this.name == "Ranged Dudette" && leftHandIndexP2 === LEFT_P2_SCROLL && this.reloadTime2 > 0){
+			drawEllipsePart(this.x, this.y, 50, 50*worldTiltYDampen, "#44FF44", this.reloadTime2/HEAL_CD);
+		} else if(this.name == "Melee Dude" && this.abilityCD > 0){
+			drawEllipsePart(this.x, this.y, 50, 50*worldTiltYDampen, "#44FF44", this.abilityCD/this.abilityCDMax);
+		}
 	}
 
 	this.move = function(_isAI) { // _isAI provided by a check of controlIndexP 1|2   .../-dalath
@@ -325,6 +343,8 @@ function warriorClass() {
 		if(this.myLives <= 0) {
 			return;
 		}
+		
+		this.drawCooldown();
 
 		var frameSize = 50;
 		var frameNum = sharedAnimCycle % PLAYER_FRAME_NUM;

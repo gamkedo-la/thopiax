@@ -84,6 +84,18 @@ function gameStart(){
 	if (controlIndexP2 == 2){
 		playerRanged.myLives = 0;
 	}
+	
+	//Set warrior ability cooldowns
+	switch(classIndexP1){
+		case CLASS_P1_WARRIOR:
+			break;
+		case CLASS_P1_BERSERKER:
+			playerFighter.abilityCDMax = 50;
+			break;
+		case CLASS_P1_PALADIN:
+			playerFighter.abilityCDMax = 200;
+			break;
+	}
 }
 
 function gameEnd(){
