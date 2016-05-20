@@ -56,7 +56,7 @@ const LEFT_P2_SCROLL = 2;
 const LEFT_P2_NUM = 3;
 
 var controlledByP1 = ["WASD / YU / Space", "AI Controlled", "None"];
-var controlledByP1Pali = ["WASD / YU / Space", "AI Controlled", "None"];
+var controlledByP1Pali = ["WASD / YU", "AI Controlled", "None"];
 var controlledByP2 = ["Arrows / Mouse", "AI Controlled", "None"];
 const CONTROL_HUMAN = 0;
 const CONTROL_AI = 1;
