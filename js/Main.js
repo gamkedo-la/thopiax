@@ -90,7 +90,7 @@ function gameStart(){
 		case CLASS_P1_WARRIOR:
 			break;
 		case CLASS_P1_BERSERKER:
-			playerFighter.abilityCDMax = 50;
+			playerFighter.abilityCDMax = 350;
 			break;
 		case CLASS_P1_PALADIN:
 			playerFighter.abilityCDMax = 200;

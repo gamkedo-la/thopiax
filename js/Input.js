@@ -134,13 +134,10 @@ function playerAbilities() {
 				playerFighter.dashAtPoint(false);
 				break;
 			case CLASS_P1_BERSERKER:
-				if (playerFighter.speedBoost < 8) {
-					playerFighter.speedBoost+= 1;
-					playerFighter.myLives -= 10;
+//					playerFighter.speedBoost+= 1;
+					//playerFighter.myLives -= 10;
+					playerFighter.berserkerAbility();
 					playerFighter.abilityCD = playerFighter.abilityCDMax;
-				} else {
-					playerFighter.invulTime = INVUL_FRAMES;
-				}
 				break;
 			case CLASS_P1_PALADIN:
 //				playerFighter.myLives += 5;

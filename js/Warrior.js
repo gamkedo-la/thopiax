@@ -57,6 +57,7 @@ function warriorClass() {
 
 	this.abilityCD;
 	this.abilityCDMax = 1;
+	this.abilityDuration = 0;
 	this.reloadTime;
 	this.reloadTime2;
 	this.windup;
@@ -185,6 +186,12 @@ function warriorClass() {
 				this.myLives = 100;
 			}
 		}
+	}
+	
+	this.berserkerAbility = function(){
+		this.speedBoost+= 8;
+		this.invulTime = INVUL_FRAMES * 1.5;
+		this.abilityDuration = INVUL_FRAMES * 1.5;
 	}
 
 	this.createHealZone = function() {
@@ -375,6 +382,12 @@ function warriorClass() {
 			}
 		}
 		
+		if(this.abilityDuration > 0){
+			this.abilityDuration--;
+		} else if (this.abilityDuration == 0){
+			this.speedBoost = 0;
+		}
+
 		if(this.invulTime > 0) {
 			this.invulTime--;
 			
@@ -407,7 +420,7 @@ function warriorClass() {
 		if(this.abilityCD > 0) {
 			this.abilityCD--;
 		}
-
+		
 		canvasContext.save();
 		canvasContext.translate(this.x, this.y);
 		if(this.lastMovedRight) {

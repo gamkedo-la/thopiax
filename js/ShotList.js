@@ -14,7 +14,7 @@ const PLAYER_BATTLE_AXE_RELOAD = 75;
 const PLAYER_THROWING_AXE_RELOAD = 50;
 const PLAYER_SPEAR_RELOAD = 13;
 const PLAYER_DAGGER_RELOAD = 14;
-const PLAYER_SHIELD_RELOAD = 60;
+const PLAYER_SHIELD_RELOAD = 120;
 const PLAYER_HORN_RELOAD = 500;
 
 var fireStaffSound = new SoundOverlapsClass("audio/fireball")
