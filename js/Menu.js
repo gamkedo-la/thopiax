@@ -19,44 +19,45 @@ var leftHandIndexP2 = 0;
 var controlIndexP1 = 0;
 var controlIndexP2 = 0;
 
-var classListP1 = ["Warrior", "Berserker", "Paladin"]
+var classListP1 = ["Warrior", "Berserker", "Paladin"];
 const CLASS_P1_WARRIOR = 0;
 const CLASS_P1_BERSERKER = 1;
 const CLASS_P1_PALADIN = 2;
 const CLASS_P1_NUM = 3;
 
-var classListP2 = ["Rogue", "Assassin", "Mage"]
+var classListP2 = ["Rogue", "Assassin", "Mage"];
 const CLASS_P2_ROGUE = 0;
 const CLASS_P2_ASSASSIN = 1;
 const CLASS_P2_MAGE = 2;
 const CLASS_P2_NUM = 3;
 
-var rightHandListP1 = ["Spear", "Sword", "Vampire Axe"]
+var rightHandListP1 = ["Spear", "Sword", "Vampire Axe"];
 const RIGHT_P1_SPEAR = 0;
 const RIGHT_P1_SWORD = 1;
 const RIGHT_P1_AXE = 2;
 const RIGHT_P1_NUM = 3;
 
-var rightHandListP2 = ["Bow", "Fire Staff", "Dagger"]
+var rightHandListP2 = ["Bow", "Fire Staff", "Dagger"];
 const RIGHT_P2_BOW = 0;
 const RIGHT_P2_STAFF = 1;
 const RIGHT_P2_DAGGER = 2;
 const RIGHT_P2_NUM = 3;
 
-var leftHandListP1 = ["Shield", "Throwing Axe", "Horn"]
+var leftHandListP1 = ["Shield", "Throwing Axe", "Horn"];
 const LEFT_P1_SHIELD = 0;
 const LEFT_P1_AXE = 1;
 const LEFT_P1_HORN = 2;
 const LEFT_P1_NUM = 3;
 
-var leftHandListP2 = ["Grapple Hook", "Shurikens", "Healing Scroll"]
+var leftHandListP2 = ["Grapple Hook", "Shurikens", "Healing Scroll"];
 const LEFT_P2_HOOK = 0;
 const LEFT_P2_SHURIKENS = 1;
 const LEFT_P2_SCROLL = 2;
 const LEFT_P2_NUM = 3;
 
-var controlledByP1 = ["WASD / YU / Space", "AI Controlled", "None"]
-var controlledByP2 = ["Arrows / Mouse", "AI Controlled", "None"]
+var controlledByP1 = ["WASD / YU / Space", "AI Controlled", "None"];
+var controlledByP1Pali = ["WASD / YU / Space", "AI Controlled", "None"];
+var controlledByP2 = ["Arrows / Mouse", "AI Controlled", "None"];
 const CONTROL_HUMAN = 0;
 const CONTROL_AI = 1;
 const CONTROL_NONE = 2;
@@ -104,7 +105,11 @@ function runMenu () {
     canvasContext.fillText(leftHandListP2[leftHandIndexP2] ,MENU_ROW2, menuColumnPos[2]);
     canvasContext.fillStyle = 'white';
     canvasContext.fillText("Controls:" ,MENU_ROW0, menuColumnPos[3]);
-    canvasContext.fillText(controlledByP1[controlIndexP1] ,MENU_ROW1, menuColumnPos[3]);
+		if(classIndexP1 != CLASS_P1_PALADIN){
+			canvasContext.fillText(controlledByP1[controlIndexP1] ,MENU_ROW1, menuColumnPos[3]);
+		} else {
+			canvasContext.fillText(controlledByP1Pali[controlIndexP1] ,MENU_ROW1, menuColumnPos[3]);
+		}
     canvasContext.fillText(controlledByP2[controlIndexP2] ,MENU_ROW2, menuColumnPos[3]);
 		
 		//Display previous score only if both players have died
