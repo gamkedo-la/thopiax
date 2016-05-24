@@ -73,11 +73,26 @@ function moveEnemies() {
 	}
 }
 
-function drawEnemies() {
+function drawEnemies(furtherPlayer, closerPlayer) {
 	// sorting on y position to achieve back-to-front draw order
 	enemyList.sort(function(a, b) {return a.y - b.y});
+	var playersDrawn = 0;
 
 	for(var i=0; i<enemyList.length; i++) {
+		if(playersDrawn === 0 && enemyList[i].y > furtherPlayer.y){
+			furtherPlayer.draw();
+			playersDrawn++;
+		}
+		if(playersDrawn === 1 && enemyList[i].y > closerPlayer.y){
+			closerPlayer.draw();
+			playersDrawn++;
+		}
 		enemyList[i].draw();
+	}
+	if(playersDrawn === 0){
+		furtherPlayer.draw();
+		closerPlayer.draw();
+	} else if(playersDrawn === 1){
+		closerPlayer.draw();
 	}
 }

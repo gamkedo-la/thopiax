@@ -152,9 +152,11 @@ function warriorClass() {
 			this.dashHookAtX = mouseX;
 			this.dashHookAtY = mouseY;
 			dash = true;
-		} else if(this.name === "Melee Dude"){
+		} else if(this.name === "Melee Dude" && this.abilityCD <= 0){
+			this.abilityCD = DASH_DURATION;
 			this.dashHookAtX = this.x + Math.cos( this.prevMoveAng ) * 100;
 			this.dashHookAtY = this.y + Math.sin( this.prevMoveAng ) * 100;
+			dash = true;
 		}
 		
 		if(dash){//this.dashTime <= 0) {
@@ -209,8 +211,11 @@ function warriorClass() {
 	this.drawCooldown = function(){
 		if(this.name == "Ranged Dudette" && leftHandIndexP2 === LEFT_P2_SCROLL && this.reloadTime2 > 0){
 			drawEllipsePart(this.x, this.y, 50, 50*worldTiltYDampen, "#44FF44", this.reloadTime2/HEAL_CD);
-		} else if(this.name == "Melee Dude" && this.abilityCD > 0){
-			drawEllipsePart(this.x, this.y, 50, 50*worldTiltYDampen, "#44FF44", this.abilityCD/this.abilityCDMax);
+		} else if(this.name == "Melee Dude" && this.abilityCD > 0 && classIndexP1 === CLASS_P1_BERSERKER){
+			drawEllipsePart(this.x, this.y, 60, 60*worldTiltYDampen, "#FFFF44", this.abilityCD/this.abilityCDMax);
+		}
+		if(this.name == "Melee Dude" && leftHandIndexP1 === LEFT_P1_HORN && this.reloadTime2 > 0){
+			drawEllipsePart(this.x, this.y, 50, 50*worldTiltYDampen, "#44FF44", this.reloadTime2/PLAYER_HORN_RELOAD);
 		}
 	}
 
@@ -384,7 +389,7 @@ function warriorClass() {
 		
 		if(this.abilityDuration > 0){
 			this.abilityDuration--;
-		} else if (this.abilityDuration == 0){
+		} else if (this.abilityDuration == 0 && this.name == "Melee Dude" && classIndexP1 == CLASS_P1_BERSERKER){
 			this.speedBoost = 0;
 		}
 

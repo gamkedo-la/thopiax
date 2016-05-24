@@ -9,12 +9,16 @@ const KEY_S = 83;
 const KEY_D = 68;
 const KEY_Y = 89;
 const KEY_U = 85;
-var keyYDown = false;
-var keyUDown = false;
-var keySpaceDown = false;
+var keyYState = 0;
+var keyUState = 0;
+var keySpaceState = 0;
 
 const KEY_SPACE = 32;
 const KEY_RETURN = 13;
+
+const KEY_STATE_UP = 0;
+const KEY_STATE_PRESSED = 1;
+const KEY_STATE_USED = 2;
 
 var mouseX = 0;
 var mouseY = 0;
@@ -101,7 +105,7 @@ function playerAbilities() {
 	}
 	
 	//Fighter
-	if(keyYDown && !controlIndexP1) {
+	if(keyYState === KEY_STATE_PRESSED && !controlIndexP1 && playerFighter.reloadTime <= 0) {
 		switch(rightHandIndexP1) {
 			case RIGHT_P1_SPEAR:
 				stabSpear();
@@ -114,7 +118,7 @@ function playerAbilities() {
 				break;
 		}
 	}
-	if(keyUDown && !controlIndexP1) {
+	if(keyUState === KEY_STATE_PRESSED && !controlIndexP1 && playerFighter.reloadTime2 <= 0) {
 		switch(leftHandIndexP1) {
 			case LEFT_P1_SHIELD:
 				raiseShield();
@@ -128,7 +132,7 @@ function playerAbilities() {
 		}
 	}
 	
-	if(keySpaceDown && playerFighter.abilityCD <= 0 && !controlIndexP1){
+	if(keySpaceState === KEY_STATE_PRESSED && playerFighter.abilityCD <= 0 && !controlIndexP1){
 		switch(classIndexP1) {
 			case CLASS_P1_WARRIOR:
 				playerFighter.dashAtPoint(false);
@@ -150,9 +154,16 @@ function playerAbilities() {
 	}
 	playerFighter.paladinHeal();
 	
-	keyUDown = false;
-	keyYDown = false;
-	keySpaceDown = false;
+	//Reset keys to prevent player from holding them down and causing ghosting
+	if(keyYState === KEY_STATE_PRESSED){
+		keyYState = KEY_STATE_USED;
+	}
+	if(keyUState === KEY_STATE_PRESSED){
+		keyUState = KEY_STATE_USED;
+	}
+	if(keySpaceState === KEY_STATE_PRESSED){
+		keySpaceState = KEY_STATE_USED;
+	}
 }
 
 function updateMousePos(evt) {
@@ -328,27 +339,27 @@ function keySet(keyEvent, setTo) {
 	if(keyEvent.keyCode == playerFighter.controlKeyDown) {
 		playerFighter.keyHeld_South = setTo;
 	}
-	if(setTo && keyEvent.keyCode == KEY_Y) {
-		keyYDown = true;
+	if(setTo && keyEvent.keyCode == KEY_Y && keyYState === KEY_STATE_UP) {
+		keyYState = KEY_STATE_PRESSED;
 	}
-	if(setTo && keyEvent.keyCode == KEY_U) {
-		keyUDown = true;
+	if(setTo && keyEvent.keyCode == KEY_U && keyUState === KEY_STATE_UP) {
+		keyUState = KEY_STATE_PRESSED;
 	}
-//	if(!setTo && keyEvent.keyCode == KEY_Y) {
-//		keyYDown = false;
-//	}
-//	if(!setTo && keyEvent.keyCode == KEY_U) {
-//		keyUDown = false;
-//	}
+	if(!setTo && keyEvent.keyCode == KEY_Y) {
+		keyYState = KEY_STATE_UP;
+	}
+	if(!setTo && keyEvent.keyCode == KEY_U) {
+		keyUState = KEY_STATE_UP;
+	}
 
 	if(setTo && keyEvent.keyCode == KEY_SPACE) {
 		if(activePlayers === 0){
 			gameEnd();
-		}else {
-			keySpaceDown = true;
+		} else if(keySpaceState === KEY_STATE_UP){
+			keySpaceState = KEY_STATE_PRESSED;
 		}
-	} else if(keyEvent.keyCode == KEY_SPACE){
-		keySpaceDown = false;
+	} else if(keyEvent.keyCode === KEY_SPACE){
+		keySpaceState = KEY_STATE_UP;
 	}
 
 	//Rogue

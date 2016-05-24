@@ -125,7 +125,7 @@ function enemyClass(spawnX, spawnY) {
 		if(!this.lives && firedBy){
 			firedBy.killCount++;
 			firedBy.assassinHeal();
-			if (firedBy == playerRanged && classIndexP2 == 1) {
+			if (firedBy == playerRanged && classIndexP2 == CLASS_P2_ASSASSIN) {
 				playerRanged.speedBoost = 5;
 				playerRanged.abilityCD = 50;
 			}

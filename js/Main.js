@@ -96,6 +96,12 @@ function gameStart(){
 			playerFighter.abilityCDMax = 200;
 			break;
 	}
+	
+	playerFighter.abilityCD = 0;
+	playerFighter.reloadTime = 0;
+	playerFighter.reloadTime2 = 0;
+	playerRanged.reloadTime = 0;
+	playerRanged.reloadTime2 = 0;
 }
 
 function gameEnd(){
@@ -157,10 +163,11 @@ function drawAll() {
 		healZone.isUp = false;
 	}
 
-
-	playerRanged.draw();
-	playerFighter.draw();
-	drawEnemies();
+	if(playerFighter.y < playerRanged.y){
+		drawEnemies(playerFighter, playerRanged);
+	} else {
+		drawEnemies(playerRanged, playerFighter);
+	}
 	drawShots();
 
 	canvasContext.drawImage(arenaWallsFG,
